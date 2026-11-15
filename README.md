@@ -1,94 +1,37 @@
-# KDMP — Kerangka (Rebuild)
+# KDMP — Sistem Survei Lapangan & Master Data Desa
 
-Kerangka Laravel 12 dibangun ulang dari sistem KDMP asli. Skema database
-**sama persis** dengan versi lama (16 migrasi, termasuk trigger & view
-khusus MySQL di tabel jurnal). Model, controller, routing, UI, dan seluruh
-service bisnis sudah diimplementasi untuk semua modul.
+Aplikasi Laravel 12 yang difokuskan khusus untuk **Modul Survei Lapangan Desa** dan **Master Data & Konfigurasi Entitas**.
 
-## Yang sudah ada
+## Fitur Utama
 
-- **Skema database** — 16 file migrasi di `database/migrations/`
-- **66 model Eloquent**, terorganisir per modul di `app/Models/`
-- **51 controller**, sebagian besar lewat satu base class
-  `App\Http\Controllers\Concerns\ModuleCrudController`
-- **Routing lengkap** semua modul di `routes/web.php`
-- **UI modern** — Tailwind 4, font Fraunces + IBM Plex, sidebar bermotif
-  tab buku besar M0–M10, sudah diverifikasi tampil benar di browser
-- Infrastruktur multi-tenant (`KoperasiScope`, `SetKoperasiAktif`,
-  trait `BelongsToKoperasi`) — fondasi isolasi data antar desa
-- Seeder: `CoaSeeder` & `TransaksiTemplateSeeder` (COA dan 30 kode
-  transaksi), `PeranSeeder`, `DataAwalSeeder` (2 koperasi contoh + akun login)
-- **Service bisnis lengkap** di `app/Services/`:
+- **Modul Survei Lapangan**:
+  - **Sesi Survei**: Pembuatan dan manajemen sesi survei per desa/wilayah, tahun, dan penugasan petugas dengan token akses link publik.
+  - **Survei RT (Ketua RT / Baseline KK)**: Pengumpulan data baseline kependudukan dari tingkat RT.
+  - **Survei Produsen Desa**: Pendataan kelompok tani dan pelaku ekonomi kreatif (ekraf) desa beserta komoditas dan kapasitas produksinya.
+  - **Survei Konsumsi Masyarakat**: Multi-step form interaktif untuk mendata profil keluarga, anggota keluarga, pola konsumsi pangan harian/bulanan (dilengkapi Web Speech API), dan validasi akhir.
+  - **Validasi Survei**: Perbandingan data baseline vs data riil hasil survei lapangan untuk perangkat desa.
+  - **Bank Pertanyaan**: Pengelolaan pertanyaan survei.
 
-  | Service | Lokasi | Fungsi |
-  |---|---|---|
-  | `StokService` | `Services/` | HPP moving average, mutasi kartu stok |
-  | `PembelianService` | `Services/` | PO, GRN, jalur cepat petani |
-  | `KonsinyasiService` | `Services/` | Transfer barang & jurnal antar desa |
-  | `JurnalService` | `Services/Finance/` | Mesin jurnal bertemplate, posting, pembalik |
-  | `TutupBulanService` | `Services/Finance/` | 8 validasi + tutup periode bulanan |
-  | `TutupTahunService` | `Services/Finance/` | Jurnal penutup & pembagian SHU |
+- **Modul Master Data**:
+  - Manajemen Entitas / Koperasi Desa (Super Admin)
+  - Komoditas
+  - Satuan Ukur
+  - Master Barang & Pengaturan Stok Minimum
+  - Pihak / Mitra
+  - Gudang
+  - Kas & Bank
+  - Periode Akuntansi & Chart of Accounts (COA)
 
-## Yang BELUM ada / masih dalam pengerjaan
+## Cara Menjalankan
 
-- Form `create/edit` sungguhan di beberapa modul (sebagian masih placeholder)
-- Fitur survei via suara (Speech-to-Text) — ada di sistem asli, belum
-  dibawa ke kerangka ini
-- Service tambahan: `PelunasanService`, `KasTransaksiService`,
-  `SimpananService`, `AsetTetapService`, `PeriodeService`
-
-## Setup
-
-Vendor PHP (`vendor/`) sudah disertakan sehingga **tidak perlu
-`composer install`**. `node_modules` **sengaja tidak disertakan** (isinya
-khusus platform tempat kerangka ini dibangun) — tapi CSS/JS hasil build
-sudah ada di `public/build/`, jadi aplikasi tetap bisa langsung dicoba.
-
-1. Sesuaikan `.env` — minimal `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`
-   untuk MySQL/MariaDB lokal Anda. `APP_KEY` sudah terisi, tapi boleh
-   generate ulang dengan `php artisan key:generate` kalau mau.
-2. Buat database kosong sesuai `DB_DATABASE` di `.env`.
-3. Jalankan:
+1. Pastikan server web dan database MySQL telah berjalan (misal: via XAMPP).
+2. Jalankan server Laravel:
    ```bash
-   php artisan migrate --seed
+   php artisan serve --port=8000
    ```
-4. (Opsional, hanya kalau ingin mengubah CSS/JS)
-   ```bash
-   npm install
-   npm run dev    # mode pengembangan
-   npm run build  # build ulang ke public/build
-   ```
-5. Jalankan server:
-   ```bash
-   php artisan serve
-   ```
-6. Buka `http://127.0.0.1:8000`, klik **Masuk ke Sistem**, login dengan:
-   - `manajer@kdmp-a.test` / `password` (Koperasi Desa Merah Putih Mekar Jaya)
-   - `manajer@kdmp-b.test` / `password` (Koperasi Desa Merah Putih Sukamaju)
+3. Akses melalui browser:
+   `http://127.0.0.1:8000`
 
-   Dua akun ini sengaja dibuat di dua koperasi (tenant) berbeda supaya
-   Anda bisa mengetes isolasi data antar desa dan alur konsinyasi nanti.
-
-## Struktur folder penting
-
-```
-app/Models/<Modul>/       Model per modul (Master, Akuntansi, Gudang, dst.)
-app/Http/Controllers/<Modul>/   Controller per modul
-app/Http/Controllers/Concerns/ModuleCrudController.php  Base CRUD generik
-app/Scopes/KoperasiScope.php    Isolasi data antar tenant (dari sistem asli)
-app/Models/Concerns/BelongsToKoperasi.php  Trait tenant (dari sistem asli)
-database/migrations/            Skema — identik dengan sistem asli
-database/seeders/               CoaSeeder & TransaksiTemplateSeeder dari sistem asli
-resources/views/components/layouts/app.blade.php   Layout utama (sidebar+topbar)
-resources/views/components/sidebar.blade.php        Sidebar modul M0-M9
-resources/views/modules/index.blade.php              Tabel generik semua modul CRUD
-routes/web.php                  Semua rute, dikelompokkan per modul
-```
-
-## Langkah berikutnya
-
-- Melengkapi form `create/edit` yang masih placeholder di semua modul
-- Mengimplementasi service yang masih kurang: `PelunasanService`,
-  `KasTransaksiService`, `SimpananService`, `AsetTetapService`, `PeriodeService`
-- Mengintegrasikan fitur survei via suara (Speech-to-Text)
-- Penyelesaian laporan keuangan (M10): Neraca, Laba Rugi, Neraca Saldo, Arus Kas
+### Akun Login
+- **Super Administrator**: `superadmin@ngobar.id` / `password`
+- **Manajer Desa**: `manajer@kdmp-a.test` / `password`

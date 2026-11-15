@@ -1,11 +1,4 @@
 @php
-    $isPurchasingUser = auth()->user()?->hasPeran('pembelian') ?? false;
-    $isSalesUser = (auth()->user()?->hasPeran('kasir') ?? false)
-        || (auth()->user()?->hasPeran('penjualan') ?? false);
-    $isModuleLimitedUser = $isPurchasingUser || $isSalesUser;
-    $restrictedGroupTitle = $isPurchasingUser && $isSalesUser
-        ? 'Pembelian & Penjualan'
-        : ($isPurchasingUser ? 'Pembelian' : 'Penjualan');
     $sidebarGroups = [
         [
             'title' => 'Master Data',
@@ -35,85 +28,6 @@
                 ['label' => 'Validasi Survei', 'route' => 'survei.validasi.index', 'match' => 'survei.validasi.*'],
                 ['label' => 'Bank Pertanyaan', 'route' => 'survei.pertanyaan.index', 'match' => 'survei.pertanyaan.*'],
             ]
-        ],
-        [
-            'title' => 'Kalkulasi & Perencanaan',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>',
-            'match' => 'perencanaan.*',
-            'items' => [
-                ['label' => 'Dashboard Kalkulasi dan Perencanaan', 'route' => 'perencanaan.dashboard', 'match' => 'perencanaan.dashboard'],
-                ['label' => 'Data & Parameter', 'route' => 'perencanaan.demografi.index', 'match' => 'perencanaan.demografi.*,perencanaan.potensi-produksi.*,perencanaan.standar-kebutuhan.*'],
-                ['label' => 'Kalkulasi Kebutuhan', 'route' => 'perencanaan.kebutuhan-komoditas.index', 'match' => 'perencanaan.kebutuhan-komoditas.*'],
-                ['label' => 'Surplus Defisit', 'route' => 'perencanaan.neraca-komoditas.index', 'match' => 'perencanaan.neraca-komoditas.*'],
-                ['label' => 'Laporan Kalkulasi', 'route' => 'perencanaan.laporan.index', 'match' => 'perencanaan.laporan.*'],
-                ['label' => 'Permintaan Pengadaan', 'route' => 'perencanaan.permintaan-pengadaan.index', 'match' => 'perencanaan.permintaan-pengadaan.*'],
-                ['label' => 'Perbandingan Harga', 'route' => 'perencanaan.perbandingan-harga.index', 'match' => 'perencanaan.perbandingan-harga.*'],
-            ]
-        ],
-        [
-            'title' => 'Manajemen Gudang',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>',
-            'match' => 'gudang.*',
-            'items' => [
-                ['label' => 'Dashboard Gudang', 'route' => 'gudang.index', 'match' => 'gudang.index'],
-                ['label' => 'Pencocokan Surplus-Defisit', 'route' => 'gudang.pencocokan-surplus-defisit.index', 'match' => 'gudang.pencocokan-surplus-defisit.*'],
-                ['label' => 'Posisi Stok', 'route' => 'gudang.stok.index', 'match' => 'gudang.stok.*'],
-                ['label' => 'Penerimaan', 'route' => 'gudang.penerimaan.index', 'match' => 'gudang.penerimaan.*'],
-                ['label' => 'Batch & Kedaluwarsa', 'route' => 'gudang.batch.index', 'match' => 'gudang.batch.*'],
-                ['label' => 'Kerusakan', 'route' => 'gudang.kerusakan.index', 'match' => 'gudang.kerusakan.*'],
-                ['label' => 'Stock Opname', 'route' => 'gudang.opname.index', 'match' => 'gudang.opname.*'],
-                ['label' => 'Kartu Stok', 'route' => 'gudang.kartu-stok.index', 'match' => 'gudang.kartu-stok.*'],
-            ]
-        ],
-        [
-            'title' => 'Pembelian & Penjualan',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>',
-            'match' => 'pembelian.*,penjualan.*',
-            'items' => [
-                ['label' => 'Order Pembelian', 'route' => 'pembelian.pembelian.index', 'match' => 'pembelian.pembelian.*'],
-                ['label' => 'Retur Pembelian', 'route' => 'pembelian.retur.index', 'match' => 'pembelian.retur.*'],
-                ['label' => 'Order Penjualan', 'route' => 'penjualan.penjualan.index', 'match' => 'penjualan.penjualan.*'],
-                ['label' => 'Retur Penjualan', 'route' => 'penjualan.retur.index', 'match' => 'penjualan.retur.*'],
-            ]
-        ],
-        [
-            'title' => 'Konsinyasi & Titipan',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>',
-            'match' => 'konsinyasi.*',
-            'items' => [
-                ['label' => 'Pengiriman', 'route' => 'konsinyasi.pengiriman.index', 'match' => 'konsinyasi.pengiriman.*'],
-                ['label' => 'Stok Konsinyasi', 'route' => 'konsinyasi.stok.index', 'match' => 'konsinyasi.stok.*'],
-                ['label' => 'Retur Konsinyasi', 'route' => 'konsinyasi.retur.index', 'match' => 'konsinyasi.retur.*'],
-                ['label' => 'Rekonsiliasi', 'route' => 'konsinyasi.rekonsiliasi.index', 'match' => 'konsinyasi.rekonsiliasi.*'],
-                ['label' => 'Setoran', 'route' => 'konsinyasi.setoran.index', 'match' => 'konsinyasi.setoran.*'],
-            ]
-        ],
-        [
-            'title' => 'Buku Keuangan',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" /></svg>',
-            'match' => 'keuangan.*',
-            'items' => [
-                ['label' => 'Piutang', 'route' => 'keuangan.piutang.index', 'match' => 'keuangan.piutang.*'],
-                ['label' => 'Hutang', 'route' => 'keuangan.hutang.index', 'match' => 'keuangan.hutang.*'],
-                ['label' => 'Pelunasan', 'route' => 'keuangan.pelunasan.index', 'match' => 'keuangan.pelunasan.*'],
-                ['label' => 'Kas & Transaksi', 'route' => 'keuangan.kas-transaksi.index', 'match' => 'keuangan.kas-transaksi.*'],
-            ]
-        ],
-        [
-            'title' => 'Akuntansi & Laporan',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>',
-            'match' => 'akuntansi.*',
-            'items' => [
-                ['label' => 'Saldo Awal', 'route' => 'akuntansi.saldo-awal.index', 'match' => 'akuntansi.saldo-awal.*'],
-                ['label' => 'Jurnal', 'route' => 'akuntansi.jurnal.index', 'match' => 'akuntansi.jurnal.*'],
-                ['label' => 'Aset Tetap', 'route' => 'akuntansi.aset-tetap.index', 'match' => 'akuntansi.aset-tetap.*'],
-                ['label' => 'Tutup Bulan', 'route' => 'akuntansi.tutup-bulan.index', 'match' => 'akuntansi.tutup-bulan.*'],
-                ['label' => 'Tutup Tahun', 'route' => 'akuntansi.tutup-tahun.index', 'match' => 'akuntansi.tutup-tahun.*'],
-                ['label' => 'Neraca Saldo', 'route' => 'akuntansi.laporan.neraca-saldo', 'match' => 'akuntansi.laporan.neraca-saldo'],
-                ['label' => 'Buku Besar', 'route' => 'akuntansi.laporan.buku-besar', 'match' => 'akuntansi.laporan.buku-besar'],
-                ['label' => 'Neraca', 'route' => 'akuntansi.laporan.neraca', 'match' => 'akuntansi.laporan.neraca'],
-                ['label' => 'Laba Rugi', 'route' => 'akuntansi.laporan.laba-rugi', 'match' => 'akuntansi.laporan.laba-rugi'],
-            ]
         ]
     ];
 @endphp
@@ -138,7 +52,7 @@
     {{-- Navigation --}}
     <nav class="flex-1 overflow-y-auto px-4 py-6 custom-scrollbar">
 
-        @if(auth()->check() && auth()->user()->id_entitas === null && !$isModuleLimitedUser)
+        @if(auth()->check() && auth()->user()->id_entitas === null)
             <div class="mb-6">
                 <p class="px-2 pb-2 font-mono text-[10px] uppercase tracking-widest text-paper-400">
                     Super Admin
@@ -162,9 +76,6 @@
 
         <ul class="space-y-2">
             @foreach ($sidebarGroups as $group)
-                @if ($isModuleLimitedUser && $group['title'] !== 'Pembelian & Penjualan')
-                    @continue
-                @endif
                 @php
                     $isGroupActive = collect(explode(',', $group['match']))->contains(fn ($p) => request()->routeIs($p));
                 @endphp
@@ -180,7 +91,7 @@
                             <span class="{{ $isGroupActive ? 'text-padi-400' : 'text-paper-500 group-hover:text-paper-300' }}">
                                 {!! $group['icon'] !!}
                             </span>
-                            <span class="font-medium">{{ $isModuleLimitedUser ? $restrictedGroupTitle : $group['title'] }}</span>
+                            <span class="font-medium">{{ $group['title'] }}</span>
                         </div>
                         <svg 
                             class="w-4 h-4 text-paper-500 transition-transform duration-200" 

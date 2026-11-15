@@ -111,14 +111,14 @@
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16 reveal">
             <span class="badge bg-padi-500/15 text-padi-100 border border-padi-500/30 mb-4">Keunggulan Platform</span>
-            <h2 class="font-display text-4xl font-semibold text-paper-50 mt-2">Satu Sistem, Semua Kebutuhan Desa</h2>
-            <p class="text-paper-300/70 mt-3 max-w-xl mx-auto">Dari pencatatan data warga, pengelolaan gudang, pembelian, penjualan, hingga laporan akuntansi — terintegrasi dalam satu platform.</p>
+            <h2 class="font-display text-4xl font-semibold text-paper-50 mt-2">Digitalisasi Survei & Pemetaan Potensi Desa</h2>
+            <p class="text-paper-300/70 mt-3 max-w-xl mx-auto">Dari survei baseline RT, pendataan produsen tani & ekraf, hingga konsumsi pangan warga — tersistematis dalam satu platform digital.</p>
         </div>
         <div class="grid md:grid-cols-3 gap-6 mb-12">
             @foreach([
-                ["icon"=>"🔗","title"=>"Terintegrasi Penuh","desc"=>"Setiap modul terhubung satu sama lain. Data survei mengalir ke gudang, gudang ke pembelian, pembelian ke akuntansi — tanpa input ulang."],
-                ["icon"=>"🏘️","title"=>"Multi-Desa (Multi-Tenant)","desc"=>"Setiap desa punya data yang terpisah dan aman. Satu instalasi bisa melayani ratusan desa sekaligus tanpa data tercampur."],
-                ["icon"=>"📱","title"=>"Ramah Perangkat Desa","desc"=>"Tampilan responsif dan ringan. Bisa diakses dari HP atau laptop dengan koneksi internet seadanya di wilayah pedesaan."],
+                ["icon"=>"📋","title"=>"Survei Multi-Step Digital","desc"=>"Form survei modern berbasis token publik tanpa perlu login. Petugas lapangan dapat mendata warga via HP lengkap dengan input suara Web Speech API."],
+                ["icon"=>"🏘️","title"=>"Multi-Desa (Multi-Tenant)","desc"=>"Setiap desa punya data yang terpisah dan aman. Satu instalasi bisa melayani banyak desa sekaligus tanpa data tercampur."],
+                ["icon"=>"✅","title"=>"Validasi Baseline vs Riil","desc"=>"Perangkat desa dapat memverifikasi dan memvalidasi langsung data baseline RT dengan data riil survei keluarga di lapangan."],
             ] as $i => $card)
                 <div class="feature-card rounded-2xl border border-ink-700 bg-ink-900 p-6 reveal" style="transition-delay:{{ $i * 100 }}ms">
                     <div class="w-12 h-12 rounded-xl bg-padi-500/15 border border-padi-500/25 flex items-center justify-center text-2xl mb-4">{{ $card["icon"] }}</div>
@@ -134,11 +134,10 @@
 <section id="modul" class="py-24 map-pattern" style="background-color:rgba(20,23,15,0.6)">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16 reveal">
-            <span class="badge bg-sawah-500/15 text-sawah-100 border border-sawah-500/30 mb-4">9 Modul Sistem</span>
-            <h2 class="font-display text-4xl font-semibold text-paper-50 mt-2">Modul Lengkap dari Hulu ke Hilir</h2>
+            <span class="badge bg-sawah-500/15 text-sawah-100 border border-sawah-500/30 mb-4">Fitur & Modul</span>
+            <h2 class="font-display text-4xl font-semibold text-paper-50 mt-2">Modul Survei Lapangan & Master Data</h2>
             <p class="text-paper-300/70 mt-3 max-w-2xl mx-auto">
-                Ngobar dirancang dengan arsitektur modular — setiap modul bisa berdiri sendiri maupun bekerja bersama modul lainnya.
-                Mulai dari survei kebutuhan warga sampai tutup buku tahunan, semua tersedia.
+                Dirancang khusus untuk memetakan demografi desa, potensi produksi lokal, dan kebutuhan konsumsi pangan warga secara akurat.
             </p>
         </div>
 
@@ -150,81 +149,54 @@
                 "icon" => "🗄️",
                 "color" => "padi",
                 "title" => "Master Data & Konfigurasi",
-                "desc" => "Fondasi seluruh sistem. Kelola data induk seperti profil desa, jenis komoditi, satuan ukur, kode akun, dan pengguna sistem. Perubahan di sini otomatis berlaku ke seluruh modul.",
-                "tags" => ["Profil Desa", "Master Komoditi", "Kode Akun", "Manajemen User"],
-                "badge" => "Fondasi",
+                "desc" => "Kelola data induk entitas desa, komoditas lokal, satuan ukur, master barang, mitra/pihak, dan akun pengguna sistem.",
+                "tags" => ["Profil Desa", "Master Komoditi", "Satuan Ukur", "Manajemen User"],
+                "badge" => "Master",
             ],
             [
-                "no" => "M1",
+                "no" => "S1",
                 "icon" => "📋",
                 "color" => "sawah",
-                "title" => "Survei Kebutuhan Warga",
-                "desc" => "Kumpulkan data kebutuhan dan potensi langsung dari warga secara digital. Form survei bisa diisi dari HP, data langsung masuk ke sistem dan bisa divalidasi perangkat desa.",
-                "tags" => ["Form Digital", "Validasi Perangkat", "Rekap Otomatis", "Riwayat Survei"],
-                "badge" => "Input Data",
+                "title" => "Sesi Survei & Token Publik",
+                "desc" => "Buat sesi survei per wilayah desa dan tahun pelaksanaan. Sistem membuatkan link token unik publik yang dapat dibagikan langsung ke petugas lapangan.",
+                "tags" => ["Token Publik", "Penugasan Petugas", "Jadwal Sesi", "Status Survei"],
+                "badge" => "Manajemen",
             ],
             [
-                "no" => "M2",
-                "icon" => "📊",
+                "no" => "S2",
+                "icon" => "🏘️",
                 "color" => "padi",
-                "title" => "Kalkulasi Kebutuhan",
-                "desc" => "Olah hasil survei menjadi estimasi kebutuhan komoditi desa secara keseluruhan. Sistem menghitung gap antara ketersediaan dan kebutuhan, serta memberikan rekomendasi pengadaan.",
-                "tags" => ["Gap Analysis", "Estimasi Kebutuhan", "Rekomendasi Pengadaan"],
-                "badge" => "Analitik",
+                "title" => "Survei RT (Baseline KK)",
+                "desc" => "Form pengisian untuk Ketua RT guna mendata jumlah KK, jumlah jiwa, dan baseline kependudukan di setiap RT dan Dusun.",
+                "tags" => ["Baseline RT", "Data Dusun/RW", "Jumlah KK", "Verifikasi RT"],
+                "badge" => "Baseline",
             ],
             [
-                "no" => "M3",
-                "icon" => "📝",
+                "no" => "S3",
+                "icon" => "🌾",
                 "color" => "sawah",
-                "title" => "Rencana Pengadaan",
-                "desc" => "Buat rencana pengadaan berdasarkan hasil kalkulasi. Tentukan prioritas, sumber pengadaan (beli, barter, atau donasi), dan jadwal pemenuhan kebutuhan komoditi desa.",
-                "tags" => ["Rencana Beli", "Rencana Barter", "Jadwal Pengadaan", "Persetujuan"],
-                "badge" => "Perencanaan",
+                "title" => "Survei Produsen Tani & Ekraf",
+                "desc" => "Pendataan kelompok tani, peternak, dan pengrajin desa beserta kapasitas komoditas yang diproduksi setiap musim.",
+                "tags" => ["Kelompok Tani", "Ekraf Desa", "Kapasitas Produksi", "Harga Produsen"],
+                "badge" => "Potensi",
             ],
             [
-                "no" => "M4",
-                "icon" => "🏭",
-                "color" => "padi",
-                "title" => "Gudang & Manajemen Stok",
-                "desc" => "Kelola seluruh pergerakan barang secara real-time. Catat penerimaan barang (GRN), pengeluaran, opname fisik, dan kerusakan stok. Kartu stok otomatis ter-update setiap transaksi.",
-                "tags" => ["Penerimaan Barang", "Kartu Stok", "Opname Fisik", "Laporan Kerusakan", "Stok Real-time"],
-                "badge" => "Operasional",
-            ],
-            [
-                "no" => "M5",
-                "icon" => "🛒",
+                "no" => "S4",
+                "icon" => "👥",
                 "color" => "merah",
-                "title" => "Pembelian (Purchase Order)",
-                "desc" => "Kelola proses pengadaan barang dari pemasok. Buat PO, terima GRN (Goods Receipt Note), catat hutang dagang, dan pantau status pembayaran. Terintegrasi langsung dengan gudang dan akuntansi.",
-                "tags" => ["Purchase Order", "GRN", "Hutang Dagang", "Approval PO", "Riwayat Supplier"],
-                "badge" => "Transaksi",
+                "title" => "Survei Konsumsi Masyarakat",
+                "desc" => "Form survei lapangan 4 tahap: Identitas KK + GPS, Anggota Keluarga, Konsumsi Pangan (dengan fitur Speech-to-Text), dan Ringkasan.",
+                "tags" => ["Multi-Step Form", "Input Suara (STT)", "Pangan Keluarga", "Geocoding GPS"],
+                "badge" => "Lapangan",
             ],
             [
-                "no" => "M6",
-                "icon" => "💰",
-                "color" => "sawah",
-                "title" => "Penjualan & Distribusi",
-                "desc" => "Catat transaksi penjualan komoditi ke warga maupun antar-desa. Kelola piutang, proses pelunasan, dan pantau performa penjualan per komoditi atau per periode.",
-                "tags" => ["Sales Order", "Faktur Penjualan", "Piutang", "Pelunasan", "Laporan Penjualan"],
-                "badge" => "Transaksi",
-            ],
-            [
-                "no" => "M7",
-                "icon" => "🔄",
+                "no" => "S5",
+                "icon" => "✅",
                 "color" => "padi",
-                "title" => "Konsinyasi & Barter Antar-Desa",
-                "desc" => "Modul inti Ngobar. Titipkan komoditi ke desa lain (konsinyasi) atau lakukan barter langsung. Sistem mencatat pengiriman, rekonsiliasi, dan status setiap transaksi antar-desa secara transparan.",
-                "tags" => ["Titip Jual", "Barter Komoditi", "Pengiriman", "Rekonsiliasi", "Konfirmasi 2 Pihak"],
-                "badge" => "Unggulan",
-            ],
-            [
-                "no" => "M8",
-                "icon" => "📒",
-                "color" => "sawah",
-                "title" => "Akuntansi & Laporan Keuangan",
-                "desc" => "Pembukuan otomatis dari setiap transaksi. Lihat Buku Besar, Neraca Saldo, Laporan Laba Rugi, dan Neraca dalam hitungan detik. Fitur tutup bulan dan tutup tahun menjaga integritas data keuangan.",
-                "tags" => ["Buku Besar", "Neraca Saldo", "Laba Rugi", "Neraca", "Tutup Bulan", "Tutup Tahun"],
-                "badge" => "Keuangan",
+                "title" => "Validasi & Rekapitulasi",
+                "desc" => "Dashboard validasi data lapangan bagi perangkat desa untuk mencocokkan target baseline RT dengan realisasi data keluarga yang masuk.",
+                "tags" => ["Baseline vs Real", "Rekapitulasi Desa", "Audit Data", "Approval"],
+                "badge" => "Validasi",
             ],
         ];
         @endphp
@@ -250,9 +222,9 @@
                             </div>
                         </div>
                         <span class="shrink-0 text-xs px-2 py-0.5 rounded-full font-mono
-                            @if($m["badge"]==="Unggulan") bg-padi-500/20 text-padi-100 border border-padi-500/30
-                            @elseif($m["badge"]==="Keuangan") bg-sawah-500/20 text-sawah-100 border border-sawah-500/30
-                            @elseif($m["badge"]==="Transaksi") bg-merah-500/15 text-merah-100 border border-merah-500/25
+                            @if($m["badge"]==="Master") bg-padi-500/20 text-padi-100 border border-padi-500/30
+                            @elseif($m["badge"]==="Manajemen") bg-sawah-500/20 text-sawah-100 border border-sawah-500/30
+                            @elseif($m["badge"]==="Lapangan") bg-merah-500/15 text-merah-100 border border-merah-500/25
                             @else bg-ink-700 text-paper-400 border border-ink-600 @endif">
                             {{ $m["badge"] }}
                         </span>
@@ -277,26 +249,20 @@
 
         {{-- Module flow diagram --}}
         <div class="mt-16 reveal">
-            <p class="text-center text-xs font-mono text-paper-500 mb-6 uppercase tracking-widest">Alur Antar Modul</p>
+            <p class="text-center text-xs font-mono text-paper-500 mb-6 uppercase tracking-widest">Alur Survei Desa</p>
             <div class="flex flex-wrap justify-center items-center gap-2 text-xs">
                 @foreach([
                     ["M0","Master Data","padi"],
                     ["→","",""],
-                    ["M1","Survei","sawah"],
+                    ["S1","Sesi & Token","sawah"],
                     ["→","",""],
-                    ["M2","Kalkulasi","padi"],
+                    ["S2","Baseline RT","padi"],
                     ["→","",""],
-                    ["M3","Rencana","sawah"],
+                    ["S3","Produsen Desa","sawah"],
                     ["→","",""],
-                    ["M4","Gudang","padi"],
+                    ["S4","Survei Warga","merah"],
                     ["→","",""],
-                    ["M5","Pembelian","merah"],
-                    ["→","",""],
-                    ["M6","Penjualan","sawah"],
-                    ["→","",""],
-                    ["M7","Konsinyasi","padi"],
-                    ["→","",""],
-                    ["M8","Akuntansi","sawah"],
+                    ["S5","Validasi & Rekap","padi"],
                 ] as [$no,$label,$color])
                     @if($no === "→")
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-ink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
