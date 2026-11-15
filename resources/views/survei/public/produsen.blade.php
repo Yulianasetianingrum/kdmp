@@ -589,8 +589,8 @@
                         <div class="input-wrap no-mic">
                             <select x-model="kategori" @change="subKategori=''">
                                 <option value="">-- Pilih --</option>
-                                <option value="Kelompok Tani">🌾 Kelompok Tani</option>
-                                <option value="Ekraf">🎨 Ekraf</option>
+                                <option value="Kelompok Tani">Kelompok Tani</option>
+                                <option value="Ekraf">Ekraf</option>
                             </select>
                         </div>
                     </div>
@@ -601,16 +601,15 @@
                                 <option value="">-- Pilih --</option>
                                 <template x-if="kategori === 'Kelompok Tani'">
                                     <optgroup label="Kelompok Tani">
-                                        <option value="Pertanian">🌾 Pertanian</option>
-                                        <option value="Perkebunan">🌴 Perkebunan</option>
-                                        <option value="Peternakan">🐄 Peternakan</option>
-                                        <option value="Kelautan">🌊 Kelautan</option>
+                                        <option value="Pertanian">Pertanian</option>
+                                        <option value="Peternakan">Peternakan</option>
+                                        <option value="Kelautan">Kelautan</option>
                                     </optgroup>
                                 </template>
                                 <template x-if="kategori === 'Ekraf'">
                                     <optgroup label="Ekonomi Kreatif">
-                                        <option value="Pangan">🍱 Pangan</option>
-                                        <option value="Non Pangan">🧶 Non Pangan</option>
+                                        <option value="Pangan">Pangan</option>
+                                        <option value="Non Pangan">Non Pangan</option>
                                     </optgroup>
                                 </template>
                             </select>
@@ -630,16 +629,6 @@
             </div>
             <div class="card-body">
 
-                {{-- Saran chips --}}
-                <div x-show="pilihanSaran.length > 0" x-cloak>
-                    <div class="chips-label">Komoditas umum (ketuk untuk pilih):</div>
-                    <div class="chips">
-                        <template x-for="s in pilihanSaran" :key="s">
-                            <button type="button" class="chip" @click="namaKmd = s" x-text="s"></button>
-                        </template>
-                    </div>
-                </div>
-
                 {{-- Nama komoditas --}}
                 <div class="field" x-data="micInput(() => namaKmd, v => namaKmd = v, 'komoditas', (qty, unit) => { if(qty) jumlah = qty; if(unit) satuan = unit; })">
                     <label class="field-label">Nama Komoditas / Produk <span class="required">*</span></label>
@@ -653,6 +642,22 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
                             </svg>
+                        </button>
+                    </div>
+                    {{-- Rekomendasi Nama Baku jika mengetik nama sejenis / alias (misal coklat -> Kakao) --}}
+                    <div x-show="rekomendasiBaku" x-cloak
+                         style="margin-top:0.4rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.45rem 0.75rem;border-radius:8px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:0.78rem;">
+                        <div style="display:flex;align-items:center;gap:0.4rem;">
+                            <span style="font-size:1rem;">💡</span>
+                            <div>
+                                Rekomendasi nama baku: <strong x-text="rekomendasiBaku"></strong>
+                                <span style="font-size:0.72rem;opacity:0.85;" x-text="'(sejenis dengan ' + namaKmd + ')'"></span>
+                            </div>
+                        </div>
+                        <button type="button" 
+                                style="background:#16a34a;color:#fff;border:none;border-radius:6px;padding:0.25rem 0.6rem;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,0.05);"
+                                @click="namaKmd = rekomendasiBaku">
+                            Gunakan Nama Baku
                         </button>
                     </div>
                 </div>
@@ -675,7 +680,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label class="field-label">Satuan</label>
+                        <label class="field-label">Satuan Berat</label>
                         <div class="input-wrap no-mic">
                             <select x-model="satuan">
                                 <option value="">-- Pilih --</option>
@@ -723,12 +728,12 @@
                         <button type="button" class="price-toggle-btn"
                                 :class="{ active: tipeHarga === 'Satuan' }"
                                 @click="setTipeHarga('Satuan')">
-                            🏷️ Harga per Satuan
+                            Harga per Satuan
                         </button>
                         <button type="button" class="price-toggle-btn"
                                 :class="{ active: tipeHarga === 'Total' }"
                                 @click="setTipeHarga('Total')">
-                            💰 Total Nominal Jual
+                            Total Nominal Jual
                         </button>
                     </div>
 
@@ -791,20 +796,6 @@
                     </div>
                 </div>
 
-                {{-- Bulan --}}
-                <div class="field">
-                    <label class="field-label">Bulan Produksi <span class="required">*</span></label>
-                    <div class="input-wrap no-mic">
-                        <select x-model="bulan">
-                            <option value="">-- Pilih Bulan --</option>
-                            @foreach($bulans as $no => $nama)
-                                <option value="{{ $no }}" {{ $sesi->bulan == $no ? 'selected' : '' }}>{{ $nama }} {{ $sesi->tahun }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <p style="font-size:0.72rem;color:#888;margin-top:0.25rem;">Pilih bulan panen atau bulan produksi komoditas ini.</p>
-                </div>
-
                 {{-- Tombol tambah ke daftar --}}
                 <button type="button" class="btn-add" @click="tambah()">
                     <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -859,8 +850,7 @@
                                     </span>
                                 </template>
                             </span>
-                            Bulan <span x-text="namaBulan(item.bulan_produksi)"></span>
-                            <span x-show="item.frekuensi"> &bull; <span x-text="item.frekuensi"></span>× panen/tahun</span>
+                            <span x-show="item.frekuensi"><span x-text="item.frekuensi"></span>× panen/tahun</span>
                         </p>
                     </div>
                     <div style="display:flex;gap:0.4rem;flex-shrink:0;">
@@ -924,6 +914,13 @@
                             </svg>
                         </button>
                     </div>
+                    <div x-show="editRekomendasiBaku" x-cloak
+                         style="margin-top:0.35rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.4rem 0.65rem;border-radius:6px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:0.75rem;">
+                        <div>💡 Nama baku: <strong x-text="editRekomendasiBaku"></strong></div>
+                        <button type="button" 
+                                style="background:#16a34a;color:#fff;border:none;border-radius:4px;padding:0.2rem 0.5rem;font-size:0.72rem;font-weight:600;cursor:pointer;"
+                                @click="editForm.nama_komoditas = editRekomendasiBaku">Gunakan</button>
+                    </div>
                 </div>
                 {{-- Kategori + Sub --}}
                 <div class="grid-2">
@@ -932,8 +929,8 @@
                         <div class="input-wrap no-mic">
                             <select x-model="editForm.kategori" @change="editForm.sub_kategori=''">
                                 <option value="">-- Pilih --</option>
-                                <option value="Kelompok Tani">🌾 Kelompok Tani</option>
-                                <option value="Ekraf">🎨 Ekraf</option>
+                                <option value="Kelompok Tani">Kelompok Tani</option>
+                                <option value="Ekraf">Ekraf</option>
                             </select>
                         </div>
                     </div>
@@ -944,16 +941,15 @@
                                 <option value="">-- Pilih --</option>
                                 <template x-if="editForm.kategori === 'Kelompok Tani'">
                                     <optgroup label="Kelompok Tani">
-                                        <option value="Pertanian">🌾 Pertanian</option>
-                                        <option value="Perkebunan">🌴 Perkebunan</option>
-                                        <option value="Peternakan">🐄 Peternakan</option>
-                                        <option value="Kelautan">🌊 Kelautan</option>
+                                        <option value="Pertanian">Pertanian</option>
+                                        <option value="Peternakan">Peternakan</option>
+                                        <option value="Kelautan">Kelautan</option>
                                     </optgroup>
                                 </template>
                                 <template x-if="editForm.kategori === 'Ekraf'">
                                     <optgroup label="Ekonomi Kreatif">
-                                        <option value="Pangan">🍱 Pangan</option>
-                                        <option value="Non Pangan">🧶 Non Pangan</option>
+                                        <option value="Pangan">Pangan</option>
+                                        <option value="Non Pangan">Non Pangan</option>
                                     </optgroup>
                                 </template>
                             </select>
@@ -976,7 +972,7 @@
                         </div>
                     </div>
                     <div class="field" style="margin-bottom:0;">
-                        <label class="field-label">Satuan</label>
+                        <label class="field-label">Satuan Berat</label>
                         <div class="input-wrap no-mic">
                             <select x-model="editForm.satuan">
                                 <option value="">-- Pilih --</option>
@@ -1002,12 +998,12 @@
                         <button type="button" class="price-toggle-btn"
                                 :class="{ active: editForm.tipe_harga === 'Satuan' }"
                                 @click="setEditTipeHarga('Satuan')">
-                            🏷️ Harga per Satuan
+                            Harga per Satuan
                         </button>
                         <button type="button" class="price-toggle-btn"
                                 :class="{ active: editForm.tipe_harga === 'Total' }"
                                 @click="setEditTipeHarga('Total')">
-                            💰 Total Nominal Jual
+                            Total Nominal Jual
                         </button>
                     </div>
                     <div class="input-wrap" x-data="micInput(() => editForm.harga, v => editForm.harga = v, 'number')">
@@ -1051,18 +1047,6 @@
                         </template>
                     </div>
                 </div>
-                {{-- Bulan --}}
-                <div class="field" style="margin-bottom:0;">
-                    <label class="field-label">Bulan Produksi <span class="required">*</span></label>
-                    <div class="input-wrap no-mic">
-                        <select x-model="editForm.bulan_produksi">
-                            <option value="">-- Pilih Bulan --</option>
-                            <template x-for="(nama, no) in BULAN_OPTS" :key="no">
-                                <option :value="no" x-text="nama + ' {{ $sesi->tahun }}'"></option>
-                            </template>
-                        </select>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-cancel" @click="showEditModal = false">Batal</button>
@@ -1085,7 +1069,23 @@
 
         function cariFrekuensi(nama) {
             const key = (nama || '').toLowerCase().replace(/\./g, '').replace(/\s+/g, ' ').trim();
-            return key && FREKUENSI_PANEN[key] ? FREKUENSI_PANEN[key] : null;
+            if (!key) return null;
+            if (FREKUENSI_PANEN[key]) return FREKUENSI_PANEN[key];
+
+            // Sub-phrase & compound matching (cth: "kopi robusta dampit", "lele sangkuriang", dsb.)
+            let bestMatch = null;
+            let longestLen = 0;
+            for (const k in FREKUENSI_PANEN) {
+                if (k.length >= 3) {
+                    if (key === k || key.startsWith(k + ' ') || key.endsWith(' ' + k) || key.includes(' ' + k + ' ')) {
+                        if (k.length > longestLen) {
+                            longestLen = k.length;
+                            bestMatch = FREKUENSI_PANEN[k];
+                        }
+                    }
+                }
+            }
+            return bestMatch;
         }
 
         function produsenSurvei() {
@@ -1097,12 +1097,91 @@
                 cart: [], errMsg: '',
 
                 init() {
-                    // Isi frekuensi otomatis setiap nama komoditas berubah (kecuali sudah diubah manual)
+                    // Isi frekuensi & auto-kategorisasi otomatis setiap nama komoditas berubah
                     this.$watch('namaKmd', (val) => {
                         this.infoFrekuensi = cariFrekuensi(val);
-                        if (!this.frekManual || !val.trim()) {
-                            this.frekuensi = this.infoFrekuensi ? this.infoFrekuensi.frekuensi : '';
-                            this.frekManual = false;
+                        if (this.infoFrekuensi) {
+                            if (!this.frekManual || !val.trim()) {
+                                this.frekuensi = this.infoFrekuensi.frekuensi;
+                                this.frekManual = false;
+                            }
+                            // Auto-kategorisasi tegas: sinkronkan Kategori & Sub Kategori
+                            if (this.infoFrekuensi.kategori && this.kategori !== this.infoFrekuensi.kategori) {
+                                this.kategori = this.infoFrekuensi.kategori;
+                            }
+                            if (this.infoFrekuensi.sub && this.subKategori !== this.infoFrekuensi.sub) {
+                                this.subKategori = this.infoFrekuensi.sub;
+                            }
+                        }
+                    });
+
+                    // Auto-koreksi tegas jika user iseng/nakal mengganti subKategori padahal nama komoditas sudah diinput
+                    this.$watch('subKategori', (val) => {
+                        if (!this.namaKmd) return;
+                        const info = cariFrekuensi(this.namaKmd);
+                        if (info && info.sub && val !== info.sub) {
+                            this.$nextTick(() => {
+                                this.subKategori = info.sub;
+                                if (info.kategori && this.kategori !== info.kategori) {
+                                    this.kategori = info.kategori;
+                                }
+                            });
+                        }
+                    });
+
+                    // Auto-koreksi tegas jika user iseng/nakal mengganti kategori
+                    this.$watch('kategori', (val) => {
+                        if (!this.namaKmd) return;
+                        const info = cariFrekuensi(this.namaKmd);
+                        if (info && info.kategori && val !== info.kategori) {
+                            this.$nextTick(() => {
+                                this.kategori = info.kategori;
+                                if (info.sub && this.subKategori !== info.sub) {
+                                    this.subKategori = info.sub;
+                                }
+                            });
+                        }
+                    });
+
+                    // Auto-kategorisasi & proteksi tegas di Modal Edit juga
+                    this.$watch('editForm.nama_komoditas', (val) => {
+                        const info = cariFrekuensi(val);
+                        if (info) {
+                            if (info.kategori && this.editForm.kategori !== info.kategori) {
+                                this.editForm.kategori = info.kategori;
+                            }
+                            if (info.sub && this.editForm.sub_kategori !== info.sub) {
+                                this.editForm.sub_kategori = info.sub;
+                            }
+                            if (!this.editForm.frekuensi) {
+                                this.editForm.frekuensi = info.frekuensi;
+                            }
+                        }
+                    });
+
+                    this.$watch('editForm.sub_kategori', (val) => {
+                        if (!this.editForm.nama_komoditas) return;
+                        const info = cariFrekuensi(this.editForm.nama_komoditas);
+                        if (info && info.sub && val !== info.sub) {
+                            this.$nextTick(() => {
+                                this.editForm.sub_kategori = info.sub;
+                                if (info.kategori && this.editForm.kategori !== info.kategori) {
+                                    this.editForm.kategori = info.kategori;
+                                }
+                            });
+                        }
+                    });
+
+                    this.$watch('editForm.kategori', (val) => {
+                        if (!this.editForm.nama_komoditas) return;
+                        const info = cariFrekuensi(this.editForm.nama_komoditas);
+                        if (info && info.kategori && val !== info.kategori) {
+                            this.$nextTick(() => {
+                                this.editForm.kategori = info.kategori;
+                                if (info.sub && this.editForm.sub_kategori !== info.sub) {
+                                    this.editForm.sub_kategori = info.sub;
+                                }
+                            });
                         }
                     });
                 },
@@ -1148,6 +1227,25 @@
                 get pilihanSaran() {
                     return this.subKategori && SARAN[this.subKategori] ? SARAN[this.subKategori] : [];
                 },
+                get rekomendasiBaku() {
+                    if (!this.infoFrekuensi || !this.infoFrekuensi.baku) return null;
+                    const input = (this.namaKmd || '').trim().toLowerCase();
+                    const baku = this.infoFrekuensi.baku.trim().toLowerCase();
+                    if (input && baku && input !== baku) {
+                        return this.infoFrekuensi.baku;
+                    }
+                    return null;
+                },
+                get editRekomendasiBaku() {
+                    const info = cariFrekuensi(this.editForm.nama_komoditas);
+                    if (!info || !info.baku) return null;
+                    const input = (this.editForm.nama_komoditas || '').trim().toLowerCase();
+                    const baku = info.baku.trim().toLowerCase();
+                    if (input && baku && input !== baku) {
+                        return info.baku;
+                    }
+                    return null;
+                },
                 namaBulan(no) { return BULANS[no] || no; },
 
                 editItem(i) {
@@ -1160,10 +1258,19 @@
                     this.showEditModal = true;
                 },
                 saveEdit() {
-                    if (!this.editForm.nama_komoditas.trim()) { alert('Nama komoditas wajib diisi!'); return; }
-                    if (!this.editForm.bulan_produksi) { alert('Pilih bulan produksi!'); return; }
+                    if (!this.editForm.nama_komoditas || !this.editForm.nama_komoditas.trim()) return;
+                    const info = cariFrekuensi(this.editForm.nama_komoditas);
+                    const finalKat = (info && info.kategori) ? info.kategori : (this.editForm.kategori || 'Kelompok Tani');
+                    const finalSub = (info && info.sub) ? info.sub : (this.editForm.sub_kategori || 'Pertanian');
+
                     this.editForm.nama_komoditas = cap(this.editForm.nama_komoditas.replace(/\./g,''));
-                    this.cart[this.editIdx] = { ...this.editForm };
+                    this.editForm.kategori = finalKat;
+                    this.editForm.sub_kategori = finalSub;
+
+                    this.cart[this.editIdx] = { 
+                        ...this.editForm,
+                        bulan_produksi: this.editForm.bulan_produksi || '{{ $sesi->bulan }}'
+                    };
                     this.showEditModal = false;
                     this.editIdx = null;
                 },
@@ -1171,16 +1278,21 @@
                 tambah() {
                     this.errMsg = '';
                     if (!this.namaResponden.trim()) { this.errMsg = 'Nama Anda wajib diisi dulu!'; window.scrollTo({top:0,behavior:'smooth'}); return; }
-                    if (!this.kategori) { this.errMsg = 'Pilih Kategori terlebih dahulu!'; return; }
                     if (!this.namaKmd.trim()) { this.errMsg = 'Nama Komoditas wajib diisi!'; return; }
-                    if (!this.bulan) { this.errMsg = 'Pilih Bulan Produksi!'; return; }
+
+                    const info = cariFrekuensi(this.namaKmd);
+                    const finalKat = (info && info.kategori) ? info.kategori : (this.kategori || 'Kelompok Tani');
+                    const finalSub = (info && info.sub) ? info.sub : (this.subKategori || 'Pertanian');
+
                     this.cart.push({
                         nama_komoditas: cap(this.namaKmd.replace(/\./g,'')),
-                        kategori: this.kategori, sub_kategori: this.subKategori,
-                        jumlah_produksi: this.jumlah, satuan: this.satuan,
+                        kategori: finalKat,
+                        sub_kategori: finalSub,
+                        jumlah_produksi: this.jumlah,
+                        satuan: this.satuan,
                         harga: this.harga,
                         tipe_harga: this.tipeHarga,
-                        bulan_produksi: this.bulan,
+                        bulan_produksi: this.bulan || '{{ $sesi->bulan }}',
                         frekuensi: this.frekuensi,
                     });
                     this.namaKmd = ''; this.jumlah = ''; this.satuan = ''; this.harga = ''; this.tipeHarga = 'Satuan';
@@ -1193,9 +1305,13 @@
                     addF(form, '_token', CSRF);
                     addF(form, 'nama_responden', this.namaResponden.replace(/\./g,'').trim());
                     this.cart.forEach((it,i) => {
+                        const info = cariFrekuensi(it.nama_komoditas);
+                        const kat = (info && info.kategori) ? info.kategori : (it.kategori || 'Kelompok Tani');
+                        const sub = (info && info.sub) ? info.sub : (it.sub_kategori || 'Pertanian');
+
                         addF(form, `komoditas[${i}][nama_komoditas]`,  it.nama_komoditas);
-                        addF(form, `komoditas[${i}][kategori]`,        it.kategori);
-                        addF(form, `komoditas[${i}][sub_kategori]`,    it.sub_kategori);
+                        addF(form, `komoditas[${i}][kategori]`,        kat);
+                        addF(form, `komoditas[${i}][sub_kategori]`,    sub);
                         addF(form, `komoditas[${i}][jumlah_produksi]`, it.jumlah_produksi);
                         addF(form, `komoditas[${i}][satuan]`,          it.satuan);
                         addF(form, `komoditas[${i}][harga]`,           it.harga);
@@ -1223,14 +1339,37 @@
 
         // Kamus kanonikal komoditas pangan, pertanian, perkebunan, peternakan, perikanan & ekraf
         const MASTER_KOMODITAS_DICT = [
-            'Beras', 'Padi', 'Jagung', 'Kedelai', 'Kacang Tanah', 'Kacang Hijau', 'Singkong', 'Ubi Jalar', 'Ubi Kayu',
-            'Kelapa', 'Kelapa Sawit', 'Kopi', 'Kopi Robusta', 'Kopi Arabika', 'Kakao', 'Cengkeh', 'Tebu', 'Tembakau', 'Karet',
-            'Sapi Potong', 'Sapi Perah', 'Sapi', 'Kambing', 'Domba', 'Ayam Broiler', 'Ayam Kampung', 'Ayam Petelur', 'Ayam',
-            'Bebek', 'Itik', 'Telur Ayam', 'Telur Bebek', 'Telur',
-            'Ikan Lele', 'Ikan Nila', 'Ikan Gurame', 'Ikan Bandeng', 'Ikan Patin', 'Ikan Mas', 'Udang', 'Garam', 'Gula Pasir', 'Gula', 'Gula Merah', 'Gula Jawa',
-            'Cabai Rawit', 'Cabai Merah', 'Cabai', 'Bawang Merah', 'Bawang Putih', 'Tomat', 'Wortel', 'Kentang', 'Kubis', 'Kol', 'Terong', 'Bayam', 'Kangkung',
-            'Semangka', 'Melon', 'Pisang', 'Mangga', 'Jeruk', 'Pepaya', 'Alpukat',
-            'Keripik Singkong', 'Keripik Tempe', 'Keripik Pisang', 'Keripik', 'Anyaman Bambu', 'Anyaman', 'Batik', 'Jamu Tradisional', 'Jamu', 'Madu'
+            'Beras', 'Padi', 'Padi Sawah', 'Padi Gogo', 'Padi Ketan', 'Ketan', 'Jagung', 'Jagung Manis', 'Jagung Pipilan', 'Kedelai', 'Kacang Tanah', 'Kacang Hijau', 'Sorgum',
+            'Singkong', 'Singkong Manis', 'Singkong Keju', 'Ubi Kayu', 'Ubi Jalar', 'Ubi Cilembu', 'Ubi Ungu', 'Ubi Madu',
+            'Kentang', 'Kentang Hitam', 'Talas', 'Talas Bogor', 'Talas Beneng', 'Porang', 'Iles-iles', 'Garut', 'Ganyong', 'Gembili', 'Uwi', 'Suweg', 'Gadung', 'Bengkuang', 'Lobak', 'Lobak Putih', 'Wortel', 'Bit Merah',
+            'Kopi', 'Kopi Robusta', 'Kopi Arabika', 'Kopi Liberika', 'Kopi Excelsa', 'Kopi Luwak', 'Biji Kopi',
+            'Teh', 'Pucuk Teh', 'Daun Teh', 'Teh Hijau', 'Teh Hitam', 'Teh Putih', 'White Tea',
+            'Kakao', 'Coklat', 'Cokelat', 'Biji Coklat', 'Biji Kakao', 'Kakao Lindak', 'Kakao Mulia',
+            'Kelapa', 'Kelapa Butir', 'Kelapa Kopyor', 'Kopyor', 'Kelapa Tua', 'Kelapa Muda', 'Degan', 'Kelapa Hibrida', 'Kelapa Genjah', 'Kelapa Pandan Wangi', 'Kelapa Sawit', 'Sawit', 'TBS Sawit', 'Nira Kelapa',
+            'Cengkeh', 'Lada', 'Merica', 'Pala', 'Kapulaga', 'Kemiri', 'Vanili', 'Kayu Manis', 'Tembakau', 'Mbako', 'Tembakau Rajangan', 'Karet', 'Getah Karet', 'Lateks', 'Tebu', 'Pinang', 'Gambir', 'Nilam', 'Serai Wangi', 'Akar Wangi',
+            'Gula Putih', 'Gula Aren', 'Gula Merah', 'Gula Pasir', 'Gula Jawa', 'Madu Ternak', 'Madu Klanceng', 'Madu',
+            'Cabai Rawit Merah', 'Cabai Rawit Hijau', 'Cabai Rawit', 'Cabai Merah Besar', 'Cabai Merah Keriting', 'Cabai Hijau Besar', 'Cabai Merah', 'Cabai',
+            'Bawang Merah', 'Bawang Putih', 'Bawang Bombay', 'Bawang Daun', 'Daun Bawang', 'Bawang Prei', 'Kucai', 'Loncang',
+            'Jahe Emprit', 'Jahe Gajah', 'Jahe Merah', 'Jahe', 'Kunyit', 'Kunyit Putih', 'Lengkuas', 'Laos', 'Kencur', 'Temulawak', 'Serai', 'Sereh', 'Ketumbar',
+            'Tomat', 'Kubis', 'Kol', 'Brokoli', 'Kembang Kol', 'Bunga Kol', 'Pakcoy', 'Sawi Putih', 'Petsai', 'Sawi', 'Selada', 'Seledri',
+            'Mentimun', 'Timun', 'Terong', 'Terong Ungu', 'Terong Hijau', 'Kacang Panjang', 'Buncis', 'Kacang Merah', 'Kacang Kapri', 'Kacang Koro', 'Kacang Bogor', 'Kecipir',
+            'Daun Singkong', 'Daun Kelor', 'Daun Pepaya', 'Kailan', 'Paprika', 'Labu Air', 'Rebung', 'Pare', 'Oyong', 'Gambas', 'Labu Siam', 'Jipang', 'Labu Kuning', 'Waluh',
+            'Jamur Tiram', 'Jamur Merang', 'Jamur Kuping',
+            'Semangka', 'Melon', 'Blewah', 'Timun Suri', 'Pepaya', 'Pisang', 'Nanas', 'Nanas Madu',
+            'Mangga', 'Mangga Harum Manis', 'Mangga Manalagi', 'Mangga Gedong Gincu', 'Mangga Indramayu', 'Mangga Golek',
+            'Jeruk', 'Jeruk Siam', 'Jeruk Keprok', 'Jeruk Manis', 'Jeruk Nipis', 'Jeruk Purut', 'Lemon',
+            'Alpukat', 'Alpukat Mentega', 'Alpukat Miki', 'Alpukat Aligator',
+            'Durian', 'Durian Montong', 'Durian Musang King', 'Durian Bawor',
+            'Rambutan', 'Rambutan Binjai', 'Rambutan Rapiah',
+            'Jambu Kristal', 'Jambu Biji', 'Jambu Air', 'Jambu Air Citra', 'Jambu Madu Deli',
+            'Salak', 'Salak Pondoh', 'Salak Bali', 'Manggis', 'Belimbing', 'Belimbing Dewa', 'Kelengkeng', 'Buah Naga', 'Sukun', 'Nangka', 'Cempedak', 'Sirsak',
+            'Daging Sapi', 'Sapi Potong', 'Sapi Perah', 'Sapi', 'Daging Kerbau', 'Kerbau Potong', 'Kerbau', 'Daging Kambing', 'Kambing', 'Daging Domba', 'Domba', 'Susu Sapi', 'Susu Kambing', 'Susu Kerbau', 'Dadih', 'Susu Kuda',
+            'Daging Kelinci', 'Kelinci', 'Daging Burung Puyuh', 'Burung Puyuh', 'Puyuh', 'Telur Puyuh',
+            'Daging Ayam Broiler', 'Daging Ayam Kampung', 'Daging Ayam Pejantan', 'Daging Ayam', 'Ayam Broiler', 'Ayam Kampung', 'Ayam Pejantan', 'Ayam',
+            'Daging Bebek Hibrida', 'Daging Bebek Lokal', 'Daging Bebek Peking', 'Daging Entok', 'Daging Bebek', 'Bebek Hibrida', 'Bebek Peking', 'Bebek Lokal', 'Entok', 'Bebek', 'Itik',
+            'Telur Ayam Horen', 'Telur Ayam Omega', 'Telur Ayam Kampung', 'Telur Ayam Arab', 'Telur Ayam', 'Telur Bebek', 'Telur Asin', 'Telur',
+            'Ikan Lele', 'Ikan Nila', 'Ikan Gurame', 'Ikan Bandeng', 'Ikan Patin', 'Ikan Mas', 'Udang', 'Garam',
+            'Keripik Singkong', 'Keripik Tempe', 'Keripik Pisang', 'Keripik', 'Anyaman Bambu', 'Anyaman', 'Batik', 'Jamu Tradisional', 'Jamu'
         ];
 
         // Normalisasi kata & bobot kemiripan Levenshtein
@@ -1280,14 +1419,7 @@
             const unitPatterns = [
                 { regex: /\b(kilogram|kilo|kg)\b/i, unit: 'kg' },
                 { regex: /\b(ton)\b/i, unit: 'ton' },
-                { regex: /\b(kwintal|kuintal)\b/i, unit: 'kwintal' },
-                { regex: /\b(gram|gr)\b/i, unit: 'gram' },
-                { regex: /\b(liter|ltr)\b/i, unit: 'liter' },
-                { regex: /\b(buah|biji|butir|butir telur)\b/i, unit: 'buah' },
-                { regex: /\b(ikat)\b/i, unit: 'ikat' },
-                { regex: /\b(pack|pak|bungkus|bks)\b/i, unit: 'pack' },
-                { regex: /\b(karung|sak)\b/i, unit: 'karung' },
-                { regex: /\b(lusin)\b/i, unit: 'lusin' }
+                { regex: /\b(kwintal|kuintal)\b/i, unit: 'kwintal' }
             ];
             for (const item of unitPatterns) {
                 if (item.regex.test(lower)) {
