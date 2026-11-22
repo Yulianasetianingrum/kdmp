@@ -1,0 +1,103 @@
+<x-layouts.app :title="$title" eyebrow="Modul Pendataan">
+
+    @if(session('success'))
+        <div class="mb-4 rounded-lg bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-800">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-padi-100 text-padi-800">
+                    🏡 {{ $desaAktif?->nama ?? 'Desa' }}
+                </span>
+                <span class="text-xs text-paper-500 font-mono">
+                    Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}
+                </span>
+            </div>
+            <h2 class="text-xl font-display font-semibold text-ink-900 mt-1">Potensi Komoditas: {{ $desaAktif?->nama ?? 'Desa' }}</h2>
+            <p class="text-xs text-paper-500">Pemetaan relasi produksi komoditas antara petani, lahan, dan estimasi hasil panen di desa ini.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <form method="GET" class="flex flex-wrap items-center gap-2">
+                <select name="kategori_id" class="rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs text-ink-800 focus:outline-none">
+                    <option value="">Semua Kategori</option>
+                    @foreach($kategoriList as $k)
+                        <option value="{{ $k->id }}" @selected($kategoriId == $k->id)>{{ $k->nama }}</option>
+                    @endforeach
+                </select>
+                <input type="text" name="q" value="{{ $search }}" placeholder="Cari petani/item..."
+                       class="w-36 rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs focus:outline-none">
+                <button class="rounded-lg bg-ink-900 text-white px-3 py-1.5 text-xs font-medium hover:bg-ink-800">Filter</button>
+                @if($kategoriId || $search)
+                    <a href="{{ route('pendataan.potensi.index') }}" class="text-xs text-paper-500 hover:text-ink-900">Reset</a>
+                @endif
+            </form>
+            <a href="{{ route('pendataan.potensi.create') }}" class="rounded-lg bg-padi-500 hover:bg-padi-600 text-ink-950 font-semibold px-4 py-2 text-xs shadow-sm transition">
+                + Hubungkan Potensi
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-paper-200 bg-white shadow-sm">
+        <table class="w-full text-left text-sm">
+            <thead class="border-b border-paper-200 bg-paper-50 font-mono text-[11px] uppercase tracking-wide text-ink-600">
+                <tr>
+                    <th class="px-5 py-3">Nama Petani</th>
+                    <th class="px-5 py-3">Item Komoditas</th>
+                    <th class="px-5 py-3">Kategori</th>
+                    <th class="px-5 py-3 text-right">Luas Lahan</th>
+                    <th class="px-5 py-3 text-right">Estimasi Panen</th>
+                    <th class="px-5 py-3">Siklus Panen</th>
+                    <th class="px-5 py-3 text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-100">
+                @forelse($items as $row)
+                    <tr class="hover:bg-paper-50/60 text-xs">
+                        <td class="px-5 py-3 font-semibold text-ink-900">
+                            <a href="{{ route('pendataan.petani.show', $row->petani) }}" class="text-blue-700 hover:underline">
+                                {{ $row->petani?->nama_lengkap ?? '-' }}
+                            </a>
+                            <span class="block text-[10px] text-paper-400 font-normal">RT {{ $row->petani?->rt }}/RW {{ $row->petani?->rw }}</span>
+                        </td>
+                        <td class="px-5 py-3 font-medium text-emerald-900">
+                            {{ $row->item?->nama ?? '-' }}
+                            <span class="block text-[10px] text-paper-400">Master: {{ $row->item?->masterKomoditas?->nama }}</span>
+                        </td>
+                        <td class="px-5 py-3">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono bg-paper-100 text-paper-700">
+                                {{ $row->item?->masterKomoditas?->kategori?->nama ?? '-' }}
+                            </span>
+                        </td>
+                        <td class="px-5 py-3 text-right font-mono">{{ $row->luas_lahan_ha ? number_format($row->luas_lahan_ha, 2) . ' Ha' : '-' }}</td>
+                        <td class="px-5 py-3 text-right font-mono font-bold text-ink-900">
+                            {{ number_format($row->estimasi_volume_panen) }} {{ $row->satuan }}
+                        </td>
+                        <td class="px-5 py-3 text-paper-600">{{ $row->periode_panen }}</td>
+                        <td class="px-5 py-3 text-right">
+                            <form action="{{ route('pendataan.potensi.destroy', $row) }}" method="POST" onsubmit="return confirm('Hapus relasi potensi ini?');" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-xs text-red-600 hover:underline">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="px-5 py-8 text-center text-paper-400 text-xs">
+                            Belum ada relasi potensi komoditas petani yang dicatat untuk desa ini.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        {{ $items->links() }}
+    </div>
+
+</x-layouts.app>

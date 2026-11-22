@@ -1,0 +1,111 @@
+================================================================================
+DOKUMEN EVALUASI CARA KERJA SISTEM (MODUL SURVEI & MASTER DATA)
+"ALUR LAMA SAYA YANG DIKOMENTARI DOSEN DAN DITOLAK"
+================================================================================
+
+1. GAMBARAN UMUM ALUR LAMA
+--------------------------------------------------------------------------------
+Pada rancangan awal, sistem survei lapangan dan master data dirancang dengan alur berikut:
+- Admin/Manajer membuka sesi survei untuk suatu desa.
+- Sistem menerbitkan satu tautan (link) survei berkode unik (token).
+- Tautan diberikan kepada "Petugas Survei Lapangan" untuk berkeliling mewawancarai narasumber.
+- Pengisian survei dilakukan secara bertahap dalam satu form panjang 4 sesi berurutan:
+    * Sesi 1: Demografi Desa (Data narasumber & kependudukan)
+    * Sesi 2: Potensi Produksi Desa (Hasil komoditas pertanian/peternakan/kelautan)
+    * Sesi 3: Standar Konsumsi Komoditas
+    * Sesi 4: Pemenuhan & Perbandingan Harga Pasar
+- Master Data memuat puluhan daftar komoditas yang sangat luas dan belum terfokus pada pangan pokok harian.
+
+Rancangan di atas dikomentari tajam dan ditolak oleh dosen pembimbing dengan poin-poin evaluasi di bawah ini.
+
+
+2. POIN-POIN CATATAN & ALASAN PENOLAKAN DARI DOSEN
+--------------------------------------------------------------------------------
+
+A. PENOLAKAN PETUGAS SURVEI LAPANGAN (EFISIENSI BIAYA)
+   - Alur Lama:
+     Menggunakan petugas survei khusus yang ditugaskan berkeliling membawa form/gadget untuk mendata warga.
+   - Komentar Dosen:
+     "Kaga bakal ada petugas survey soalnya efisiensi biaya."
+     Desa tidak memiliki dana anggaran untuk menggaji surveyor lapangan.
+   - Perbaikan:
+     Survei harus diisi secara mandiri oleh responden (self-administered) lewat HP masing-masing melalui tautan yang disebarkan via WhatsApp / SMS.
+
+B. PENOLAKAN SATU FORM CAMPURAN (PEMISAHAN 3 TIPE RESPONDEN)
+   - Alur Lama:
+     Satu link umum memuat 4 sesi berurutan (Sesi 1 s.d. Sesi 4) yang dicampur aduk.
+   - Komentar Dosen:
+     Responden harus dipisahkan secara tegas karena data yang dimiliki tiap pihak berbeda dan tidak boleh dicampur:
+     1) Responden Pemerintah Desa / Ketua RT (Link Terpisah):
+        - Hanya memasukkan data Kartu Keluarga (KK) dan estimasi jumlah jiwa per RT sebagai data kontrol (baseline).
+        - Tidak perlu mendata detail kelompok umur atau jenis kelamin.
+        - Memiliki halaman tersendiri untuk daftar RT dalam 1 desa beserta jumlah KK dan jiwanya.
+     2) Responden Produsen Desa / Kelompok Tani & Ekraf (Link Terpisah):
+        - Hanya mengisi Sesi 2 (Potensi Produksi Desa).
+        - Kelompok Tani mendata komoditas pertanian, perkebunan, peternakan, dan kelautan dengan masa/siklus produksi musiman.
+        - Pengurus Ekonomi Kreatif (Ekraf) mendata kreativitas pangan desa dan kerajinan benda desa dengan masa produksi per bulan.
+        - Produsen TIDAK MENGISI kebutuhan konsumsi keluarga.
+        - Harus ada halaman khusus daftar nama anggota kelompok tani dan panitia ekraf.
+     3) Responden Masyarakat Umum / Rumah Tangga (Link Terpisah):
+        - Hanya mengisi identitas KK, anggota keluarga (wajib isi usia & jenis kelamin), serta konsumsi pangan keluarga (Sesi 3 & Sesi 4).
+        - Standar klasifikasi kelompok umur:
+          * Balita: 0-4
+          * Anak-anak: 5-9
+          * Remaja: 10-19
+          * Dewasa: 20-59
+          * Lansia: 60+
+        - Masyarakat TIDAK MENGISI potensi produksi desa.
+
+C. KETENTUAN FITUR SUARA (SPEECH-TO-TEXT) & VALIDASI LOKASI
+   - Alur Lama:
+     Ada rencana menggunakan AI / Large Language Model (LLM) serta biometrik pengenalan suara individu untuk validasi input.
+   - Komentar Dosen:
+     - Fitur Speech-to-Text (STT) untuk input konsumsi masyarakat dan produksi kelompok tani tetap menggunakan Web Speech API bawaan browser saja.
+     - TIDAK BOLEH memakai AI / LLM berbayar karena STT hanya fitur tambahan pembantu untuk mempermudah warga berbicara daripada mengetik.
+     - TIDAK PERLU biometrik pengenalan suara individu. Pembeda identitas responden sudah ditangani oleh pencatatan titik lokasi koordinat (GPS perangkat) dan validasi Geocoding OpenStreetMap (Nominatim).
+
+D. PEMBATASAN & PENATAAN MASTER DATA KOMODITAS
+   - Alur Lama:
+     Master komoditas memuat puluhan item yang terlalu luas, tidak terarah, bahkan memuat komoditas non-pangan berat (batu belah, kuningan) atau komoditas non-halal (babi).
+   - Komentar Dosen:
+     1) Batasan fokus utama produksi desa harus tertuju pada KEBUTUHAN PANGAN POKOK HARIAN:
+        - Pertanian: Beras, Cabai, Bawang Merah, Bawang Putih, Kedelai
+        - Perkebunan: Kopi, Gula
+        - Peternakan: Ayam, Telur Ayam
+        - Kelautan: Garam, Ikan
+     2) Produk olahan dan kerajinan desa dipisah ke kategori EKONOMI KREATIF (Ekraf Pangan & Ekraf Non-Pangan).
+     3) Struktur Master Data harus konsisten:
+        - Kategori: Kelompok besar (misal: Pertanian, Peternakan)
+        - Master: Nama kelompok bahan pokok satu kata (misal: "Daging", "Telur", "Ikan")
+        - Item: Nama spesifik komoditas (misal: "Daging sapi", "Telur ayam ras", "Ikan lele")
+     4) Frekuensi produksi dihitung dari satu siklus produksi lengkap (tanam s.d. panen), bukan dari berapa kali petik per hari.
+
+E. VALIDASI SILANG DEMOGRAFI & KELOMPOK UMUR (CROSS-CHECK DATA)
+   - Alur Lama:
+     Data demografi hanya diinput sepihak tanpa mekanisme pembanding.
+   - Komentar Dosen:
+     - Data agregat KK dari Ketua RT dijadikan acuan pembanding (baseline total KK dan estimasi jiwa).
+     - Data dari formulir responden masyarakat mendata usia dan gender anggota keluarga yang diklasifikasikan ke dalam kelompok umur:
+       * Balita: 0-4
+       * Anak-anak: 5-9
+       * Remaja: 10-19
+       * Dewasa: 20-59
+       * Lansia: 60+
+     - Setelah survei ditutup, sistem menghitung total jiwa per kelompok umur dan gender dari data riil warga, lalu membandingkannya dengan data KK dari Ketua RT untuk melihat tingkat validitas dan kelengkapan survei desa.
+
+
+3. TABEL PERBANDINGAN ALUR LAMA VS HASIL EVALUASI DOSEN
+--------------------------------------------------------------------------------
+| Aspek Evaluasi       | Alur Lama (Ditolak)                 | Alur Baru (Sesuai Catatan Dosen)         |
+|----------------------|-------------------------------------|------------------------------------------|
+| Pelaksana Survei     | Petugas Lapangan (butuh biaya gaji) | Mandiri oleh Responden (lewat link WA)   |
+| Tautan & Formulir    | 1 Link umum, 4 Sesi linear dicampur | 3 Link terpisah (RT, Produsen, Warga)    |
+| Peran Ketua RT       | Dicampur dengan wawancara umum      | Link khusus: input total KK & jiwa per RT|
+| Peran Produsen Desa  | Mengisi produksi dan konsumsi       | Link khusus: hanya mengisi produksi      |
+| Peran Warga Desa     | Mengisi semua modul 1-4             | Link khusus: anggota KK & konsumsi pangan|
+| Fitur Suara (STT)    | Rencana AI / LLM / Voice Biometrics | Murni Web Speech API browser bawaan      |
+| Validasi Responden   | Verifikasi manual oleh surveyor     | GPS Browser & Geocoding OpenStreetMap    |
+| Master Komoditas     | 85+ komoditas acak & non-pangan     | Fokus kebutuhan pangan pokok & Ekraf desa|
+| Penataan Master Data | Nama master dan item bercampur      | Hirarki: Kategori -> Master -> Item      |
+| Validasi Silang      | Tidak ada perbandingan data         | Cross-check data RT vs input riil warga  |
+================================================================================

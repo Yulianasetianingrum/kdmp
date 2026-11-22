@@ -39,7 +39,18 @@ trait ResolvesEntitasAktif
     {
         $id = $this->entitasAktifId();
 
-        return $id ? Entitas::find($id) : null;
+        return $id ? Entitas::with('wilayah.parent.parent')->find($id) : null;
+    }
+
+    protected function desaAktif(): ?\App\Models\Tenant\Wilayah
+    {
+        $entitas = $this->entitasAktif();
+
+        if ($entitas && $entitas->wilayah) {
+            return $entitas->wilayah;
+        }
+
+        return \App\Models\Tenant\Wilayah::where('tingkat', 'desa')->with('parent.parent')->first();
     }
 }
 
