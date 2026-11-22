@@ -192,7 +192,7 @@ class PublicSurveiProdusenController extends Controller
         'labu air'            => ['item' => 'Labu air / bligo',    'frekuensi' => 4,   'rentang' => '±4',        'durasi' => '70–85 hari',   'sumber' => 'Balitsa Kementan'],
         'rebung'              => ['item' => 'Rebung bambu',        'frekuensi' => 4,   'rentang' => '±4–6',      'durasi' => 'Panen tunas rebung saat musim hujan (3–4 bln)', 'sumber' => 'Ditjen Hortikultura Kementan'],
 
-        // Perkebunan Rakyat, Tanaman Industri & Rempah
+        // Tanaman Industri & Rempah (Pertanian)
         'kopi'                => ['item' => 'Kopi Robusta',        'baku' => 'Kopi Robusta',  'frekuensi' => 1,   'rentang' => '1',         'durasi' => '10–11 bulan buah masak (panen raya tahunan)', 'sumber' => 'Puslitkoka; Ditjenbun'],
         'kopi robusta'        => ['item' => 'Kopi Robusta',        'baku' => 'Kopi Robusta',  'frekuensi' => 1,   'rentang' => '1',         'durasi' => '10–11 bulan buah masak (panen raya tahunan)', 'sumber' => 'Puslitkoka; Ditjenbun'],
         'kopi arabika'        => ['item' => 'Kopi Arabika',        'baku' => 'Kopi Arabika',  'frekuensi' => 1,   'rentang' => '1',         'durasi' => '6–9 bulan buah masak (panen raya dataran tinggi)', 'sumber' => 'Puslitkoka; Ditjenbun'],
@@ -663,7 +663,7 @@ class PublicSurveiProdusenController extends Controller
         'rebung bambu'        => 'rebung',
         'bung'                => 'rebung',
 
-        // Perkebunan & Rempah Tambahan (Kopi, Teh, Kakao/Coklat, Kelapa, Tembakau, Karet, Tebu, dsb)
+        // Tanaman Rempah & Industri Tambahan (Kopi, Teh, Kakao/Coklat, Kelapa, Tembakau, Karet, Tebu, dsb)
         'kopi'                => 'kopi robusta',
         'kopi luwak'          => 'kopi robusta',
         'biji kopi'           => 'kopi robusta',
@@ -897,7 +897,7 @@ class PublicSurveiProdusenController extends Controller
 
         $jumlah = count($rows);
         return redirect()->back()->with('success',
-            "✅ Terima kasih, {$namaResponden}! {$jumlah} komoditas berhasil dicatat."
+            "Terima kasih, {$namaResponden}! {$jumlah} komoditas berhasil dicatat."
         );
     }
 

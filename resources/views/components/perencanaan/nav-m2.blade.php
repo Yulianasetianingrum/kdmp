@@ -19,21 +19,18 @@
             'id' => 'demografi',
             'label' => 'Demografi Penduduk Desa',
             'route' => 'perencanaan.demografi.index',
-            'icon' => '👥',
             'info' => 'M1 Sesi 1',
         ],
         [
             'id' => 'potensi',
             'label' => 'Potensi Produksi Panen',
             'route' => 'perencanaan.potensi-produksi.index',
-            'icon' => '🌾',
             'info' => 'M1 Sesi 2',
         ],
         [
             'id' => 'standar',
             'label' => 'Standar Kebutuhan Gizi',
             'route' => 'perencanaan.standar-kebutuhan.index',
-            'icon' => '⚖️',
             'info' => 'AKG / Standar',
         ],
     ];
@@ -68,7 +65,6 @@
                           {{ $isPillActive
                               ? 'bg-ink-900 text-paper-50 shadow-xs'
                               : 'bg-paper-200/70 text-ink-700 hover:bg-paper-200 hover:text-ink-950' }}">
-                    <span>{{ $pill['icon'] }}</span>
                     <span>{{ $pill['label'] }}</span>
                     <span class="rounded px-1 py-0.2 font-mono text-[9px] {{ $isPillActive ? 'bg-ink-800 text-paper-200' : 'bg-paper-300/60 text-ink-600' }}">
                         {{ $pill['info'] }}

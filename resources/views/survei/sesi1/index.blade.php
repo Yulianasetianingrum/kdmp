@@ -317,7 +317,7 @@
 
                         @if($narasumbers->where('status', 'belum_diisi')->count() > 0)
                             <div class="mb-3 rounded-sm border border-yellow-200 bg-yellow-50 px-3 py-2 text-xs text-yellow-800">
-                                ⚠ Ada <strong>{{ $narasumbers->where('status', 'belum_diisi')->count() }}</strong>
+                                Ada <strong>{{ $narasumbers->where('status', 'belum_diisi')->count() }}</strong>
                                 narasumber yang belum mengisi data demografi.
                             </div>
                         @endif

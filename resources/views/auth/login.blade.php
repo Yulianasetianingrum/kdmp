@@ -37,7 +37,9 @@
 
             {{-- Header --}}
             <div class="text-center mb-7">
-                <div class="w-14 h-14 rounded-2xl bg-padi-500/15 border border-padi-500/30 flex items-center justify-center text-2xl mx-auto mb-4">🏘️</div>
+                <div class="w-14 h-14 rounded-2xl bg-padi-500/15 border border-padi-500/30 flex items-center justify-center mx-auto mb-4 text-padi-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+                </div>
                 <h1 class="font-display text-2xl font-semibold text-paper-50">Selamat Datang</h1>
                 <p class="text-paper-400/70 text-sm mt-1">Masuk ke platform Ngobar desa Anda</p>
             </div>

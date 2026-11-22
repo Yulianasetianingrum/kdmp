@@ -8,7 +8,7 @@
 
             <div>
                 <label class="block text-xs font-medium text-paper-700 mb-1">Kode Kategori <span class="text-red-500">*</span></label>
-                <input type="text" name="kode" value="{{ old('kode') }}" placeholder="Contoh: PERTANIAN, PERKEBUNAN" required
+                <input type="text" name="kode" value="{{ old('kode') }}" placeholder="Contoh: PERTANIAN, PETERNAKAN" required
                        class="w-full rounded-lg border border-paper-300 p-2 text-sm uppercase font-mono focus:border-padi-500 focus:outline-none">
                 @error('kode') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>

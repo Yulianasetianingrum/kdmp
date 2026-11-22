@@ -26,7 +26,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="p-3 bg-padi-50 border border-padi-200 rounded-lg">
                     <span class="text-[10px] uppercase font-mono tracking-wider text-padi-700 font-bold">Desa Wilayah Aktor</span>
-                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">🏡 {{ $desaAktif?->nama ?? '-' }}</p>
+                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">{{ $desaAktif?->nama ?? '-' }}</p>
                     <p class="text-xs text-paper-500 font-mono">Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}</p>
                 </div>
 

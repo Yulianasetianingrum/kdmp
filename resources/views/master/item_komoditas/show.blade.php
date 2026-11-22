@@ -47,7 +47,7 @@
     {{-- 4. Daftar Desa Penghasil --}}
     <div class="mb-6 bg-white p-5 rounded-xl border border-paper-200 shadow-sm">
         <h3 class="text-sm font-display font-semibold text-ink-900 uppercase tracking-wide mb-3 flex items-center gap-2">
-            <span>🏘️</span> 4. Desa Penghasil Komoditas Ini
+            4. Desa Penghasil Komoditas Ini
         </h3>
 
         @if(empty($desaPenghasil))
@@ -56,7 +56,7 @@
             <div class="flex flex-wrap gap-2">
                 @foreach($desaPenghasil as $dp)
                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-sawah-50 text-sawah-900 border border-sawah-200 font-medium">
-                        📍 <strong>{{ $dp['desa'] }}</strong> (Kec. {{ $dp['kecamatan'] ?? '-' }}, Kab. {{ $dp['kabupaten'] ?? 'Pati' }})
+                        <strong>{{ $dp['desa'] }}</strong> (Kec. {{ $dp['kecamatan'] ?? '-' }}, Kab. {{ $dp['kabupaten'] ?? 'Pati' }})
                     </span>
                 @endforeach
             </div>
@@ -67,18 +67,18 @@
     <div class="bg-white rounded-xl border border-paper-200 shadow-sm overflow-hidden">
         <div class="px-5 py-4 border-b border-paper-200 bg-paper-50/50 flex items-center justify-between">
             <h3 class="text-sm font-display font-semibold text-ink-900 uppercase tracking-wide flex items-center gap-2">
-                <span>👨‍🌾</span> 5. Daftar Petani / Produsen Penghasil
+                5. Daftar Petani / Produsen Penghasil
             </h3>
             <span class="text-xs text-paper-500">{{ $daftarPetani->count() }} Petani Terdaftar</span>
         </div>
 
-        <table class="w-full text-left text-sm">
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[640px] text-left text-sm">
             <thead class="border-b border-paper-200 bg-paper-50 font-mono text-[11px] uppercase tracking-wide text-ink-600">
                 <tr>
                     <th class="px-5 py-3">Nama Petani</th>
                     <th class="px-5 py-3">Kontak (HP)</th>
                     <th class="px-5 py-3">Wilayah (Desa, Kec)</th>
-                    <th class="px-5 py-3">Luas Lahan</th>
                     <th class="px-5 py-3">Estimasi Panen</th>
                     <th class="px-5 py-3">Periode Panen</th>
                     <th class="px-5 py-3 text-right">Aksi</th>
@@ -96,9 +96,6 @@
                         <td class="px-5 py-3 text-xs text-paper-700">
                             {{ $p->desa ?: $p->wilayah?->nama }}, Kec. {{ $p->kecamatan ?: $p->wilayah?->parent?->nama }}
                         </td>
-                        <td class="px-5 py-3 text-xs font-mono text-paper-700">
-                            {{ $p->pivot->luas_lahan_ha ? $p->pivot->luas_lahan_ha . ' Ha' : '-' }}
-                        </td>
                         <td class="px-5 py-3 text-xs font-semibold text-sawah-900 font-mono">
                             {{ number_format($p->pivot->estimasi_volume_panen) }} {{ $p->pivot->satuan }}
                         </td>
@@ -113,13 +110,14 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-5 py-8 text-center text-sm text-paper-400">
+                        <td colspan="6" class="px-5 py-8 text-center text-sm text-paper-400">
                             Belum ada petani yang terhubung menghasilkan item komoditas ini.
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 
 </x-layouts.app>

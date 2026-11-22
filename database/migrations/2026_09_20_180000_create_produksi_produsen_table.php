@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('nama_responden');
             // Kategori & sub-kategori diisi saat simpan agar data mandiri
             $table->string('kategori');          // Kelompok Tani / Ekraf
-            $table->string('sub_kategori')->nullable(); // Pertanian, Perkebunan, Pangan, dll
+            $table->string('sub_kategori')->nullable(); // Pertanian, Pangan, dll
             // Data komoditas
             $table->string('nama_komoditas');
             $table->decimal('jumlah_produksi', 12, 2)->nullable();

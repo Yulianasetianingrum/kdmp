@@ -4,7 +4,7 @@
         <div>
             <div class="flex items-center gap-2 mb-1">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-padi-100 text-padi-800">
-                    🏡 {{ $desaAktif?->nama ?? 'Desa' }}
+                    {{ $desaAktif?->nama ?? 'Desa' }}
                 </span>
                 <span class="text-xs text-paper-500 font-mono">
                     Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}
@@ -15,7 +15,7 @@
         </div>
 
         <button onclick="window.print()" class="px-3 py-1.5 rounded-lg border border-paper-300 bg-white text-xs font-medium hover:bg-paper-50">
-            🖨️ Cetak / PDF
+            Cetak / PDF
         </button>
     </div>
 
@@ -74,7 +74,7 @@
                             <span class="text-xs text-paper-400">&rarr;</span>
                             <span class="text-xs font-semibold text-paper-700">{{ $item->masterKomoditas?->nama }}</span>
                         </div>
-                        <h3 class="text-base font-display font-bold text-emerald-800 mt-0.5">🌾 {{ $item->nama }}</h3>
+                        <h3 class="text-base font-display font-bold text-emerald-800 mt-0.5">{{ $item->nama }}</h3>
                     </div>
                     <div class="flex items-center gap-2 text-xs">
                         <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold font-mono">
@@ -87,13 +87,12 @@
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
+                    <table class="w-full min-w-[640px] text-left text-xs">
                         <thead class="border-b border-paper-200 text-[10px] font-mono uppercase text-paper-500 bg-paper-50/50">
                             <tr>
                                 <th class="px-5 py-2">Nama Petani</th>
                                 <th class="px-5 py-2">Kontak</th>
                                 <th class="px-5 py-2">Alamat Domisili</th>
-                                <th class="px-5 py-2 text-right">Luas Lahan</th>
                                 <th class="px-5 py-2 text-right">Estimasi Panen</th>
                                 <th class="px-5 py-2">Periode Panen</th>
                             </tr>
@@ -110,7 +109,6 @@
                                     <td class="px-5 py-2.5 text-paper-600">
                                         {{ $p->alamat ?: '-' }} (RT {{ $p->rt ?: '00' }}/RW {{ $p->rw ?: '00' }})
                                     </td>
-                                    <td class="px-5 py-2.5 text-right font-mono">{{ $p->pivot->luas_lahan_ha ? number_format($p->pivot->luas_lahan_ha, 2) . ' Ha' : '-' }}</td>
                                     <td class="px-5 py-2.5 text-right font-mono font-bold text-ink-950">
                                         {{ number_format($p->pivot->estimasi_volume_panen) }} {{ $p->pivot->satuan }}
                                     </td>

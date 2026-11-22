@@ -111,7 +111,7 @@
                                         <button type="button"
                                                 onclick="openEditBankModal('{{ $item->kode_anak }}', '{{ addslashes($item->nama_template) }}', '{{ addslashes($item->nama_tampil) }}', '{{ addslashes((string) $item->no_rekening_entitas) }}')"
                                                 class="inline-flex items-center gap-1 rounded-sm border border-merah-300 bg-white px-2.5 py-1 text-xs font-medium text-merah-600 hover:bg-merah-50">
-                                            ✎ Ubah Nama Bank
+                                            Ubah Nama Bank
                                         </button>
                                     @else
                                         <span class="text-[11px] text-ink-500">Pilih entitas untuk edit</span>
@@ -146,7 +146,7 @@
                         <h3 class="font-display text-base font-semibold text-ink-900">Ubah Nama Akun Bank Entitas</h3>
                         <p class="text-xs text-ink-600">Entitas: <strong>{{ $entitas?->nama_entitas }}</strong></p>
                     </div>
-                    <button type="button" onclick="closeEditBankModal()" class="text-ink-600 hover:text-ink-950">✕</button>
+                    <button type="button" onclick="closeEditBankModal()" class="text-ink-600 hover:text-ink-950 text-base font-semibold leading-none">&times;</button>
                 </div>
 
                 <form id="form-edit-bank" method="POST" class="mt-4 space-y-4">

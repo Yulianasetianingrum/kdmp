@@ -4,7 +4,7 @@
         <div>
             <div class="flex items-center gap-2 mb-1">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-padi-100 text-padi-800">
-                    🏡 {{ $desaAktif?->nama ?? 'Desa' }}
+                    {{ $desaAktif?->nama ?? 'Desa' }}
                 </span>
                 <span class="text-xs text-paper-500 font-mono">
                     Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}
@@ -15,13 +15,12 @@
         </div>
 
         <button onclick="window.print()" class="px-3 py-1.5 rounded-lg border border-paper-300 bg-white text-xs font-medium hover:bg-paper-50">
-            🖨️ Cetak Analisis
+            Cetak Analisis
         </button>
     </div>
 
     {{-- Penjelasan Alur Barter Komoditas --}}
-    <div class="mb-6 p-4 rounded-xl bg-padi-50 border border-padi-200 text-xs text-ink-900 flex items-start gap-3">
-        <span class="text-xl">💡</span>
+    <div class="mb-6 p-4 rounded-xl bg-padi-50 border border-padi-200 text-xs text-ink-900">
         <div>
             <strong class="font-semibold text-sm text-padi-900 block mb-0.5">Konsep Barter Komoditas Antar-Koperasi Desa (KDMP)</strong>
             Desa Anda (<strong class="text-ink-950">{{ $desaAktif?->nama ?? 'Desa' }}</strong>) yang memiliki surplus komoditas tertentu dapat bertukar dengan desa mitra yang menghasilkan komoditas berbeda untuk memenuhi kebutuhan konsumsi dan cadangan pangan tanpa bergantung pada tengkulak luar.
@@ -33,8 +32,8 @@
         <div class="flex items-center justify-between pb-3 border-b border-paper-200 mb-4">
             <div>
                 <span class="text-[10px] font-mono uppercase tracking-wider text-padi-700 font-bold">Kapasitas Desa Anda</span>
-                <h3 class="font-display font-bold text-ink-900 text-lg flex items-center gap-2 mt-0.5">
-                    <span>🌟</span> Komoditas Unggulan {{ $desaAktif?->nama ?? 'Desa Anda' }} untuk Barter
+                <h3 class="font-display font-bold text-ink-900 text-lg mt-0.5">
+                    Komoditas Unggulan {{ $desaAktif?->nama ?? 'Desa Anda' }} untuk Barter
                 </h3>
             </div>
             <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
@@ -43,7 +42,7 @@
         </div>
 
         @if(empty($komoditasDesaAktif))
-            <p class="text-xs text-paper-400 py-4 text-center">Belum ada komoditas tercatat untuk desa ini. Silakan input melalui Formulir Survei Komoditas.</p>
+            <p class="text-xs text-paper-400 py-4 text-center">Belum ada komoditas tercatat untuk desa ini. Silakan input melalui menu Pendataan Potensi Komoditas.</p>
         @else
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 @foreach($komoditasDesaAktif as $k)
@@ -63,8 +62,8 @@
     </div>
 
     {{-- Seksi 2: Matriks Peluang Kerjasama dengan Desa Lain --}}
-    <h3 class="font-display text-base font-semibold text-ink-900 mb-3 flex items-center gap-2">
-        <span>🤝</span> Peluang Kemitraan Barter Antar-Desa
+    <h3 class="font-display text-base font-semibold text-ink-900 mb-3">
+        Peluang Kemitraan Barter Antar-Desa
     </h3>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -72,8 +71,7 @@
             <div class="bg-white p-5 rounded-xl border border-paper-200 shadow-sm flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3 border-b border-paper-100 mb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">🏡</span>
+                        <div>
                             <h3 class="font-display font-semibold text-ink-900 text-base">{{ $namaDesa }}</h3>
                         </div>
                         <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-sawah-100 text-sawah-900">

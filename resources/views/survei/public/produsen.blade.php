@@ -648,7 +648,6 @@
                     <div x-show="rekomendasiBaku" x-cloak
                          style="margin-top:0.4rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.45rem 0.75rem;border-radius:8px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:0.78rem;">
                         <div style="display:flex;align-items:center;gap:0.4rem;">
-                            <span style="font-size:1rem;">💡</span>
                             <div>
                                 Rekomendasi nama baku: <strong x-text="rekomendasiBaku"></strong>
                                 <span style="font-size:0.72rem;opacity:0.85;" x-text="'(sejenis dengan ' + namaKmd + ')'"></span>
@@ -702,7 +701,6 @@
                                placeholder="Terisi otomatis sesuai komoditas">
                     </div>
                     <div class="calc-box calc-box-green" x-show="infoFrekuensi" x-cloak>
-                        <span style="font-size:1rem;">🌾</span>
                         <div>
                             <div>
                                 Acuan <strong x-text="infoFrekuensi && infoFrekuensi.item"></strong>:
@@ -755,7 +753,6 @@
                     <div x-show="harga && parseFloat(harga) > 0" x-cloak>
                         <template x-if="tipeHarga === 'Satuan'">
                             <div class="calc-box calc-box-green">
-                                <span style="font-size:1rem;">🧮</span>
                                 <div>
                                     <template x-if="jumlah && parseFloat(jumlah) > 0">
                                         <div>
@@ -767,7 +764,7 @@
                                     </template>
                                     <template x-if="!jumlah || parseFloat(jumlah) <= 0">
                                         <div style="font-size:0.75rem;color:#166534;">
-                                            💡 Masukkan <strong>Jumlah Produksi</strong> di atas untuk melihat perkalian total penjualan secara otomatis.
+                                            Masukkan <strong>Jumlah Produksi</strong> di atas untuk melihat perkalian total penjualan secara otomatis.
                                         </div>
                                     </template>
                                 </div>
@@ -775,7 +772,6 @@
                         </template>
                         <template x-if="tipeHarga === 'Total'">
                             <div class="calc-box calc-box-blue">
-                                <span style="font-size:1rem;">🧮</span>
                                 <div>
                                     <template x-if="jumlah && parseFloat(jumlah) > 0">
                                         <div>
@@ -787,7 +783,7 @@
                                     </template>
                                     <template x-if="!jumlah || parseFloat(jumlah) <= 0">
                                         <div style="font-size:0.75rem;color:#1e40af;">
-                                            💡 Masukkan <strong>Jumlah Produksi</strong> di atas untuk menghitung pembagian harga per satuan.
+                                            Masukkan <strong>Jumlah Produksi</strong> di atas untuk menghitung pembagian harga per satuan.
                                         </div>
                                     </template>
                                 </div>
@@ -916,7 +912,7 @@
                     </div>
                     <div x-show="editRekomendasiBaku" x-cloak
                          style="margin-top:0.35rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.4rem 0.65rem;border-radius:6px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:0.75rem;">
-                        <div>💡 Nama baku: <strong x-text="editRekomendasiBaku"></strong></div>
+                        <div>Nama baku: <strong x-text="editRekomendasiBaku"></strong></div>
                         <button type="button" 
                                 style="background:#16a34a;color:#fff;border:none;border-radius:4px;padding:0.2rem 0.5rem;font-size:0.72rem;font-weight:600;cursor:pointer;"
                                 @click="editForm.nama_komoditas = editRekomendasiBaku">Gunakan</button>
@@ -1021,7 +1017,6 @@
                     <div x-show="editForm.harga && parseFloat(editForm.harga) > 0" x-cloak>
                         <template x-if="editForm.tipe_harga === 'Satuan'">
                             <div class="calc-box calc-box-green">
-                                <span>🧮</span>
                                 <div style="flex:1;">
                                     <template x-if="editForm.jumlah_produksi && parseFloat(editForm.jumlah_produksi) > 0">
                                         <div>
@@ -1034,7 +1029,6 @@
                         </template>
                         <template x-if="editForm.tipe_harga === 'Total'">
                             <div class="calc-box calc-box-blue">
-                                <span>🧮</span>
                                 <div style="flex:1;">
                                     <template x-if="editForm.jumlah_produksi && parseFloat(editForm.jumlah_produksi) > 0">
                                         <div>
@@ -1051,7 +1045,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn-cancel" @click="showEditModal = false">Batal</button>
                 <button type="button" class="btn-save" @click="saveEdit()">
-                    ✓ Simpan Perubahan
+                    Simpan Perubahan
                 </button>
             </div>
         </div>
@@ -1337,7 +1331,7 @@
         // Multi-Hypothesis + Kamus Komoditas Pangan/Ekraf + Parser Angka
         // ========================================================
 
-        // Kamus kanonikal komoditas pangan, pertanian, perkebunan, peternakan, perikanan & ekraf
+        // Kamus kanonikal komoditas pangan, pertanian, peternakan, perikanan & ekraf
         const MASTER_KOMODITAS_DICT = [
             'Beras', 'Padi', 'Padi Sawah', 'Padi Gogo', 'Padi Ketan', 'Ketan', 'Jagung', 'Jagung Manis', 'Jagung Pipilan', 'Kedelai', 'Kacang Tanah', 'Kacang Hijau', 'Sorgum',
             'Singkong', 'Singkong Manis', 'Singkong Keju', 'Ubi Kayu', 'Ubi Jalar', 'Ubi Cilembu', 'Ubi Ungu', 'Ubi Madu',
@@ -1572,7 +1566,7 @@
                         this.interimText = '';
                         if (this.$refs.el) {
                             this.originalPlaceholder = this.$refs.el.placeholder || '';
-                            this.$refs.el.placeholder = '🎙️ Mendengarkan suara Anda...';
+                            this.$refs.el.placeholder = 'Mendengarkan suara Anda...';
                         }
                     };
 

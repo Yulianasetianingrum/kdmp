@@ -12,7 +12,7 @@
 
     @if(! $idEntitas)
         <div class="mb-5 rounded-sm border border-padi-500 bg-padi-100 px-4 py-3 text-sm text-ink-800">
-            ⚠️ Pilih <strong>Entitas</strong> terlebih dahulu pada dropdown di bagian atas halaman untuk mengelola Periode Akuntansi entitas.
+            Pilih <strong>Entitas</strong> terlebih dahulu pada dropdown di bagian atas halaman untuk mengelola Periode Akuntansi entitas.
         </div>
     @endif
 
@@ -49,8 +49,8 @@
         ];
     @endphp
 
-    <div class="overflow-hidden rounded-sm border border-paper-300 bg-paper-50">
-        <table class="w-full text-left text-sm">
+    <div class="overflow-x-auto rounded-sm border border-paper-300 bg-paper-50">
+        <table class="w-full min-w-[600px] text-left text-sm">
             <thead class="border-b border-paper-300 bg-paper-200/60 font-mono text-[11px] uppercase tracking-wide text-ink-600/80">
                 <tr>
                     <th class="px-4 py-3 font-medium">Bulan</th>

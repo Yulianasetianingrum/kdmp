@@ -1,25 +1,25 @@
 <x-layouts.app title="Dashboard Sistem KDMP" eyebrow="Ringkasan Penduduk & Potensi Desa">
 
     {{-- Header Banner Fokus 1 Desa --}}
-    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-xl border border-paper-200 shadow-sm">
+    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 sm:p-6 rounded-xl border border-paper-200 shadow-sm">
         <div>
-            <div class="flex items-center gap-2 mb-1">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-padi-100 text-padi-900 border border-padi-300">
-                    🏡 WILAYAH OPERASIONAL: {{ strtoupper($desaAktif?->nama ?? 'DESA AKTIF') }}
+                    WILAYAH OPERASIONAL: {{ strtoupper($desaAktif?->nama ?? 'DESA AKTIF') }}
                 </span>
                 <span class="text-xs text-paper-500 font-mono">
                     Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}
                 </span>
             </div>
-            <h2 class="font-display text-2xl font-semibold text-ink-900">Dashboard Pemetaan Potensi {{ $desaAktif?->nama ?? 'Desa' }}</h2>
+            <h2 class="font-display text-xl sm:text-2xl font-semibold text-ink-900">Dashboard Pemetaan Potensi {{ $desaAktif?->nama ?? 'Desa' }}</h2>
             <p class="text-xs text-paper-500 mt-1">Sistem informasi demografi penduduk, komoditas unggulan desa, dan identifikasi potensi barter antar koperasi.</p>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="{{ route('survei.formulir.komoditas') }}" class="inline-flex items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-padi-500 text-ink-950 hover:bg-padi-600 shadow-sm transition">
-                + Survei Komoditas
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{{ route('pendataan.potensi.create') }}" class="inline-flex justify-center items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-padi-500 text-ink-950 hover:bg-padi-600 shadow-sm transition">
+                + Input Potensi
             </a>
-            <a href="{{ route('laporan.analisis.index') }}" class="inline-flex items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-ink-900 text-white hover:bg-ink-800 shadow-sm transition">
-                📊 Analisis Barter Desa
+            <a href="{{ route('laporan.analisis.index') }}" class="inline-flex justify-center items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-ink-900 text-white hover:bg-ink-800 shadow-sm transition">
+                Analisis Barter Desa
             </a>
         </div>
     </div>
@@ -30,7 +30,9 @@
         <div class="bg-white p-5 rounded-xl border border-paper-200 shadow-sm">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-medium uppercase tracking-wider text-paper-500">Total Penduduk Desa</span>
-                <span class="p-2 bg-blue-50 text-blue-600 rounded-lg text-lg">👥</span>
+                <span class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </span>
             </div>
             <p class="text-3xl font-display font-bold text-ink-900">{{ number_format($demografi['total_penduduk']) }}</p>
             <p class="text-xs text-paper-400 mt-1">Jiwa terdata di {{ $desaAktif?->nama ?? 'desa ini' }}</p>
@@ -40,7 +42,9 @@
         <div class="bg-white p-5 rounded-xl border border-paper-200 shadow-sm">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-medium uppercase tracking-wider text-paper-500">Petani / Produsen</span>
-                <span class="p-2 bg-emerald-50 text-emerald-600 rounded-lg text-lg">👨‍🌾</span>
+                <span class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                </span>
             </div>
             <p class="text-3xl font-display font-bold text-ink-900">{{ number_format($jumlahPetani) }}</p>
             <p class="text-xs text-paper-400 mt-1">Produsen aktif di {{ $desaAktif?->nama ?? 'desa ini' }}</p>
@@ -50,7 +54,9 @@
         <div class="bg-white p-5 rounded-xl border border-paper-200 shadow-sm">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-medium uppercase tracking-wider text-paper-500">Master Komoditas</span>
-                <span class="p-2 bg-amber-50 text-amber-600 rounded-lg text-lg">🌾</span>
+                <span class="p-2 bg-amber-50 text-amber-600 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                </span>
             </div>
             <p class="text-3xl font-display font-bold text-ink-900">{{ number_format($jumlahMaster) }}</p>
             <p class="text-xs text-paper-400 mt-1">Terbagi dalam {{ $jumlahKategori }} Kategori</p>
@@ -60,7 +66,9 @@
         <div class="bg-white p-5 rounded-xl border border-paper-200 shadow-sm">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-medium uppercase tracking-wider text-paper-500">Subjenis Komoditas</span>
-                <span class="p-2 bg-indigo-50 text-indigo-600 rounded-lg text-lg">📦</span>
+                <span class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                </span>
             </div>
             <p class="text-3xl font-display font-bold text-ink-900">{{ number_format($jumlahItem) }}</p>
             <p class="text-xs text-paper-400 mt-1">Varian item spesifik terdata</p>

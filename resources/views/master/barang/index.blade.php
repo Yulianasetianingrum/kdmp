@@ -12,7 +12,7 @@
 
     @if(! $idEntitas)
         <div class="mb-5 rounded-sm border border-padi-500 bg-padi-100 px-4 py-3 text-sm text-ink-800">
-            ⚠️ Pilih <strong>Entitas</strong> terlebih dahulu pada dropdown di bagian atas halaman untuk mengelola Master Barang &amp; Harga Jual entitas.
+            Pilih <strong>Entitas</strong> terlebih dahulu pada dropdown di bagian atas halaman untuk mengelola Master Barang &amp; Harga Jual entitas.
         </div>
     @endif
 

@@ -16,15 +16,20 @@ class ItemKomoditasController extends Controller
         $masterId = $request->query('master_id');
         $search = trim((string) $request->query('q', ''));
 
-        $query = ItemKomoditas::with(['masterKomoditas.kategori'])->withCount('petani');
+        $query = ItemKomoditas::with([
+            'masterKomoditas.kategori',
+            'petani.wilayah',
+        ])->withCount('petani');
 
         if ($masterId) {
             $query->where('id_master_komoditas', $masterId);
         }
 
         if ($search !== '') {
-            $query->where('nama', 'like', "%{$search}%")
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
                   ->orWhere('kode', 'like', "%{$search}%");
+            });
         }
 
         $items = $query->orderBy('nama')->paginate(15)->withQueryString();

@@ -241,8 +241,8 @@
                     this.originalPlaceholder = el.placeholder || '';
                     const isPhone = el.type === 'tel' || el.name === 'no_hp';
                     el.placeholder = isPhone 
-                        ? '🎙️ Sebut nomor HP (bisa berjeda)...' 
-                        : '🎙️ Mendengarkan suara Anda...';
+                        ? 'Sebut nomor HP (bisa berjeda)...' 
+                        : 'Mendengarkan suara Anda...';
                 }
             },
 
@@ -287,10 +287,10 @@
                         } else if (newDigits.length > preview.length) {
                             preview = newDigits;
                         }
-                        el.placeholder = '🎙️ "' + preview + '"... (bicara lagi)';
+                        el.placeholder = '"' + preview + '"... (bicara lagi)';
                     }
                 } else {
-                    el.placeholder = '🎙️ "' + interim + '"...';
+                    el.placeholder = '"' + interim + '"...';
                 }
             },
 
@@ -343,7 +343,7 @@
 
                         inputElement.value = this.accumulated;
                         this.notifyModelAndEvents(inputElement);
-                        inputElement.placeholder = '🎙️ ' + this.accumulated + '... (sebutkan sisa nomor)';
+                        inputElement.placeholder = this.accumulated + '... (sebutkan sisa nomor)';
                     }
 
                     // Jika nomor sudah mencapai panjang standar HP (>= 10 digit, misal 08123456789)

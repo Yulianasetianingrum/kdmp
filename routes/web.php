@@ -85,6 +85,9 @@ Route::middleware('auth')->group(function () {
 
     // ===== LAPORAN =====
     Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('laporan.potensi.index');
+        })->name('index');
         Route::get('demografi', [\App\Http\Controllers\Laporan\LaporanDemografiController::class, 'index'])->name('demografi.index');
         Route::get('potensi-desa', [\App\Http\Controllers\Laporan\LaporanPotensiController::class, 'index'])->name('potensi.index');
         Route::get('petani-komoditas', [\App\Http\Controllers\Laporan\LaporanPetaniKomoditasController::class, 'index'])->name('petani-komoditas.index');

@@ -8,7 +8,6 @@
                 ['label' => 'Kategori Komoditas', 'route' => 'master.kategori-komoditas.index', 'match' => 'master.kategori-komoditas.*'],
                 ['label' => 'Master Komoditas', 'route' => 'master.master-komoditas.index', 'match' => 'master.master-komoditas.*'],
                 ['label' => 'Item/Subjenis Komoditas', 'route' => 'master.item-komoditas.index', 'match' => 'master.item-komoditas.*'],
-                ['label' => 'Master Pertanyaan', 'route' => 'master.pertanyaan.index', 'match' => 'master.pertanyaan.*'],
             ]
         ],
         [
@@ -21,16 +20,7 @@
                 ['label' => 'Data Potensi Komoditas', 'route' => 'pendataan.potensi.index', 'match' => 'pendataan.potensi.*'],
             ]
         ],
-        [
-            'title' => 'Survei',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>',
-            'match' => 'survei.*',
-            'items' => [
-                ['label' => 'Sesi Survei', 'route' => 'survei.sesi.index', 'match' => 'survei.sesi.*'],
-                ['label' => 'Formulir Penduduk', 'route' => 'survei.formulir.penduduk', 'match' => 'survei.formulir.penduduk*'],
-                ['label' => 'Formulir Potensi Komoditas', 'route' => 'survei.formulir.komoditas', 'match' => 'survei.formulir.komoditas*'],
-            ]
-        ],
+
         [
             'title' => 'Laporan',
             'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>',
@@ -45,22 +35,32 @@
     ];
 @endphp
 
-<aside class="flex h-screen w-72 shrink-0 flex-col bg-ink-950 text-paper-100 shadow-xl z-50">
+<aside class="flex h-screen w-72 max-w-[85vw] shrink-0 flex-col bg-ink-950 text-paper-100 shadow-xl z-50">
 
-    {{-- Logo --}}
-    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 border-b border-ink-800 px-6 py-5 hover:bg-ink-900 transition-colors">
-        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-padi-500 font-display text-lg font-bold text-ink-950 shadow-sm">
-            N
-        </span>
-        <div class="leading-tight">
-            <p class="font-display text-base font-semibold tracking-tight text-white">
-                Ngobar
-            </p>
-            <p class="text-[10px] text-paper-400 uppercase tracking-widest mt-0.5">
-                Barter & Pemetaan
-            </p>
-        </div>
-    </a>
+    {{-- Logo & Mobile Close --}}
+    <div class="flex items-center justify-between border-b border-ink-800 px-6 py-5">
+        <a href="{{ route('dashboard') }}" @click="if(isMobile) sidebarOpen = false" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-padi-500 font-display text-lg font-bold text-ink-950 shadow-sm">
+                N
+            </span>
+            <div class="leading-tight">
+                <p class="font-display text-base font-semibold tracking-tight text-white">
+                    Ngobar
+                </p>
+                <p class="text-[10px] text-paper-400 uppercase tracking-widest mt-0.5">
+                    Barter & Pemetaan
+                </p>
+            </div>
+        </a>
+        <button type="button" 
+                @click="sidebarOpen = false" 
+                class="lg:hidden p-1.5 text-paper-400 hover:text-white hover:bg-ink-800 rounded-lg focus:outline-none transition-colors"
+                aria-label="Tutup menu navigasi">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
 
     {{-- Navigation --}}
     <nav class="flex-1 overflow-y-auto px-4 py-6 custom-scrollbar">
@@ -72,6 +72,7 @@
                 </p>
                 <a
                     href="{{ route('admin.dashboard') }}"
+                    @click="if(isMobile) sidebarOpen = false"
                     class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors
                     {{ request()->routeIs('admin.*') ? 'bg-padi-500/10 text-padi-400' : 'text-paper-300 hover:bg-ink-800 hover:text-white' }}"
                 >
@@ -138,7 +139,7 @@
                                         <div x-data="{ expanded: {{ ($isChildActive || $isItemActive) ? 'true' : 'false' }} }">
                                             <div class="flex items-center rounded-lg text-xs transition-colors
                                                 {{ ($isChildActive || $isItemActive) ? 'bg-padi-500/10 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
-                                                <a href="{{ route($item['route']) }}" class="min-w-0 flex-1 px-3 py-2">
+                                                <a href="{{ route($item['route']) }}" @click="if(isMobile) sidebarOpen = false" class="min-w-0 flex-1 px-3 py-2">
                                                     {{ $item['label'] }}
                                                 </a>
                                                 <button type="button" @click="expanded = !expanded" class="px-3 py-2 text-paper-500 hover:text-white" aria-label="Buka submenu {{ $item['label'] }}">
@@ -160,21 +161,21 @@
                                                             @if ($childHasChildren)
                                                                 <div x-data="{ expanded: {{ ($childActive || $grandchildActive) ? 'true' : 'false' }} }">
                                                                     <div class="flex items-center rounded-md {{ ($childActive || $grandchildActive) ? 'bg-ink-800 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
-                                                                        <a href="{{ route($child['route']) }}" class="min-w-0 flex-1 px-2.5 py-1.5">{{ $child['label'] }}</a>
+                                                                        <a href="{{ route($child['route']) }}" @click="if(isMobile) sidebarOpen = false" class="min-w-0 flex-1 px-2.5 py-1.5">{{ $child['label'] }}</a>
                                                                         <button type="button" @click="expanded = !expanded" class="px-2 py-1.5 text-paper-500 hover:text-white" aria-label="Buka submenu {{ $child['label'] }}">
                                                                             <svg class="h-3 w-3 transition-transform" :class="expanded ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" /></svg>
                                                                         </button>
                                                                     </div>
                                                                     <div x-show="expanded" x-transition x-cloak class="ml-3 mt-1 border-l border-ink-800 pl-2">
                                                                         @foreach ($child['children'] as $grandchild)
-                                                                            <a href="{{ route($grandchild['route']) }}" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ request()->routeIs($grandchild['match']) ? 'bg-padi-500/10 text-padi-400 font-medium' : 'text-paper-500 hover:bg-ink-800 hover:text-white' }}">
+                                                                            <a href="{{ route($grandchild['route']) }}" @click="if(isMobile) sidebarOpen = false" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ request()->routeIs($grandchild['match']) ? 'bg-padi-500/10 text-padi-400 font-medium' : 'text-paper-500 hover:bg-ink-800 hover:text-white' }}">
                                                                                 {{ $grandchild['label'] }}
                                                                             </a>
                                                                         @endforeach
                                                                     </div>
                                                                 </div>
                                                             @else
-                                                                <a href="{{ route($child['route']) }}" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ $childActive ? 'bg-ink-800 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
+                                                                <a href="{{ route($child['route']) }}" @click="if(isMobile) sidebarOpen = false" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ $childActive ? 'bg-ink-800 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
                                                                     {{ $child['label'] }}
                                                                 </a>
                                                             @endif
@@ -184,7 +185,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <a href="{{ route($item['route']) }}" class="block rounded-lg px-3 py-2 text-xs transition-colors {{ $isItemActive ? 'bg-padi-500/10 text-padi-400 font-medium relative before:absolute before:-left-[0.8125rem] before:top-1/2 before:-translate-y-1/2 before:w-[5px] before:h-[5px] before:rounded-full before:bg-padi-400' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
+                                        <a href="{{ route($item['route']) }}" @click="if(isMobile) sidebarOpen = false" class="block rounded-lg px-3 py-2 text-xs transition-colors {{ $isItemActive ? 'bg-padi-500/10 text-padi-400 font-medium relative before:absolute before:-left-[0.8125rem] before:top-1/2 before:-translate-y-1/2 before:w-[5px] before:h-[5px] before:rounded-full before:bg-padi-400' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
                                             {{ $item['label'] }}
                                         </a>
                                     @endif

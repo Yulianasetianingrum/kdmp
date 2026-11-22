@@ -48,7 +48,7 @@
         <div class="md:col-span-2 bg-white rounded-xl border border-paper-200 shadow-sm overflow-hidden flex flex-col">
             <div class="px-5 py-4 border-b border-paper-200 bg-paper-50/50 flex items-center justify-between">
                 <h3 class="text-sm font-display font-semibold text-ink-900 uppercase tracking-wide flex items-center gap-2">
-                    <span>🌾</span> Seluruh Komoditas yang Diproduksi Petani Ini
+                    Seluruh Komoditas yang Diproduksi Petani Ini
                 </h3>
                 <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sawah-100 text-sawah-800">
                     {{ $komoditasList->count() }} Komoditas
@@ -56,12 +56,11 @@
             </div>
 
             <div class="flex-1 overflow-x-auto">
-                <table class="w-full text-left text-sm">
+                <table class="w-full min-w-[500px] text-left text-sm">
                     <thead class="border-b border-paper-200 bg-paper-50 font-mono text-[11px] uppercase tracking-wide text-ink-600">
                         <tr>
                             <th class="px-5 py-3">Komoditas (Item)</th>
                             <th class="px-5 py-3">Master & Kategori</th>
-                            <th class="px-5 py-3">Luas Lahan</th>
                             <th class="px-5 py-3">Estimasi Panen</th>
                             <th class="px-5 py-3">Siklus Panen</th>
                         </tr>
@@ -78,9 +77,6 @@
                                     <strong>{{ $item->masterKomoditas?->nama }}</strong>
                                     <span class="block text-[10px] text-paper-400">{{ $item->masterKomoditas?->kategori?->nama }}</span>
                                 </td>
-                                <td class="px-5 py-3 text-xs font-mono text-paper-700">
-                                    {{ $item->pivot->luas_lahan_ha ? $item->pivot->luas_lahan_ha . ' Ha' : '-' }}
-                                </td>
                                 <td class="px-5 py-3 text-xs font-semibold text-sawah-900 font-mono">
                                     {{ number_format($item->pivot->estimasi_volume_panen) }} {{ $item->pivot->satuan }}
                                 </td>
@@ -90,7 +86,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-5 py-8 text-center text-sm text-paper-400">
+                                <td colspan="4" class="px-5 py-8 text-center text-sm text-paper-400">
                                     Petani ini belum memiliki data komoditas yang diproduksi.
                                 </td>
                             </tr>

@@ -29,7 +29,7 @@
         }">
             <div class="mb-5 border-b border-paper-200 pb-4">
                 <div class="flex items-center gap-2 text-xs font-mono text-padi-700 font-semibold mb-1">
-                    <span>🏡 WILAYAH PENDATAAN DESA</span>
+                    <span>WILAYAH PENDATAAN DESA</span>
                 </div>
                 <h2 class="text-xl font-display font-semibold text-ink-900">Formulir Pendataan Penduduk: {{ $desaAktif?->nama ?? 'Desa' }}</h2>
                 <p class="text-xs text-paper-500 mt-1">
@@ -128,7 +128,7 @@
 
                 <div class="flex justify-end gap-2 pt-3">
                     <button type="submit" class="px-5 py-2.5 rounded-lg bg-padi-500 text-ink-950 text-xs font-semibold hover:bg-padi-600 shadow-sm">
-                        💾 Simpan Data Penduduk Desa
+                        Simpan Data Penduduk Desa
                     </button>
                 </div>
             </form>
@@ -138,7 +138,7 @@
         <div class="space-y-4">
             <div class="bg-white p-5 rounded-xl border border-paper-200 shadow-sm">
                 <h3 class="text-sm font-display font-semibold text-ink-900 mb-3 flex items-center gap-1.5">
-                    <span>📊</span> Riwayat Demografi {{ $desaAktif?->nama ?? 'Desa' }}
+                    Riwayat Demografi {{ $desaAktif?->nama ?? 'Desa' }}
                 </h3>
 
                 @if($riwayatData->isEmpty())
@@ -167,7 +167,7 @@
             @if($pertanyaanList->isNotEmpty())
                 <div class="bg-white p-5 rounded-xl border border-paper-200 shadow-sm">
                     <h3 class="text-xs font-mono uppercase tracking-wider text-paper-700 font-semibold mb-2">
-                        📋 Pertanyaan Acuan Survei
+                        Pertanyaan Acuan Survei
                     </h3>
                     <ul class="text-xs text-paper-600 space-y-2">
                         @foreach($pertanyaanList as $pt)

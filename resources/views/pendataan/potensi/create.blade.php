@@ -14,7 +14,7 @@
             <div class="p-3 bg-padi-50 border border-padi-200 rounded-lg flex items-center justify-between">
                 <div>
                     <span class="text-[10px] uppercase font-mono tracking-wider text-padi-700 font-bold">Desa Wilayah Aktor</span>
-                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">🏡 {{ $desaAktif?->nama ?? '-' }}</p>
+                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">{{ $desaAktif?->nama ?? '-' }}</p>
                     <p class="text-xs text-paper-500 font-mono">Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}</p>
                 </div>
                 <span class="text-xs px-2.5 py-1 rounded bg-padi-200 text-padi-900 font-medium">Petani Warga Desa Aktif</span>
@@ -48,24 +48,19 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-medium text-paper-700 mb-1">Luas Lahan (Hektar)</label>
-                    <input type="number" step="0.01" name="luas_lahan_ha" value="{{ old('luas_lahan_ha') }}" placeholder="Contoh: 1.5"
-                           class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
-                </div>
-
-                <div>
                     <label class="block text-xs font-medium text-paper-700 mb-1">Estimasi Volume Panen <span class="text-red-500">*</span></label>
                     <input type="number" step="0.1" name="estimasi_volume_panen" value="{{ old('estimasi_volume_panen') }}" placeholder="Contoh: 5000" required
                            class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
+                    @error('estimasi_volume_panen') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
-            </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-medium text-paper-700 mb-1">Satuan Hasil <span class="text-red-500">*</span></label>
                     <input type="text" name="satuan" value="{{ old('satuan', 'kg') }}" placeholder="kg, ton, butir, bungkus" required
                            class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
+                    @error('satuan') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
+            </div>
 
                 <div>
                     <label class="block text-xs font-medium text-paper-700 mb-1">Siklus / Periode Panen <span class="text-red-500">*</span></label>

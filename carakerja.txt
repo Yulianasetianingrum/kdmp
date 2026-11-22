@@ -42,7 +42,7 @@ B. PENOLAKAN SATU FORM CAMPURAN (PEMISAHAN 3 TIPE RESPONDEN)
         - Memiliki halaman tersendiri untuk daftar RT dalam 1 desa beserta jumlah KK dan jiwanya.
      2) Responden Produsen Desa / Kelompok Tani & Ekraf (Link Terpisah):
         - Hanya mengisi Sesi 2 (Potensi Produksi Desa).
-        - Kelompok Tani mendata komoditas pertanian, perkebunan, peternakan, dan kelautan dengan masa/siklus produksi musiman.
+        - Kelompok Tani mendata komoditas pertanian, peternakan, dan kelautan dengan masa/siklus produksi musiman.
         - Pengurus Ekonomi Kreatif (Ekraf) mendata kreativitas pangan desa dan kerajinan benda desa dengan masa produksi per bulan.
         - Produsen TIDAK MENGISI kebutuhan konsumsi keluarga.
         - Harus ada halaman khusus daftar nama anggota kelompok tani dan panitia ekraf.
@@ -69,8 +69,7 @@ D. PEMBATASAN & PENATAAN MASTER DATA KOMODITAS
      Master komoditas memuat puluhan item yang terlalu luas, tidak terarah, bahkan memuat komoditas non-pangan berat (batu belah, kuningan) atau komoditas non-halal (babi).
    - Komentar Dosen:
      1) Batasan fokus utama produksi desa harus tertuju pada KEBUTUHAN PANGAN POKOK HARIAN:
-        - Pertanian: Beras, Cabai, Bawang Merah, Bawang Putih, Kedelai
-        - Perkebunan: Kopi, Gula
+        - Pertanian: Beras, Cabai, Bawang Merah, Bawang Putih, Kedelai, Kopi, Gula
         - Peternakan: Ayam, Telur Ayam
         - Kelautan: Garam, Ikan
      2) Produk olahan dan kerajinan desa dipisah ke kategori EKONOMI KREATIF (Ekraf Pangan & Ekraf Non-Pangan).

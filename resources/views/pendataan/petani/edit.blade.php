@@ -15,7 +15,7 @@
             <div class="p-3 bg-padi-50 border border-padi-200 rounded-lg flex items-center justify-between">
                 <div>
                     <span class="text-[10px] uppercase font-mono tracking-wider text-padi-700 font-bold">Desa Domisili Petani</span>
-                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">🏡 {{ $petani->desa ?: ($desaAktif?->nama ?? '-') }}</p>
+                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">{{ $petani->desa ?: ($desaAktif?->nama ?? '-') }}</p>
                     <p class="text-xs text-paper-500 font-mono">Kec. {{ $petani->kecamatan ?: ($desaAktif?->parent?->nama ?? 'Juwana') }}</p>
                 </div>
                 <span class="text-xs px-2.5 py-1 rounded bg-padi-200 text-padi-900 font-medium">Desa Aktif</span>

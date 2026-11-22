@@ -21,7 +21,7 @@
 
 {{-- NAVBAR --}}
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-ink-800/60 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-padi-500 flex items-center justify-center text-ink-950 font-display font-bold text-sm">N</div>
             <span class="font-display font-semibold text-paper-50 text-lg">Ngobar</span>
@@ -52,7 +52,7 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-padi-500 animate-pulse inline-block"></span>
                     Sistem Desa Digital
                 </span>
-                <h1 class="font-display text-5xl xl:text-6xl font-semibold leading-tight text-paper-50">
+                <h1 class="font-display text-3xl sm:text-5xl xl:text-6xl font-semibold leading-tight text-paper-50">
                     Pemetaan Potensi Desa &amp; <span class="gradient-text">Barter Komoditi</span> Lokal
                 </h1>
                 <p class="text-lg text-paper-300/80 leading-relaxed max-w-xl">
@@ -60,7 +60,7 @@
                 </p>
             </div>
             <div class="flex flex-wrap gap-2">
-                @foreach(["🌾 Padi","🥜 Kacang","🐟 Ikan","🌽 Jagung","🥥 Kelapa","🍌 Pisang","🥬 Sayuran","🏺 Olahan"] as $tag)
+                @foreach(["Padi","Kacang","Ikan","Jagung","Kelapa","Pisang","Sayuran","Olahan"] as $tag)
                     <span class="commodity-tag">{{ $tag }}</span>
                 @endforeach
             </div>
@@ -89,7 +89,9 @@
                 <img src="/ngobar_hero.jpg" alt="Ilustrasi desa dan pasar komoditi lokal" class="w-full object-cover">
                 <div class="absolute bottom-4 left-4 right-4 rounded-xl p-3 border border-ink-700/50" style="background:rgba(28,33,26,0.85);backdrop-filter:blur(12px)">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style="background:rgba(79,115,81,0.2);border:1px solid rgba(79,115,81,0.3)">📍</div>
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sawah-400" style="background:rgba(79,115,81,0.2);border:1px solid rgba(79,115,81,0.3)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
                         <div>
                             <p class="text-xs font-medium text-paper-50">Desa Merah Putih</p>
                             <p class="text-xs text-paper-400">3 komoditi tersedia untuk barter</p>
@@ -116,12 +118,12 @@
         </div>
         <div class="grid md:grid-cols-3 gap-6 mb-12">
             @foreach([
-                ["icon"=>"📋","title"=>"Survei Multi-Step Digital","desc"=>"Form survei modern berbasis token publik tanpa perlu login. Petugas lapangan dapat mendata warga via HP lengkap dengan input suara Web Speech API."],
-                ["icon"=>"🏘️","title"=>"Multi-Desa (Multi-Tenant)","desc"=>"Setiap desa punya data yang terpisah dan aman. Satu instalasi bisa melayani banyak desa sekaligus tanpa data tercampur."],
-                ["icon"=>"✅","title"=>"Validasi Baseline vs Riil","desc"=>"Perangkat desa dapat memverifikasi dan memvalidasi langsung data baseline RT dengan data riil survei keluarga di lapangan."],
+                ["no"=>"01","title"=>"Survei Multi-Step Digital","desc"=>"Form survei modern berbasis token publik tanpa perlu login. Petugas lapangan dapat mendata warga via HP lengkap dengan input suara Web Speech API."],
+                ["no"=>"02","title"=>"Multi-Desa (Multi-Tenant)","desc"=>"Setiap desa punya data yang terpisah dan aman. Satu instalasi bisa melayani banyak desa sekaligus tanpa data tercampur."],
+                ["no"=>"03","title"=>"Validasi Baseline vs Riil","desc"=>"Perangkat desa dapat memverifikasi dan memvalidasi langsung data baseline RT dengan data riil survei keluarga di lapangan."],
             ] as $i => $card)
                 <div class="feature-card rounded-2xl border border-ink-700 bg-ink-900 p-6 reveal" style="transition-delay:{{ $i * 100 }}ms">
-                    <div class="w-12 h-12 rounded-xl bg-padi-500/15 border border-padi-500/25 flex items-center justify-center text-2xl mb-4">{{ $card["icon"] }}</div>
+                    <div class="w-12 h-12 rounded-xl bg-padi-500/15 border border-padi-500/25 flex items-center justify-center font-mono font-bold text-padi-400 text-base mb-4">{{ $card["no"] }}</div>
                     <h3 class="font-display text-lg font-semibold text-paper-50 mb-2">{{ $card["title"] }}</h3>
                     <p class="text-sm text-paper-300/75 leading-relaxed">{{ $card["desc"] }}</p>
                 </div>
@@ -146,7 +148,6 @@
         $modules = [
             [
                 "no" => "M0",
-                "icon" => "🗄️",
                 "color" => "padi",
                 "title" => "Master Data & Konfigurasi",
                 "desc" => "Kelola data induk entitas desa, komoditas lokal, satuan ukur, master barang, mitra/pihak, dan akun pengguna sistem.",
@@ -155,7 +156,6 @@
             ],
             [
                 "no" => "S1",
-                "icon" => "📋",
                 "color" => "sawah",
                 "title" => "Sesi Survei & Token Publik",
                 "desc" => "Buat sesi survei per wilayah desa dan tahun pelaksanaan. Sistem membuatkan link token unik publik yang dapat dibagikan langsung ke petugas lapangan.",
@@ -164,7 +164,6 @@
             ],
             [
                 "no" => "S2",
-                "icon" => "🏘️",
                 "color" => "padi",
                 "title" => "Survei RT (Baseline KK)",
                 "desc" => "Form pengisian untuk Ketua RT guna mendata jumlah KK, jumlah jiwa, dan baseline kependudukan di setiap RT dan Dusun.",
@@ -173,7 +172,6 @@
             ],
             [
                 "no" => "S3",
-                "icon" => "🌾",
                 "color" => "sawah",
                 "title" => "Survei Produsen Tani & Ekraf",
                 "desc" => "Pendataan kelompok tani, peternak, dan pengrajin desa beserta kapasitas komoditas yang diproduksi setiap musim.",
@@ -182,7 +180,6 @@
             ],
             [
                 "no" => "S4",
-                "icon" => "👥",
                 "color" => "merah",
                 "title" => "Survei Konsumsi Masyarakat",
                 "desc" => "Form survei lapangan 4 tahap: Identitas KK + GPS, Anggota Keluarga, Konsumsi Pangan (dengan fitur Speech-to-Text), dan Ringkasan.",
@@ -191,7 +188,6 @@
             ],
             [
                 "no" => "S5",
-                "icon" => "✅",
                 "color" => "padi",
                 "title" => "Validasi & Rekapitulasi",
                 "desc" => "Dashboard validasi data lapangan bagi perangkat desa untuk mencocokkan target baseline RT dengan realisasi data keluarga yang masuk.",
@@ -207,17 +203,13 @@
                     {{-- Header --}}
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0
-                                @if($m["color"]==="padi") bg-padi-500/15 border border-padi-500/25
-                                @elseif($m["color"]==="sawah") bg-sawah-500/15 border border-sawah-500/25
-                                @else bg-merah-500/15 border border-merah-500/25 @endif">
-                                {{ $m["icon"] }}
+                            <div class="w-11 h-11 rounded-xl flex items-center justify-center font-mono font-bold text-sm shrink-0
+                                @if($m["color"]==="padi") bg-padi-500/15 border border-padi-500/25 text-padi-400
+                                @elseif($m["color"]==="sawah") bg-sawah-500/15 border border-sawah-500/25 text-sawah-500
+                                @else bg-merah-500/15 border border-merah-500/25 text-merah-400 @endif">
+                                {{ $m["no"] }}
                             </div>
                             <div>
-                                <span class="font-mono text-xs
-                                    @if($m["color"]==="padi") text-padi-400
-                                    @elseif($m["color"]==="sawah") text-sawah-500
-                                    @else text-merah-400 @endif">{{ $m["no"] }}</span>
                                 <h3 class="font-display text-base font-semibold text-paper-50 leading-tight">{{ $m["title"] }}</h3>
                             </div>
                         </div>
@@ -295,10 +287,10 @@
         <div class="grid md:grid-cols-4 gap-6">
             @php
             $steps = [
-                ["num"=>"01","icon"=>"🏘️","title"=>"Daftar Desa","desc"=>"Daftarkan desa Anda dan lengkapi profil dengan data wilayah dan potensi awal."],
-                ["num"=>"02","icon"=>"🌾","title"=>"Input Komoditi","desc"=>"Catat stok komoditi yang tersedia — hasil panen, ternak, atau olahan desa."],
-                ["num"=>"03","icon"=>"🔍","title"=>"Cari Mitra Desa","desc"=>"Temukan desa lain yang punya komoditi berbeda dan ajukan penawaran barter."],
-                ["num"=>"04","icon"=>"✅","title"=>"Barter Terlaksana","desc"=>"Konfirmasi transaksi, sistem mencatat riwayat, dan laporan tersimpan otomatis."],
+                ["num"=>"01","title"=>"Daftar Desa","desc"=>"Daftarkan desa Anda dan lengkapi profil dengan data wilayah dan potensi awal."],
+                ["num"=>"02","title"=>"Input Komoditi","desc"=>"Catat stok komoditi yang tersedia — hasil panen, ternak, atau olahan desa."],
+                ["num"=>"03","title"=>"Cari Mitra Desa","desc"=>"Temukan desa lain yang punya komoditi berbeda dan ajukan penawaran barter."],
+                ["num"=>"04","title"=>"Barter Terlaksana","desc"=>"Konfirmasi transaksi, sistem mencatat riwayat, dan laporan tersimpan otomatis."],
             ];
             @endphp
             @foreach($steps as $i => $step)
@@ -306,11 +298,8 @@
                     @if($i < 3)
                         <div class="hidden md:block absolute top-7 h-px" style="left:60%;right:0;background:linear-gradient(to right,rgba(185,138,44,0.4),transparent)"></div>
                     @endif
-                    <div class="relative w-14 h-14 rounded-2xl bg-padi-500/15 border border-padi-500/30 flex items-center justify-center text-2xl mb-4 z-10">
-                        {{ $step["icon"] }}
-                        <div class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-padi-500 flex items-center justify-center">
-                            <span class="font-mono text-ink-950" style="font-size:9px;font-weight:700">{{ $step["num"] }}</span>
-                        </div>
+                    <div class="relative w-14 h-14 rounded-2xl bg-padi-500/15 border border-padi-500/30 flex items-center justify-center font-mono font-bold text-padi-400 text-lg mb-4 z-10">
+                        {{ $step["num"] }}
                     </div>
                     <h3 class="font-display text-base font-semibold text-paper-50 mb-2">{{ $step["title"] }}</h3>
                     <p class="text-xs text-paper-400 leading-relaxed">{{ $step["desc"] }}</p>
@@ -337,14 +326,13 @@
                 <p class="text-paper-300/75 leading-relaxed">Ngobar mendukung berbagai jenis komoditi dari seluruh sektor ekonomi desa. Tidak ada komoditi yang terlalu kecil — semuanya bisa bernilai dalam sistem barter yang tepat.</p>
                 <div class="space-y-3">
                     @foreach([
-                        ["🌾","Pertanian","Padi, Jagung, Kedelai, Singkong, Ubi"],
-                        ["🐄","Peternakan","Sapi, Kambing, Ayam, Telur, Susu"],
-                        ["🐟","Perikanan","Ikan Tawar, Udang, Lele, Bandeng"],
-                        ["🥥","Perkebunan","Kelapa, Kopi, Kakao, Pisang, Durian"],
-                        ["🏺","Olahan & UMKM","Keripik, Anyaman, Batik, Gula Aren"],
-                    ] as [$emoji,$name,$items])
+                        ["Pertanian","Padi, Jagung, Kedelai, Singkong, Ubi, Kelapa, Kopi"],
+                        ["Peternakan","Sapi, Kambing, Ayam, Telur, Susu"],
+                        ["Perikanan","Ikan Tawar, Udang, Lele, Bandeng"],
+                        ["Olahan & UMKM","Keripik, Anyaman, Batik, Gula Aren"],
+                    ] as [$name,$items])
                         <div class="flex items-start gap-3 p-3.5 rounded-xl bg-ink-800 border border-ink-700 hover:border-sawah-500/30 transition-all duration-200 group cursor-default">
-                            <span class="text-xl mt-0.5">{{ $emoji }}</span>
+                            <span class="w-2 h-2 rounded-full bg-sawah-500 mt-2 shrink-0"></span>
                             <div>
                                 <p class="text-sm font-medium text-paper-100 group-hover:text-sawah-100 transition-colors">{{ $name }}</p>
                                 <p class="text-xs text-paper-400 mt-0.5">{{ $items }}</p>
@@ -362,9 +350,8 @@
 <section class="py-16 border-y border-ink-700" style="background:linear-gradient(to right,rgba(61,92,63,0.2),rgba(38,45,34,0.5),rgba(147,112,31,0.2))">
     <div class="max-w-5xl mx-auto px-6">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            @foreach([["🏘️","Antar-Desa","Jaringan Barter"],["📦","50+","Jenis Komoditi"],["⚡","Real-time","Pembaruan Stok"],["🔒","Aman","Data Terenkripsi"]] as [$icon,$val,$label])
+            @foreach([["Antar-Desa","Jaringan Barter"],["50+","Jenis Komoditi"],["Real-time","Pembaruan Stok"],["Terverifikasi","Data Terenkripsi"]] as [$val,$label])
                 <div class="reveal">
-                    <div class="text-3xl mb-2">{{ $icon }}</div>
                     <p class="font-display text-2xl font-semibold text-padi-100">{{ $val }}</p>
                     <p class="text-xs text-paper-400 mt-1">{{ $label }}</p>
                 </div>
@@ -403,11 +390,10 @@
 <section class="py-24 relative overflow-hidden map-pattern">
     <div class="hero-blob" style="width:400px;height:400px;background:#b98a2c;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.08"></div>
     <div class="relative max-w-3xl mx-auto px-6 text-center reveal">
-        <span class="text-4xl mb-6 block">🤝</span>
         <h2 class="font-display text-4xl md:text-5xl font-semibold text-paper-50 mb-4">Siap Wujudkan Desa<br>yang Mandiri?</h2>
         <p class="text-paper-300/70 mb-10 text-lg leading-relaxed">Bergabunglah dengan Ngobar dan mulai pemetaan potensi desa serta barter komoditi lokal hari ini.</p>
         <div class="flex flex-wrap justify-center gap-4">
-            <a href="{{ route("login") }}" class="cta-glow inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-padi-500 text-ink-950 font-semibold text-base">🚀 Masuk ke Sistem</a>
+            <a href="{{ route("login") }}" class="cta-glow inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-padi-500 text-ink-950 font-semibold text-base">Masuk ke Sistem</a>
             <a href="#fitur" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-ink-600 text-paper-200 hover:border-padi-500/50 hover:text-padi-100 font-medium text-base transition-all duration-200">Pelajari Lebih Lanjut</a>
         </div>
     </div>

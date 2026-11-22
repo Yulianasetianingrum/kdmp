@@ -4,7 +4,7 @@
         <div>
             <div class="flex items-center gap-2 mb-1">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-padi-100 text-padi-800">
-                    🏡 {{ $desaAktif?->nama ?? 'Desa' }}
+                    {{ $desaAktif?->nama ?? 'Desa' }}
                 </span>
                 <span class="text-xs text-paper-500 font-mono">
                     Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}
@@ -15,7 +15,7 @@
         </div>
 
         <button onclick="window.print()" class="px-3 py-1.5 rounded-lg border border-paper-300 bg-white text-xs font-medium hover:bg-paper-50">
-            🖨️ Cetak / PDF
+            Cetak / PDF
         </button>
     </div>
 
@@ -64,15 +64,14 @@
     </div>
 
     {{-- Tabel Data --}}
-    <div class="overflow-hidden rounded-xl border border-paper-200 bg-white shadow-sm">
-        <table class="w-full text-left text-sm">
+    <div class="overflow-x-auto rounded-xl border border-paper-200 bg-white shadow-sm">
+        <table class="w-full min-w-[640px] text-left text-sm">
             <thead class="border-b border-paper-200 bg-paper-50 font-mono text-[11px] uppercase tracking-wide text-ink-600">
                 <tr>
                     <th class="px-4 py-3">Nama Petani</th>
                     <th class="px-4 py-3">Item Komoditas</th>
                     <th class="px-4 py-3">Master</th>
                     <th class="px-4 py-3">Kategori</th>
-                    <th class="px-4 py-3 text-right">Luas Lahan</th>
                     <th class="px-4 py-3 text-right">Estimasi Panen</th>
                     <th class="px-4 py-3">Siklus</th>
                 </tr>
@@ -91,7 +90,6 @@
                                 {{ $row->item?->masterKomoditas?->kategori?->nama ?? '-' }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-right font-mono">{{ $row->luas_lahan_ha ? number_format($row->luas_lahan_ha, 2) . ' Ha' : '-' }}</td>
                         <td class="px-4 py-3 text-right font-mono font-bold text-ink-950">
                             {{ number_format($row->estimasi_volume_panen) }} {{ $row->satuan }}
                         </td>
@@ -99,7 +97,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-paper-400 text-xs">
+                        <td colspan="6" class="px-4 py-8 text-center text-paper-400 text-xs">
                             Tidak ada data potensi komoditas yang sesuai filter untuk desa ini.
                         </td>
                     </tr>

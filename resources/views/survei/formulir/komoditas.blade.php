@@ -37,7 +37,7 @@
     }">
         <div class="mb-5 border-b border-paper-200 pb-4">
             <div class="flex items-center gap-2 text-xs font-mono text-padi-700 font-semibold mb-1">
-                <span>🌾 SURVEI POTENSI KOMODITAS DESA</span>
+                <span>SURVEI POTENSI KOMODITAS DESA</span>
             </div>
             <h2 class="text-xl font-display font-semibold text-ink-900">Formulir Potensi Komoditas Petani: {{ $desaAktif?->nama ?? 'Desa' }}</h2>
             <p class="text-xs text-paper-500 mt-1">
@@ -61,7 +61,7 @@
                 <div class="p-2.5 bg-white border border-paper-200 rounded-lg flex items-center justify-between text-xs">
                     <div>
                         <span class="text-paper-500">Desa Domisili Petani:</span>
-                        <strong class="text-ink-900 ml-1">📍 {{ $desaAktif?->nama }}</strong>
+                        <strong class="text-ink-900 ml-1">{{ $desaAktif?->nama }}</strong>
                     </div>
                     <div class="text-paper-500 font-mono text-[11px]">
                         Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}
@@ -199,7 +199,7 @@
 
             <div class="flex justify-end gap-2 pt-3">
                 <button type="submit" class="px-5 py-2.5 rounded-lg bg-padi-500 text-ink-950 text-xs font-semibold hover:bg-padi-600 shadow-sm">
-                    💾 Simpan Data Potensi Petani Desa
+                    Simpan Data Potensi Petani Desa
                 </button>
             </div>
         </form>

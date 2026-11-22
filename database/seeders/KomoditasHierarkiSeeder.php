@@ -15,11 +15,19 @@ class KomoditasHierarkiSeeder extends Seeder
 {
     public function run(): void
     {
+        // Pastikan kategori perkebunan lama dipindahkan ke pertanian jika ada
+        $perkebunanOld = KategoriKomoditas::where('kode', 'PERKEBUNAN')->first();
+        $pertanianCat = KategoriKomoditas::where('kode', 'PERTANIAN')->first();
+        if ($perkebunanOld && $pertanianCat) {
+            MasterKomoditas::where('id_kategori', $perkebunanOld->id)->update(['id_kategori' => $pertanianCat->id]);
+            $perkebunanOld->delete();
+        }
+
         $kategoriData = [
             [
                 'kode' => 'PERTANIAN',
                 'nama' => 'Pertanian',
-                'deskripsi' => 'Komoditas tanaman pangan dan hortikultura',
+                'deskripsi' => 'Komoditas tanaman pangan, hortikultura, dan perkebunan',
                 'masters' => [
                     [
                         'kode' => 'BERAS',
@@ -53,13 +61,6 @@ class KomoditasHierarkiSeeder extends Seeder
                             ['kode' => 'KEDELAI-KUNING', 'nama' => 'Kedelai Kuning', 'satuan' => 'kg'],
                         ]
                     ],
-                ]
-            ],
-            [
-                'kode' => 'PERKEBUNAN',
-                'nama' => 'Perkebunan',
-                'deskripsi' => 'Komoditas perkebunan rakyat',
-                'masters' => [
                     [
                         'kode' => 'KOPI',
                         'nama' => 'Kopi',

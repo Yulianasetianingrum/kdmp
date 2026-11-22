@@ -10,7 +10,7 @@
         <div>
             <div class="flex items-center gap-2">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-padi-100 text-padi-800">
-                    🏡 {{ $desaAktif?->nama ?? 'Desa' }}
+                    {{ $desaAktif?->nama ?? 'Desa' }}
                 </span>
                 <span class="text-xs text-paper-500 font-mono">
                     Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}
@@ -20,23 +20,23 @@
             <p class="text-xs text-paper-500">Identitas produsen lokal desa beserta komoditas yang dihasilkannya.</p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3">
-            <form method="GET" class="flex items-center gap-2">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <form method="GET" class="flex items-center gap-2 w-full sm:w-auto">
                 <input type="text" name="q" value="{{ $search }}" placeholder="Cari nama / alamat / HP..."
-                       class="w-48 rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs focus:outline-none">
-                <button class="rounded-lg bg-ink-900 text-white px-3 py-1.5 text-xs font-medium hover:bg-ink-800">Cari</button>
+                       class="w-full sm:w-48 rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs focus:outline-none">
+                <button class="rounded-lg bg-ink-900 text-white px-3 py-1.5 text-xs font-medium hover:bg-ink-800 shrink-0">Cari</button>
                 @if($search)
-                    <a href="{{ route('pendataan.petani.index') }}" class="text-xs text-paper-500 hover:text-ink-900">Reset</a>
+                    <a href="{{ route('pendataan.petani.index') }}" class="text-xs text-paper-500 hover:text-ink-900 shrink-0">Reset</a>
                 @endif
             </form>
-            <a href="{{ route('pendataan.petani.create') }}" class="rounded-lg bg-padi-500 hover:bg-padi-600 text-ink-950 font-semibold px-4 py-2 text-xs shadow-sm transition">
+            <a href="{{ route('pendataan.petani.create') }}" class="inline-flex justify-center items-center rounded-lg bg-padi-500 hover:bg-padi-600 text-ink-950 font-semibold px-4 py-2 text-xs shadow-sm transition">
                 + Tambah Petani
             </a>
         </div>
     </div>
 
-    <div class="overflow-hidden rounded-xl border border-paper-200 bg-white shadow-sm">
-        <table class="w-full text-left text-sm">
+    <div class="overflow-x-auto rounded-xl border border-paper-200 bg-white shadow-sm">
+        <table class="w-full min-w-[640px] text-left text-sm">
             <thead class="border-b border-paper-200 bg-paper-50 font-mono text-[11px] uppercase tracking-wide text-ink-600">
                 <tr>
                     <th class="px-5 py-3">Nama Petani</th>

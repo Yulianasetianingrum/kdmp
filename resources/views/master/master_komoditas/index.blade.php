@@ -17,26 +17,26 @@
             <p class="text-xs text-paper-500 mt-0.5">Kelompok komoditas utama (Contoh: Beras, Cabai, Bawang, Kopi, Ayam, Ikan, Garam).</p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3">
-            <form method="GET" class="flex items-center gap-2">
-                <select name="kategori_id" class="rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs text-ink-800 focus:outline-none">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <form method="GET" class="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
+                <select name="kategori_id" class="w-full sm:w-auto rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs text-ink-800 focus:outline-none">
                     <option value="">Semua Kategori</option>
                     @foreach($kategoriList as $kat)
                         <option value="{{ $kat->id }}" @selected($kategoriId == $kat->id)>{{ $kat->nama }}</option>
                     @endforeach
                 </select>
                 <input type="text" name="q" value="{{ $search }}" placeholder="Cari master komoditas..."
-                       class="w-44 rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs focus:outline-none">
-                <button class="rounded-lg bg-ink-900 text-white px-3 py-1.5 text-xs font-medium hover:bg-ink-800">Filter</button>
+                       class="w-full sm:w-44 rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs focus:outline-none">
+                <button class="w-full sm:w-auto rounded-lg bg-ink-900 text-white px-3 py-1.5 text-xs font-medium hover:bg-ink-800">Filter</button>
             </form>
-            <a href="{{ route('master.master-komoditas.create') }}" class="rounded-lg bg-padi-500 hover:bg-padi-600 text-ink-950 font-semibold px-4 py-2 text-xs shadow-sm transition">
+            <a href="{{ route('master.master-komoditas.create') }}" class="inline-flex justify-center items-center rounded-lg bg-padi-500 hover:bg-padi-600 text-ink-950 font-semibold px-4 py-2 text-xs shadow-sm transition">
                 + Tambah Master
             </a>
         </div>
     </div>
 
-    <div class="overflow-hidden rounded-xl border border-paper-200 bg-white shadow-sm">
-        <table class="w-full text-left text-sm">
+    <div class="overflow-x-auto rounded-xl border border-paper-200 bg-white shadow-sm">
+        <table class="w-full min-w-[640px] text-left text-sm">
             <thead class="border-b border-paper-200 bg-paper-50 font-mono text-[11px] uppercase tracking-wide text-ink-600">
                 <tr>
                     <th class="px-5 py-3">Kode</th>

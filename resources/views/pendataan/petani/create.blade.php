@@ -14,7 +14,7 @@
             <div class="p-3 bg-padi-50 border border-padi-200 rounded-lg flex items-center justify-between">
                 <div>
                     <span class="text-[10px] uppercase font-mono tracking-wider text-padi-700 font-bold">Desa Domisili Petani</span>
-                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">🏡 {{ $desaAktif?->nama ?? '-' }}</p>
+                    <p class="text-base font-display font-bold text-ink-900 mt-0.5">{{ $desaAktif?->nama ?? '-' }}</p>
                     <p class="text-xs text-paper-500 font-mono">Kec. {{ $desaAktif?->parent?->nama ?? 'Juwana' }}, Kab. {{ $desaAktif?->parent?->parent?->nama ?? 'Pati' }}</p>
                 </div>
                 <span class="text-xs px-2.5 py-1 rounded bg-padi-200 text-padi-900 font-medium">Otomatis Terkunci ke Desa Aktif</span>
@@ -63,24 +63,16 @@
                     Komoditas Utama yang Dihasilkan (Opsional)
                 </h3>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-paper-700 mb-1">Item / Subjenis Komoditas</label>
-                        <select name="item_komoditas_id" class="w-full rounded-lg border border-paper-300 p-2 text-sm bg-white focus:border-padi-500 focus:outline-none">
-                            <option value="">Pilih Komoditas...</option>
-                            @foreach($itemList as $it)
-                                <option value="{{ $it->id }}">
-                                    {{ $it->masterKomoditas?->kategori?->nama }} &rarr; {{ $it->masterKomoditas?->nama }} &rarr; {{ $it->nama }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-medium text-paper-700 mb-1">Luas Lahan (Ha)</label>
-                        <input type="number" step="0.01" name="luas_lahan_ha" value="{{ old('luas_lahan_ha') }}" placeholder="Contoh: 1.5"
-                               class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono bg-white focus:border-padi-500 focus:outline-none">
-                    </div>
+                <div>
+                    <label class="block text-xs font-medium text-paper-700 mb-1">Item / Subjenis Komoditas</label>
+                    <select name="item_komoditas_id" class="w-full rounded-lg border border-paper-300 p-2 text-sm bg-white focus:border-padi-500 focus:outline-none">
+                        <option value="">Pilih Komoditas...</option>
+                        @foreach($itemList as $it)
+                            <option value="{{ $it->id }}">
+                                {{ $it->masterKomoditas?->kategori?->nama }} &rarr; {{ $it->masterKomoditas?->nama }} &rarr; {{ $it->nama }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">

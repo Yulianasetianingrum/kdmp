@@ -39,7 +39,9 @@
 
             {{-- Header --}}
             <div class="text-center mb-7">
-                <div class="w-14 h-14 rounded-2xl bg-sawah-500/15 border border-sawah-500/30 flex items-center justify-center text-2xl mx-auto mb-4">🌾</div>
+                <div class="w-14 h-14 rounded-2xl bg-sawah-500/15 border border-sawah-500/30 flex items-center justify-center mx-auto mb-4 text-sawah-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                </div>
                 <h1 class="font-display text-2xl font-semibold text-paper-50">Daftarkan Entitas / Organisasi</h1>
                 <p class="text-paper-400/70 text-sm mt-1">BUMDes, Koperasi, UMKM Ekraf, Supplier, atau Perorangan</p>
             </div>
@@ -146,7 +148,7 @@
             {{-- Info --}}
             <div class="mt-4 rounded-xl border border-padi-500/20 bg-padi-500/5 px-4 py-3">
                 <div class="flex items-start gap-3">
-                    <span class="text-base mt-0.5">🛡️</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-padi-400 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     <p class="text-xs text-paper-500 leading-relaxed">
                         Setelah mendaftar, akun Anda akan masuk ke tahap <strong class="text-paper-400">Verifikasi Admin</strong> demi menjaga keamanan dan kepercayaan jejaring barter Ngobar.
                     </p>

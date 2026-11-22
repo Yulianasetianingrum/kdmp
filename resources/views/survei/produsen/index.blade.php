@@ -132,7 +132,7 @@
             <div class="mb-6 rounded-sm border border-green-200 bg-green-50 p-5">
                 <div>
                     <h2 class="text-sm font-bold text-green-800">
-                        🔗 Tautan Survei Produsen —
+                        Tautan Survei Produsen —
                         {{ \Carbon\Carbon::createFromFormat('m', $sesiDipilih->bulan)->translatedFormat('F') }} {{ $sesiDipilih->tahun }}
                     </h2>
                     <p class="text-xs text-green-700 mt-1">Bagikan tautan ini ke Kelompok Tani &amp; Pelaku Ekraf untuk mengisi komoditas produksi mereka.</p>
@@ -142,7 +142,7 @@
                         {{ url('/survei/isi/produsen/' . $sesiDipilih->token_produsen) }}
                     </div>
                     <button type="button"
-                            onclick="navigator.clipboard.writeText('{{ url('/survei/isi/produsen/' . $sesiDipilih->token_produsen) }}').then(() => { this.textContent = '✓ Disalin'; setTimeout(() => this.textContent = 'Salin', 2000); })"
+                            onclick="navigator.clipboard.writeText('{{ url('/survei/isi/produsen/' . $sesiDipilih->token_produsen) }}').then(() => { this.textContent = 'Tersalin'; setTimeout(() => this.textContent = 'Salin', 2000); })"
                             class="shrink-0 rounded-sm bg-green-600 px-3 py-2.5 text-xs font-medium text-white hover:bg-green-700 shadow-sm">
                         Salin
                     </button>
