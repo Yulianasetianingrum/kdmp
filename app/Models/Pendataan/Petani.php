@@ -36,7 +36,7 @@ class Petani extends Model
     public function items(): BelongsToMany
     {
         return $this->belongsToMany(ItemKomoditas::class, 'potensi_produksi_petani', 'petani_id', 'item_komoditas_id')
-            ->withPivot('luas_lahan_ha', 'estimasi_volume_panen', 'satuan', 'periode_panen', 'keterangan')
+            ->withPivot('id', 'luas_lahan_ha', 'estimasi_volume_panen', 'satuan', 'periode_panen', 'harga_satuan', 'total_nilai', 'keterangan')
             ->withTimestamps();
     }
 

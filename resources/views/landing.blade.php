@@ -45,7 +45,7 @@
 <section class="relative min-h-screen flex items-center pt-16 map-pattern overflow-hidden">
     <div class="hero-blob" style="width:600px;height:600px;background:#b98a2c;top:-160px;right:-80px;"></div>
     <div class="hero-blob" style="width:500px;height:500px;background:#4f7351;bottom:0;left:-80px;"></div>
-    <div class="max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <div class="space-y-8">
             <div class="space-y-4">
                 <span class="badge bg-padi-500/15 text-padi-100 border border-padi-500/30">
@@ -74,7 +74,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </a>
             </div>
-            <div class="pt-4 grid grid-cols-3 gap-6 border-t border-ink-700">
+            <div class="pt-4 grid grid-cols-3 gap-2 sm:gap-6 border-t border-ink-700">
                 @foreach([["9+","Modul Aktif"],["50+","Jenis Komoditi"],["Real-time","Pembaruan Stok"]] as [$val,$label])
                     <div>
                         <p class="font-display text-2xl font-semibold text-padi-100">{{ $val }}</p>

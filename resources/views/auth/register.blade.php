@@ -9,7 +9,8 @@
     .select-field:focus { border-color:#b98a2c; box-shadow:0 0 0 3px rgba(185,138,44,0.12); }
     .btn-primary { width:100%; padding:0.75rem 1rem; border-radius:0.625rem; background:#b98a2c; color:#14170f; font-weight:600; font-size:0.875rem; transition:all 0.2s; box-shadow:0 0 24px rgba(185,138,44,0.25); cursor:pointer; border:none; }
     .btn-primary:hover { background:#93701f; box-shadow:0 0 40px rgba(185,138,44,0.4); transform:translateY(-1px); }
-    .card { background:rgba(28,33,26,0.8); backdrop-filter:blur(20px); border:1px solid rgba(51,60,45,0.8); border-radius:1.25rem; padding:2rem; }
+    .card { background:rgba(28,33,26,0.8); backdrop-filter:blur(20px); border:1px solid rgba(51,60,45,0.8); border-radius:1.25rem; padding:1.25rem; }
+    @media (min-width: 640px) { .card { padding:2rem; } }
     .nav-back { display:inline-flex; align-items:center; gap:6px; color:rgba(221,217,203,0.5); font-size:0.8125rem; text-decoration:none; transition:color 0.2s; }
     .nav-back:hover { color:#e3ead9; }
     .section-title { font-size:0.6875rem; font-family:"IBM Plex Mono",monospace; letter-spacing:0.1em; text-transform:uppercase; color:rgba(185,138,44,0.7); margin-bottom:0.75rem; display:flex; align-items:center; gap:8px; }

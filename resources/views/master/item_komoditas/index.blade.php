@@ -32,19 +32,32 @@
                 <p class="text-xs text-paper-500 mt-0.5">Varian spesifik komoditas (Contoh: Beras Mentik, Cabai Rawit, Bawang Merah, Kopi Robusta).</p>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <form method="GET" class="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
-                    <select name="master_id" class="w-full sm:w-auto rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs text-ink-800 focus:outline-none">
+                    <select name="master_id" class="w-full sm:w-auto rounded-lg border border-paper-300 bg-white px-3 py-2 text-xs text-ink-800 focus:outline-none shadow-sm">
                         <option value="">Semua Master</option>
                         @foreach($masterList as $m)
                             <option value="{{ $m->id }}" @selected($masterId == $m->id)>{{ $m->nama }} ({{ $m->kategori?->nama }})</option>
                         @endforeach
                     </select>
-                    <input type="text" name="q" value="{{ $search }}" placeholder="Cari item komoditas..."
-                           class="w-full sm:w-44 rounded-lg border border-paper-300 bg-white px-3 py-1.5 text-xs focus:outline-none">
-                    <button class="w-full sm:w-auto rounded-lg bg-ink-900 text-white px-3 py-1.5 text-xs font-medium hover:bg-ink-800">Filter</button>
+                    <select name="status_petani" class="w-full sm:w-auto rounded-lg border border-paper-300 bg-white px-3 py-2 text-xs text-ink-800 focus:outline-none shadow-sm">
+                        <option value="">Semua Status Data</option>
+                        <option value="ada" @selected($statusPetani === 'ada')>Sudah Didata Petani</option>
+                        <option value="belum" @selected($statusPetani === 'belum')>Belum Didata Petani</option>
+                    </select>
+                    <div class="w-full sm:w-48">
+                        <x-speech-input
+                            name="q"
+                            :value="$search"
+                            placeholder="Cari item komoditas..."
+                        />
+                    </div>
+                    <button type="submit" class="w-full sm:w-auto rounded-lg bg-ink-900 text-white px-3.5 py-2 text-xs font-medium hover:bg-ink-800 shadow-sm shrink-0">Filter</button>
+                    @if($masterId || $statusPetani || $search)
+                        <a href="{{ route('master.item-komoditas.index') }}" class="px-2.5 py-2 text-xs text-paper-500 hover:text-ink-900 shrink-0">Reset</a>
+                    @endif
                 </form>
-                <a href="{{ route('master.item-komoditas.create') }}" class="inline-flex justify-center items-center rounded-lg bg-padi-500 hover:bg-padi-600 text-ink-950 font-semibold px-4 py-2 text-xs shadow-sm transition">
+                <a href="{{ route('master.item-komoditas.create') }}" class="inline-flex justify-center items-center rounded-lg bg-padi-500 hover:bg-padi-600 text-ink-950 font-semibold px-4 py-2 text-xs shadow-sm transition w-full sm:w-auto text-center shrink-0">
                     + Tambah Item
                 </a>
             </div>
@@ -101,6 +114,8 @@
                                             'kecamatan' => $wilayahKec ?: '-',
                                             'kabupaten' => $wilayahKab ?: '-',
                                             'estimasi_panen' => $p->pivot?->estimasi_volume_panen ? number_format($p->pivot->estimasi_volume_panen, 0, ',', '.') . ' ' . ($p->pivot->satuan ?? 'kg') : '-',
+                                            'harga_satuan' => $p->pivot?->harga_satuan ? 'Rp ' . number_format($p->pivot->harga_satuan, 0, ',', '.') . '/' . ($p->pivot->satuan ?? 'kg') : '-',
+                                            'total_nilai' => $p->pivot?->total_nilai ? 'Rp ' . number_format($p->pivot->total_nilai, 0, ',', '.') : '-',
                                             'periode' => $p->pivot?->periode_panen ?: '-',
                                             'show_url' => route('pendataan.petani.show', $p),
                                         ];
@@ -160,7 +175,7 @@
                  class="fixed inset-0 bg-ink-950/50 backdrop-blur-sm transition-opacity"></div>
 
             <!-- Dialog Box -->
-            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-6">
+            <div class="flex min-h-full items-center justify-center p-3 sm:p-6 text-center">
                 <div x-show="modalOpen"
                      x-transition:enter="ease-out duration-200"
                      x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -168,10 +183,10 @@
                      x-transition:leave="ease-in duration-150"
                      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     class="relative w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all border border-paper-200 flex flex-col max-h-[88vh]">
+                     class="relative w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all border border-paper-200 flex flex-col max-h-[90vh]">
                     
                     <!-- Modal Header -->
-                    <div class="px-6 py-4 border-b border-paper-200 bg-paper-50 flex items-center justify-between shrink-0">
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-paper-200 bg-paper-50 flex items-center justify-between shrink-0">
                         <div>
                             <div class="flex items-center gap-2">
                                 <h3 class="text-base font-display font-semibold text-ink-900">
@@ -253,7 +268,9 @@
                                                 </td>
                                                 <td class="px-4 py-3">
                                                     <div class="font-mono font-medium text-ink-900" x-text="p.estimasi_panen"></div>
-                                                    <div class="text-[11px] text-paper-500" x-text="'Siklus: ' + p.periode"></div>
+                                                    <div class="text-[11px] text-emerald-800 font-mono font-medium" x-text="p.harga_satuan"></div>
+                                                    <div class="text-[11px] text-emerald-700 font-mono font-bold" x-text="'Total: ' + p.total_nilai"></div>
+                                                    <div class="text-[10px] text-paper-500" x-text="'Siklus: ' + p.periode"></div>
                                                 </td>
                                                 <td class="px-4 py-3 text-right">
                                                     <a :href="p.show_url" class="inline-flex items-center text-xs font-medium text-emerald-700 hover:text-emerald-800 hover:underline">
@@ -270,8 +287,8 @@
 
                     <!-- Modal Footer -->
                     <div class="px-6 py-3 border-t border-paper-200 bg-paper-50 flex items-center justify-between shrink-0">
-                        <a :href="selectedDetailUrl" class="text-xs text-blue-700 hover:underline font-medium inline-flex items-center gap-1">
-                            Halaman Detail Komoditas Lengkap &rarr;
+                        <a :href="selectedDetailUrl" class="text-xs text-blue-700 hover:underline font-semibold inline-flex items-center gap-1">
+                            Lihat di Halaman Petani Komoditas (Filter Otomatis) &rarr;
                         </a>
                         <button type="button"
                                 @click="modalOpen = false"

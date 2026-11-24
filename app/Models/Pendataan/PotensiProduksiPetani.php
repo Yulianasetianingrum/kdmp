@@ -20,12 +20,16 @@ class PotensiProduksiPetani extends Model
         'estimasi_volume_panen',
         'satuan',
         'periode_panen',
+        'harga_satuan',
+        'total_nilai',
         'keterangan',
     ];
 
     protected $casts = [
         'luas_lahan_ha' => 'decimal:2',
         'estimasi_volume_panen' => 'decimal:2',
+        'harga_satuan' => 'decimal:2',
+        'total_nilai' => 'decimal:2',
     ];
 
     public function petani(): BelongsTo

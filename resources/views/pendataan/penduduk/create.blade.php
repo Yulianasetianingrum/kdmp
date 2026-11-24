@@ -1,6 +1,6 @@
 <x-layouts.app :title="$title" eyebrow="Modul Pendataan">
 
-    <div class="max-w-2xl bg-white p-6 rounded-xl border border-paper-200 shadow-sm" x-data="{
+    <div class="max-w-2xl bg-white p-4 sm:p-6 rounded-xl border border-paper-200 shadow-sm" x-data="{
         balita: {{ old('balita', 0) }},
         anak: {{ old('anak', 0) }},
         remaja: {{ old('remaja', 0) }},
@@ -31,10 +31,15 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-paper-700 mb-1">Tahun Pendataan <span class="text-red-500">*</span></label>
-                    <input type="number" name="tahun" value="{{ old('tahun', date('Y')) }}" min="2000" max="{{ date('Y')+1 }}" required
-                           class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
-                    @error('tahun') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                    <x-speech-input
+                        name="tahun"
+                        type="number"
+                        label="Tahun Pendataan"
+                        :required="true"
+                        :min="2000"
+                        :max="date('Y')+1"
+                        :value="old('tahun', date('Y'))"
+                    />
                 </div>
             </div>
 
@@ -44,38 +49,58 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-pink-800 mb-1">1. Balita (0–4 tahun) <span class="text-red-500">*</span></label>
-                        <input type="number" name="balita" x-model.number="balita" min="0" required
-                               class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
-                        @error('balita') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        <x-speech-input
+                            name="balita"
+                            type="number"
+                            label="1. Balita (0–4 tahun)"
+                            :required="true"
+                            min="0"
+                            x-model.number="balita"
+                        />
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-amber-800 mb-1">2. Anak-anak (5–9 tahun) <span class="text-red-500">*</span></label>
-                        <input type="number" name="anak" x-model.number="anak" min="0" required
-                               class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
-                        @error('anak') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        <x-speech-input
+                            name="anak"
+                            type="number"
+                            label="2. Anak-anak (5–9 tahun)"
+                            :required="true"
+                            min="0"
+                            x-model.number="anak"
+                        />
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-cyan-800 mb-1">3. Remaja (10–19 tahun) <span class="text-red-500">*</span></label>
-                        <input type="number" name="remaja" x-model.number="remaja" min="0" required
-                               class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
-                        @error('remaja') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        <x-speech-input
+                            name="remaja"
+                            type="number"
+                            label="3. Remaja (10–19 tahun)"
+                            :required="true"
+                            min="0"
+                            x-model.number="remaja"
+                        />
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-emerald-800 mb-1">4. Dewasa (20–59 tahun) <span class="text-red-500">*</span></label>
-                        <input type="number" name="dewasa" x-model.number="dewasa" min="0" required
-                               class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
-                        @error('dewasa') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        <x-speech-input
+                            name="dewasa"
+                            type="number"
+                            label="4. Dewasa (20–59 tahun)"
+                            :required="true"
+                            min="0"
+                            x-model.number="dewasa"
+                        />
                     </div>
 
                     <div class="sm:col-span-2">
-                        <label class="block text-xs font-medium text-purple-800 mb-1">5. Lansia (60 tahun ke atas) <span class="text-red-500">*</span></label>
-                        <input type="number" name="lansia" x-model.number="lansia" min="0" required
-                               class="w-full rounded-lg border border-paper-300 p-2 text-sm font-mono focus:border-padi-500 focus:outline-none">
-                        @error('lansia') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        <x-speech-input
+                            name="lansia"
+                            type="number"
+                            label="5. Lansia (60 tahun ke atas)"
+                            :required="true"
+                            min="0"
+                            x-model.number="lansia"
+                        />
                     </div>
                 </div>
 
@@ -87,20 +112,19 @@
             </div>
 
             <div>
-                <label class="block text-xs font-medium text-paper-700 mb-1">Sumber Data</label>
-                <input type="text" name="sumber_data" value="{{ old('sumber_data', 'Input Admin ' . ($desaAktif?->nama ?? 'Desa')) }}"
-                       class="w-full rounded-lg border border-paper-300 p-2 text-sm focus:border-padi-500 focus:outline-none">
+                <x-speech-input
+                    name="keterangan"
+                    type="textarea"
+                    :rows="2"
+                    label="Keterangan / Catatan"
+                    :value="old('keterangan')"
+                    placeholder="Catatan tambahan..."
+                />
             </div>
 
-            <div>
-                <label class="block text-xs font-medium text-paper-700 mb-1">Keterangan / Catatan</label>
-                <textarea name="keterangan" rows="2"
-                          class="w-full rounded-lg border border-paper-300 p-2 text-sm focus:border-padi-500 focus:outline-none">{{ old('keterangan') }}</textarea>
-            </div>
-
-            <div class="flex justify-end gap-2 pt-2">
-                <a href="{{ route('pendataan.penduduk.index') }}" class="px-4 py-2 rounded-lg border border-paper-300 text-xs font-medium hover:bg-paper-50">Batal</a>
-                <button type="submit" class="px-5 py-2 rounded-lg bg-padi-500 text-ink-950 text-xs font-semibold hover:bg-padi-600 shadow-sm">
+            <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 pt-2">
+                <a href="{{ route('pendataan.penduduk.index') }}" class="w-full sm:w-auto text-center px-4 py-2 rounded-lg border border-paper-300 text-xs font-medium hover:bg-paper-50">Batal</a>
+                <button type="submit" class="w-full sm:w-auto text-center px-5 py-2 rounded-lg bg-padi-500 text-ink-950 text-xs font-semibold hover:bg-padi-600 shadow-sm">
                     Simpan Data
                 </button>
             </div>

@@ -15,31 +15,20 @@
             'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>',
             'match' => 'pendataan.*',
             'items' => [
-                ['label' => 'Data Penduduk', 'route' => 'pendataan.penduduk.index', 'match' => 'pendataan.penduduk.*'],
-                ['label' => 'Data Petani/Produsen', 'route' => 'pendataan.petani.index', 'match' => 'pendataan.petani.*'],
-                ['label' => 'Data Potensi Komoditas', 'route' => 'pendataan.potensi.index', 'match' => 'pendataan.potensi.*'],
+                ['label' => 'Pendataan Penduduk', 'route' => 'pendataan.penduduk.index', 'match' => 'pendataan.penduduk.*'],
+                ['label' => 'Petani Komoditas', 'route' => 'pendataan.petani.index', 'match' => 'pendataan.petani.*,pendataan.potensi.*'],
             ]
         ],
-
-        [
-            'title' => 'Laporan',
-            'icon' => '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>',
-            'match' => 'laporan.*',
-            'items' => [
-                ['label' => 'Demografi Penduduk Desa', 'route' => 'laporan.demografi.index', 'match' => 'laporan.demografi.*'],
-                ['label' => 'Potensi Komoditas Desa', 'route' => 'laporan.potensi.index', 'match' => 'laporan.potensi.*'],
-                ['label' => 'Daftar Petani per Komoditas', 'route' => 'laporan.petani-komoditas.index', 'match' => 'laporan.petani-komoditas.*'],
-                ['label' => 'Analisis Potensi Desa', 'route' => 'laporan.analisis.index', 'match' => 'laporan.analisis.*'],
-            ]
-        ]
     ];
 @endphp
 
-<aside class="flex h-screen w-72 max-w-[85vw] shrink-0 flex-col bg-ink-950 text-paper-100 shadow-xl z-50">
+<aside class="flex h-screen h-[100dvh] w-72 max-w-[85vw] sm:max-w-xs shrink-0 flex-col bg-ink-950 text-paper-100 shadow-xl z-50 relative overflow-hidden">
+    {{-- Mount Point Layer Anotasi Sidebar --}}
+    <div id="sidebar-annotation-mount" class="pointer-events-none"></div>
 
     {{-- Logo & Mobile Close --}}
     <div class="flex items-center justify-between border-b border-ink-800 px-6 py-5">
-        <a href="{{ route('dashboard') }}" @click="if(isMobile) sidebarOpen = false" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+        <a href="{{ route('dashboard') }}" @click="if(isMobile && !window.isReviewDrawingActive && !window.isReviewModalActive) sidebarOpen = false" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
             <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-padi-500 font-display text-lg font-bold text-ink-950 shadow-sm">
                 N
             </span>
@@ -72,7 +61,7 @@
                 </p>
                 <a
                     href="{{ route('admin.dashboard') }}"
-                    @click="if(isMobile) sidebarOpen = false"
+                    @click="if(isMobile && !window.isReviewDrawingActive && !window.isReviewModalActive) sidebarOpen = false"
                     class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors
                     {{ request()->routeIs('admin.*') ? 'bg-padi-500/10 text-padi-400' : 'text-paper-300 hover:bg-ink-800 hover:text-white' }}"
                 >
@@ -94,10 +83,14 @@
                     $isGroupActive = collect(explode(',', $group['match']))->contains(fn ($p) => request()->routeIs($p));
                 @endphp
                 
-                <li x-data="{ expanded: {{ $isGroupActive ? 'true' : 'false' }} }">
+                <li x-data="{ expanded: {{ $isGroupActive ? 'true' : 'false' }} }"
+                    data-sidebar-group="{{ \Illuminate\Support\Str::slug($group['title']) }}"
+                    data-group-title="{{ $group['title'] }}">
                     {{-- Accordion Header --}}
                     <button 
-                        @click="expanded = !expanded" 
+                        @click="expanded = !expanded; window.dispatchEvent(new CustomEvent('kdmp-dropdown-toggle', { detail: { group: '{{ \Illuminate\Support\Str::slug($group['title']) }}' } }))" 
+                        data-sidebar-component="group-header"
+                        data-sidebar-group-title="{{ $group['title'] }}"
                         class="w-full flex items-center justify-between rounded-xl px-3 py-2.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-padi-500/50
                         {{ $isGroupActive ? 'bg-ink-800 text-white shadow-sm' : 'text-paper-300 hover:bg-ink-800 hover:text-white' }}"
                     >
@@ -122,6 +115,8 @@
                         x-transition
                         x-cloak
                         class="mt-1"
+                        data-dropdown-container="{{ \Illuminate\Support\Str::slug($group['title']) }}"
+                        data-sidebar-group-title="{{ $group['title'] }}"
                     >
                         <ul class="space-y-1 py-1 pl-11 pr-2 relative before:absolute before:left-[1.375rem] before:top-2 before:bottom-2 before:w-px before:bg-ink-800">
                             @foreach($group['items'] as $item)
@@ -139,7 +134,13 @@
                                         <div x-data="{ expanded: {{ ($isChildActive || $isItemActive) ? 'true' : 'false' }} }">
                                             <div class="flex items-center rounded-lg text-xs transition-colors
                                                 {{ ($isChildActive || $isItemActive) ? 'bg-padi-500/10 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
-                                                <a href="{{ route($item['route']) }}" @click="if(isMobile) sidebarOpen = false" class="min-w-0 flex-1 px-3 py-2">
+                                                <a href="{{ route($item['route']) }}" 
+                                                   data-sidebar-item="{{ \Illuminate\Support\Str::slug($item['label']) }}"
+                                                   data-sidebar-item-label="{{ $item['label'] }}"
+                                                   data-sidebar-group="{{ \Illuminate\Support\Str::slug($group['title']) }}"
+                                                   data-sidebar-component="dropdown-item"
+                                                   @click="if(isMobile && !window.isReviewDrawingActive && !window.isReviewModalActive) sidebarOpen = false" 
+                                                   class="min-w-0 flex-1 px-3 py-2">
                                                     {{ $item['label'] }}
                                                 </a>
                                                 <button type="button" @click="expanded = !expanded" class="px-3 py-2 text-paper-500 hover:text-white" aria-label="Buka submenu {{ $item['label'] }}">
@@ -161,21 +162,21 @@
                                                             @if ($childHasChildren)
                                                                 <div x-data="{ expanded: {{ ($childActive || $grandchildActive) ? 'true' : 'false' }} }">
                                                                     <div class="flex items-center rounded-md {{ ($childActive || $grandchildActive) ? 'bg-ink-800 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
-                                                                        <a href="{{ route($child['route']) }}" @click="if(isMobile) sidebarOpen = false" class="min-w-0 flex-1 px-2.5 py-1.5">{{ $child['label'] }}</a>
+                                                                        <a href="{{ route($child['route']) }}" @click="if(isMobile && !window.isReviewDrawingActive && !window.isReviewModalActive) sidebarOpen = false" class="min-w-0 flex-1 px-2.5 py-1.5">{{ $child['label'] }}</a>
                                                                         <button type="button" @click="expanded = !expanded" class="px-2 py-1.5 text-paper-500 hover:text-white" aria-label="Buka submenu {{ $child['label'] }}">
                                                                             <svg class="h-3 w-3 transition-transform" :class="expanded ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" /></svg>
                                                                         </button>
                                                                     </div>
                                                                     <div x-show="expanded" x-transition x-cloak class="ml-3 mt-1 border-l border-ink-800 pl-2">
                                                                         @foreach ($child['children'] as $grandchild)
-                                                                            <a href="{{ route($grandchild['route']) }}" @click="if(isMobile) sidebarOpen = false" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ request()->routeIs($grandchild['match']) ? 'bg-padi-500/10 text-padi-400 font-medium' : 'text-paper-500 hover:bg-ink-800 hover:text-white' }}">
+                                                                            <a href="{{ route($grandchild['route']) }}" @click="if(isMobile && !window.isReviewDrawingActive && !window.isReviewModalActive) sidebarOpen = false" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ request()->routeIs($grandchild['match']) ? 'bg-padi-500/10 text-padi-400 font-medium' : 'text-paper-500 hover:bg-ink-800 hover:text-white' }}">
                                                                                 {{ $grandchild['label'] }}
                                                                             </a>
                                                                         @endforeach
                                                                     </div>
                                                                 </div>
                                                             @else
-                                                                <a href="{{ route($child['route']) }}" @click="if(isMobile) sidebarOpen = false" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ $childActive ? 'bg-ink-800 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
+                                                                <a href="{{ route($child['route']) }}" @click="if(isMobile && !window.isReviewDrawingActive && !window.isReviewModalActive) sidebarOpen = false" class="block rounded-md px-2.5 py-1.5 text-[11px] transition-colors {{ $childActive ? 'bg-ink-800 text-padi-400 font-medium' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
                                                                     {{ $child['label'] }}
                                                                 </a>
                                                             @endif
@@ -185,7 +186,13 @@
                                             </div>
                                         </div>
                                     @else
-                                        <a href="{{ route($item['route']) }}" @click="if(isMobile) sidebarOpen = false" class="block rounded-lg px-3 py-2 text-xs transition-colors {{ $isItemActive ? 'bg-padi-500/10 text-padi-400 font-medium relative before:absolute before:-left-[0.8125rem] before:top-1/2 before:-translate-y-1/2 before:w-[5px] before:h-[5px] before:rounded-full before:bg-padi-400' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
+                                        <a href="{{ route($item['route']) }}" 
+                                           data-sidebar-item="{{ \Illuminate\Support\Str::slug($item['label']) }}"
+                                           data-sidebar-item-label="{{ $item['label'] }}"
+                                           data-sidebar-group="{{ \Illuminate\Support\Str::slug($group['title']) }}"
+                                           data-sidebar-component="dropdown-item"
+                                           @click="if(isMobile && !window.isReviewDrawingActive && !window.isReviewModalActive) sidebarOpen = false" 
+                                           class="block rounded-lg px-3 py-2 text-xs transition-colors {{ $isItemActive ? 'bg-padi-500/10 text-padi-400 font-medium relative before:absolute before:-left-[0.8125rem] before:top-1/2 before:-translate-y-1/2 before:w-[5px] before:h-[5px] before:rounded-full before:bg-padi-400' : 'text-paper-400 hover:bg-ink-800 hover:text-white' }}">
                                             {{ $item['label'] }}
                                         </a>
                                     @endif

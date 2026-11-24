@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Services\StokService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -88,15 +87,38 @@ class KonsinyasiDemoSeeder extends Seeder
             ->exists();
 
         if (! $sudahAda) {
-            app(StokService::class)->masuk(
-                entitasId: $entitasA->id_entitas,
-                gudangId: $gudangA->id_gudang,
-                barangId: $barangId,
-                qty: '100',
-                hargaSatuan: '8000',
-                refTipe: 'SALDO_AWAL',
-                refId: $saldoAwalRef,
+            DB::table('stok')->updateOrInsert(
+                [
+                    'id_gudang' => $gudangA->id_gudang,
+                    'id_barang' => $barangId,
+                ],
+                [
+                    'qty_on_hand' => '100',
+                    'qty_reserved' => '0',
+                    'hpp_rata2' => '8000',
+                    'nilai_persediaan' => '800000',
+                    'updated_at' => now(),
+                ]
             );
+
+            DB::table('kartu_stok')->insert([
+                'id_entitas' => $entitasA->id_entitas,
+                'id_gudang' => $gudangA->id_gudang,
+                'id_barang' => $barangId,
+                'tanggal' => now()->toDateString(),
+                'jenis_mutasi' => 'IN',
+                'ref_tipe' => 'SALDO_AWAL',
+                'ref_id' => $saldoAwalRef,
+                'qty_masuk' => '100',
+                'qty_keluar' => '0',
+                'harga_satuan' => '8000',
+                'nilai_mutasi' => '800000',
+                'saldo_qty' => '100',
+                'saldo_nilai' => '800000',
+                'hpp_rata2_setelah' => '8000',
+                'created_by' => null,
+                'created_at' => now(),
+            ]);
         }
 
         $this->command?->info('Data demo konsinyasi siap: Desa A memiliki 100 kg beras @ Rp8.000.');

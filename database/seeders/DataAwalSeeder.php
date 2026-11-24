@@ -10,26 +10,15 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-/**
- * Data awal: 2 koperasi desa contoh lengkap dengan gudang, kas/bank, unit
- * usaha, satu pengguna login per desa, dan pihak "entitas_lain" antar
- * keduanya (dibutuhkan modul Konsinyasi).
- *
- * CATATAN: seeder ini SENGAJA tidak memakai JurnalService/PeriodeService â€”
- * kerangka ini belum menyertakan service Finance. Baris periode_akuntansi
- * dibuat langsung lewat DB::table() sebagai pengganti sementara
- * PeriodeService::bukaTahun() yang akan dibangun saat pendalaman modul
- * Finance.
- */
 class DataAwalSeeder extends Seeder
 {
     public function run(): void
     {
-        // 0. Buat Super Admin
+        // 1. Buat Super Admin
         $superAdmin = Pengguna::updateOrCreate(
             ['email' => 'superadmin@ngobar.id'],
             [
-                'id_entitas' => null, // Super admin tidak terikat entitas tertentu
+                'id_entitas' => null,
                 'nama' => 'Super Administrator',
                 'password' => Hash::make('password'),
                 'is_active' => true,
@@ -37,84 +26,38 @@ class DataAwalSeeder extends Seeder
         );
 
         $idPeranSuperAdmin = Peran::where('kode', 'super_admin')->value('id_peran');
-        DB::table('pengguna_peran')->updateOrInsert([
-            'id_pengguna' => $superAdmin->id,
-            'id_peran' => $idPeranSuperAdmin,
-        ]);
+        if ($idPeranSuperAdmin) {
+            DB::table('pengguna_peran')->updateOrInsert([
+                'id_pengguna' => $superAdmin->id,
+                'id_peran' => $idPeranSuperAdmin,
+            ]);
+        }
 
-        DB::table('master_unit_usaha')->updateOrInsert(
-            ['kode_unit_usaha' => 'SEMBAKO'],
-            [
-                'nama_unit_usaha' => 'Sembako',
-                'kode_akun_persediaan' => '1123',
-                'kode_akun_pendapatan_anggota' => '411',
-                'kode_akun_pendapatan_non_anggota' => '412',
-                'kode_akun_hpp' => '511',
-            ]
+        // 2. Hierarki Wilayah Sampel (Kabupaten Pati -> Kecamatan -> Desa)
+        $kabPati = Wilayah::firstOrCreate(
+            ['nama' => 'Pati', 'tingkat' => 'kab'],
+            ['parent_id' => null]
         );
 
-        DB::table('master_unit_usaha')->updateOrInsert(
-            ['kode_unit_usaha' => 'APOTEK'],
-            [
-                'nama_unit_usaha' => 'Apotek',
-                'kode_akun_persediaan' => '1124',
-                'kode_akun_pendapatan_anggota' => '413',
-                'kode_akun_pendapatan_non_anggota' => '414',
-                'kode_akun_hpp' => '512',
-            ]
+        $kecBatangan = Wilayah::firstOrCreate(
+            ['nama' => 'Batangan', 'tingkat' => 'kec', 'parent_id' => $kabPati->id]
         );
 
-        $satuanKg = DB::table('satuan')->updateOrInsert(
-            ['kode_satuan' => 'KG'],
-            ['alias_json' => json_encode(['kilogram']), 'is_active' => true, 'updated_at' => now(), 'created_at' => now()]
-        );
-        $satuanKgId = DB::table('satuan')->where('kode_satuan', 'KG')->value('id');
-
-        $satuanKarungId = DB::table('satuan')->updateOrInsert(
-            ['kode_satuan' => 'KARUNG'],
-            ['alias_json' => json_encode(['karung']), 'is_active' => true, 'updated_at' => now(), 'created_at' => now()]
-        );
-        $satuanKarungId = DB::table('satuan')->where('kode_satuan', 'KARUNG')->value('id');
-
-        $beras = DB::table('komoditas')->updateOrInsert(
-            ['nama' => 'Beras'],
-            ['kategori' => 'pangan', 'is_active' => true, 'updated_at' => now(), 'created_at' => now()]
-        );
-        $berasId = DB::table('komoditas')->where('nama', 'Beras')->value('id');
-        $sembakoId = DB::table('master_unit_usaha')->where('kode_unit_usaha', 'SEMBAKO')->value('id_unit_usaha');
-
-        DB::table('master_barang')->updateOrInsert(
-            ['kode_barang' => 'BRG-BERAS-MEDIUM'],
-            [
-                'id_komoditas' => $berasId,
-                'id_unit_usaha' => $sembakoId,
-                'nama_barang' => 'Beras Medium',
-                'id_satuan_dasar' => $satuanKgId,
-                'is_active' => true,
-                'updated_at' => now(),
-                'created_at' => now(),
-            ]
-        );
-
-        $berasBarangId = DB::table('master_barang')->where('kode_barang', 'BRG-BERAS-MEDIUM')->value('id_barang');
-        DB::table('konversi_satuan')->updateOrInsert(
-            ['id_barang' => $berasBarangId, 'id_satuan' => $satuanKgId],
-            ['faktor_ke_dasar' => 1, 'is_default_beli' => true, 'is_default_jual' => true]
-        );
-        DB::table('konversi_satuan')->updateOrInsert(
-            ['id_barang' => $berasBarangId, 'id_satuan' => $satuanKarungId],
-            ['faktor_ke_dasar' => 25, 'is_default_beli' => false, 'is_default_jual' => false]
+        $kecJuwana = Wilayah::firstOrCreate(
+            ['nama' => 'Juwana', 'tingkat' => 'kec', 'parent_id' => $kabPati->id]
         );
 
         $desaContoh = [
-            ['kode' => 'KDMP-A', 'nama' => 'Koperasi Desa Merah Putih Mekar Jaya', 'wilayah' => 'Desa Mekar Jaya'],
-            ['kode' => 'KDMP-B', 'nama' => 'Koperasi Desa Merah Putih Sukamaju', 'wilayah' => 'Desa Sukamaju'],
+            ['kode' => 'KDMP-A', 'nama' => 'Koperasi Desa Merah Putih Mekar Jaya', 'wilayah' => 'Desa Mekar Jaya', 'kec' => $kecBatangan->id],
+            ['kode' => 'KDMP-B', 'nama' => 'Koperasi Desa Merah Putih Sukamaju', 'wilayah' => 'Desa Sukamaju', 'kec' => $kecJuwana->id],
         ];
+
+        $idPeranManajer = Peran::where('kode', 'manajer')->value('id_peran');
 
         foreach ($desaContoh as $desa) {
             $wilayah = Wilayah::firstOrCreate(
                 ['nama' => $desa['wilayah']],
-                ['tingkat' => 'desa']
+                ['tingkat' => 'desa', 'parent_id' => $desa['kec']]
             );
 
             $entitas = Entitas::updateOrCreate(
@@ -127,97 +70,23 @@ class DataAwalSeeder extends Seeder
                 ]
             );
 
-            DB::table('gudang')->updateOrInsert(
-                ['id_entitas' => $entitas->id_entitas, 'kode_gudang' => 'UTAMA'],
-                ['nama_gudang' => $desa['kode'] === 'KDMP-A'
-                    ? 'Gudang Koperasi Desa Mekar Jaya'
-                    : 'Gudang Koperasi Desa Sukamaju', 'is_active' => true]
-            );
-
-            DB::table('master_kas_bank')->updateOrInsert(
-                ['id_entitas' => $entitas->id_entitas, 'jenis' => 'kas', 'nama' => 'Kas Utama'],
-                ['kode_akun' => '1111', 'is_default' => true, 'is_active' => true]
-            );
-
-            DB::table('master_kas_bank')->updateOrInsert(
-                ['id_entitas' => $entitas->id_entitas, 'jenis' => 'bank', 'nama' => 'Bank A'],
-                ['kode_akun' => '11121', 'is_default' => false, 'is_active' => true]
-            );
-
-            DB::table('master_pihak')->updateOrInsert(
-                ['id_entitas' => $entitas->id_entitas, 'nama' => 'Warga Contoh'],
-                [
-                    'jenis_pihak' => 'warga',
-                    'is_anggota' => true,
-                    'is_active' => true,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );
-
-            DB::table('master_pihak')->updateOrInsert(
-                ['id_entitas' => $entitas->id_entitas, 'nama' => 'Toko Sembako Sumber Rejeki'],
-                [
-                    'jenis_pihak' => 'supplier',
-                    'is_anggota' => false,
-                    'is_active' => true,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );
-
-            // Pengganti sementara PeriodeService::bukaTahun(): 13 baris periode
-            // (bulan 1-12 operasional + bulan 13 penyesuaian), semua OPEN.
-            for ($bulan = 1; $bulan <= 13; $bulan++) {
-                DB::table('periode_akuntansi')->updateOrInsert(
-                    ['id_entitas' => $entitas->id_entitas, 'tahun' => 2026, 'bulan' => $bulan],
-                    ['status' => 'OPEN']
-                );
-            }
-
-            $emailLogin = 'manajer@'.strtolower(str_replace(' ', '', $desa['kode'])).'.test';
-
-            $pengguna = Pengguna::updateOrCreate(
-                ['email' => $emailLogin],
+            $userSlug = strtolower($desa['kode']);
+            $manajer = Pengguna::updateOrCreate(
+                ['email' => "manajer@{$userSlug}.test"],
                 [
                     'id_entitas' => $entitas->id_entitas,
-                    'nama' => 'Manajer '.$desa['wilayah'],
+                    'nama' => "Manajer {$desa['wilayah']}",
                     'password' => Hash::make('password'),
                     'is_active' => true,
                 ]
             );
 
-            $idPeranManajer = Peran::where('kode', 'manajer')->value('id_peran');
-            DB::table('pengguna_peran')->updateOrInsert([
-                'id_pengguna' => $pengguna->id,
-                'id_peran' => $idPeranManajer,
-            ]);
-        }
-
-        // Setiap desa butuh pihak 'entitas_lain' yang menunjuk ke desa
-        // mitranya â€” dipakai modul Konsinyasi untuk resolusi id_pihak piutang/hutang.
-        $semuaKoperasi = Entitas::whereIn('kode_entitas', array_column($desaContoh, 'kode'))->get();
-
-        foreach ($semuaKoperasi as $entitas) {
-            foreach ($semuaKoperasi as $mitra) {
-                if ($entitas->id_entitas === $mitra->id_entitas) {
-                    continue;
-                }
-
-                DB::table('master_pihak')->updateOrInsert(
-                    ['id_entitas' => $entitas->id_entitas, 'id_entitas_mitra' => $mitra->id_entitas],
-                    [
-                        'jenis_pihak' => 'entitas_lain',
-                        'nama' => $mitra->nama_entitas,
-                        'is_anggota' => false,
-                        'is_active' => true,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]
-                );
+            if ($idPeranManajer) {
+                DB::table('pengguna_peran')->updateOrInsert([
+                    'id_pengguna' => $manajer->id,
+                    'id_peran' => $idPeranManajer,
+                ]);
             }
         }
     }
 }
-
-

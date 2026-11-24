@@ -32,9 +32,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 });
 
-// ===== Modul Survei Lapangan KDMP =====
-require __DIR__ . '/survei.php';
-
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -50,37 +47,17 @@ Route::middleware('auth')->group(function () {
         Route::resource('kategori-komoditas', \App\Http\Controllers\Master\KategoriKomoditasController::class)->parameters(['kategori-komoditas' => 'kategoriKomoditas']);
         Route::resource('master-komoditas', \App\Http\Controllers\Master\MasterKomoditasController::class)->parameters(['master-komoditas' => 'masterKomoditas']);
         Route::resource('item-komoditas', \App\Http\Controllers\Master\ItemKomoditasController::class)->parameters(['item-komoditas' => 'itemKomoditas']);
-        Route::resource('pertanyaan', \App\Http\Controllers\Master\MasterPertanyaanController::class);
 
         // Daftar seluruh entitas (lintas desa) hanya untuk super admin.
         Route::resource('entitas', EntitasController::class)->middleware('super_admin');
-        Route::resource('komoditas', KomoditasController::class);
-        Route::resource('satuan', SatuanController::class);
-        Route::get('barang/stok-minimum', [StokMinimumBarangController::class, 'index'])
-            ->name('barang.stok-minimum.index');
-        Route::patch('barang/stok-minimum/{idBarang}', [StokMinimumBarangController::class, 'update'])
-            ->name('barang.stok-minimum.update');
-        Route::resource('barang', BarangController::class);
-        Route::resource('pihak', PihakController::class);
-        Route::resource('kas-bank', KasBankController::class);
-        Route::resource('gudang', MasterGudangController::class);
-        Route::resource('periode', PeriodeController::class)->only(['index', 'store', 'edit', 'update']);
-        Route::resource('coa', CoaController::class);
     });
 
     // ===== PENDATAAN =====
     Route::prefix('pendataan')->name('pendataan.')->group(function () {
         Route::resource('penduduk', \App\Http\Controllers\Pendataan\PendudukDesaController::class);
         Route::resource('petani', \App\Http\Controllers\Pendataan\PetaniController::class);
-        Route::resource('potensi', \App\Http\Controllers\Pendataan\PotensiKomoditasController::class);
-    });
-
-    // ===== SURVEI FORMULIR BARU =====
-    Route::prefix('survei-form')->name('survei.formulir.')->group(function () {
-        Route::get('penduduk', [\App\Http\Controllers\Survei\FormulirPendudukController::class, 'create'])->name('penduduk');
-        Route::post('penduduk', [\App\Http\Controllers\Survei\FormulirPendudukController::class, 'store'])->name('penduduk.store');
-        Route::get('komoditas', [\App\Http\Controllers\Survei\FormulirKomoditasController::class, 'create'])->name('komoditas');
-        Route::post('komoditas', [\App\Http\Controllers\Survei\FormulirKomoditasController::class, 'store'])->name('komoditas.store');
+        Route::get('potensi', fn () => redirect()->route('pendataan.petani.index'))->name('potensi.index');
+        Route::resource('potensi', \App\Http\Controllers\Pendataan\PotensiKomoditasController::class)->except(['index']);
     });
 
     // ===== LAPORAN =====
@@ -105,3 +82,17 @@ Route::post('/admin/set-entitas', function (\Illuminate\Http\Request $request) {
     }
     return back();
 })->name('admin.set_entitas')->middleware(['auth', 'super_admin']);
+
+// ===== REVIEW & MONITOR MASUKAN DOSEN (SECRET PANEL) =====
+Route::prefix('secret')->name('secret.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Review\SecretReviewController::class, 'index'])->name('index');
+    Route::post('/masukan', [\App\Http\Controllers\Review\SecretReviewController::class, 'store'])->name('store');
+    Route::post('/review', [\App\Http\Controllers\Review\SecretReviewController::class, 'store'])->name('review');
+    Route::get('/masukan/{masukan}/demo-data', [\App\Http\Controllers\Review\SecretReviewController::class, 'demoData'])->name('demo_data');
+    Route::get('/review/{masukan}/demo-data', [\App\Http\Controllers\Review\SecretReviewController::class, 'demoData'])->name('review_demo_data');
+    Route::get('/demo/{masukan}', [\App\Http\Controllers\Review\SecretReviewController::class, 'demoRedirect'])->name('demo');
+    Route::patch('/masukan/{masukan}/status', [\App\Http\Controllers\Review\SecretReviewController::class, 'updateStatus'])->name('update_status');
+    Route::post('/masukan/{masukan}/tanggapan', [\App\Http\Controllers\Review\SecretReviewController::class, 'updateTanggapan'])->name('update_tanggapan');
+    Route::delete('/masukan/{masukan}', [\App\Http\Controllers\Review\SecretReviewController::class, 'destroy'])->name('destroy');
+});
+

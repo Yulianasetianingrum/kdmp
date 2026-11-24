@@ -9,17 +9,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            CoaSeeder::class,
-            TransaksiTemplateSeeder::class,
             PeranSeeder::class,
             DataAwalSeeder::class,
-            M2PerencanaanSeeder::class,
-            M3PerencanaanSeeder::class,
-            KonsinyasiDemoSeeder::class,
+            KomoditasHierarkiSeeder::class,
         ]);
-
-        if (! $this->app->environment('testing')) {
-            $this->call(PerencanaanDemoSeeder::class);
-        }
     }
 }

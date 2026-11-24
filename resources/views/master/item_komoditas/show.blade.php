@@ -1,24 +1,24 @@
 <x-layouts.app :title="$title" eyebrow="Informasi Detail Komoditas">
 
-    <div class="mb-5 flex items-center justify-between">
+    <div class="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
             <div class="flex items-center gap-2">
                 <a href="{{ route('master.item-komoditas.index') }}" class="text-xs text-paper-500 hover:text-ink-900">&larr; Kembali ke Daftar Item</a>
             </div>
-            <h2 class="text-2xl font-display font-semibold text-ink-900 mt-1">{{ $item->nama }}</h2>
+            <h2 class="text-xl sm:text-2xl font-display font-semibold text-ink-900 mt-1">{{ $item->nama }}</h2>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="{{ route('master.item-komoditas.edit', $item) }}" class="px-3 py-1.5 rounded-lg border border-paper-300 text-xs font-medium hover:bg-paper-50">
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <a href="{{ route('master.item-komoditas.edit', $item) }}" class="flex-1 sm:flex-initial inline-flex justify-center items-center px-3 py-1.5 rounded-lg border border-paper-300 text-xs font-medium hover:bg-paper-50 text-center">
                 Edit Item
             </a>
-            <a href="{{ route('pendataan.potensi.create') }}" class="px-3 py-1.5 rounded-lg bg-padi-500 text-ink-950 text-xs font-semibold hover:bg-padi-600 shadow-sm">
+            <a href="{{ route('pendataan.potensi.create', ['redirect_to' => route('master.item-komoditas.show', $item)]) }}" class="flex-1 sm:flex-initial inline-flex justify-center items-center px-3 py-1.5 rounded-lg bg-padi-500 text-ink-950 text-xs font-semibold hover:bg-padi-600 shadow-sm text-center">
                 + Tambah Petani Penghasil
             </a>
         </div>
     </div>
 
     {{-- Kartu Ringkasan Hierarki --}}
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <div class="p-4 rounded-xl bg-white border border-paper-200 shadow-sm">
             <span class="text-[10px] font-mono uppercase tracking-wider text-paper-400">1. Kategori</span>
             <p class="text-base font-display font-bold text-ink-900 mt-0.5">{{ $item->masterKomoditas?->kategori?->nama ?? '-' }}</p>
@@ -73,14 +73,16 @@
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full min-w-[640px] text-left text-sm">
+            <table class="w-full min-w-[760px] text-left text-sm">
             <thead class="border-b border-paper-200 bg-paper-50 font-mono text-[11px] uppercase tracking-wide text-ink-600">
                 <tr>
                     <th class="px-5 py-3">Nama Petani</th>
                     <th class="px-5 py-3">Kontak (HP)</th>
                     <th class="px-5 py-3">Wilayah (Desa, Kec)</th>
                     <th class="px-5 py-3">Estimasi Panen</th>
-                    <th class="px-5 py-3">Periode Panen</th>
+                    <th class="px-5 py-3">Harga Satuan</th>
+                    <th class="px-5 py-3">Total Nilai</th>
+                    <th class="px-5 py-3">Siklus Panen</th>
                     <th class="px-5 py-3 text-right">Aksi</th>
                 </tr>
             </thead>
@@ -99,18 +101,37 @@
                         <td class="px-5 py-3 text-xs font-semibold text-sawah-900 font-mono">
                             {{ number_format($p->pivot->estimasi_volume_panen) }} {{ $p->pivot->satuan }}
                         </td>
-                        <td class="px-5 py-3 text-xs text-paper-600">
-                            {{ $p->pivot->periode_panen ?: 'Musiman' }}
+                        <td class="px-5 py-3 text-xs font-mono font-medium text-emerald-800">
+                            @if($p->pivot->harga_satuan)
+                                Rp {{ number_format($p->pivot->harga_satuan, 0, ',', '.') }}<span class="text-[10px] text-paper-500 font-sans">/{{ $p->pivot->satuan }}</span>
+                            @else
+                                <span class="text-paper-400">-</span>
+                            @endif
+                        </td>
+                        <td class="px-5 py-3 text-xs font-mono font-bold text-emerald-700">
+                            @if($p->pivot->total_nilai)
+                                Rp {{ number_format($p->pivot->total_nilai, 0, ',', '.') }}
+                            @else
+                                <span class="text-paper-400 font-normal">-</span>
+                            @endif
+                        </td>
+                        <td class="px-5 py-3 text-xs text-paper-600 font-medium">
+                            {{ $p->pivot->periode_panen ?: '-' }}
                         </td>
                         <td class="px-5 py-3 text-right text-xs">
-                            <a href="{{ route('pendataan.petani.show', $p) }}" class="text-blue-600 hover:underline">
-                                Profil Petani &rarr;
-                            </a>
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('pendataan.potensi.edit', ['potensi' => $p->pivot->id, 'redirect_to' => route('master.item-komoditas.show', $item)]) }}" class="text-amber-600 hover:underline font-medium">
+                                    Edit Produksi
+                                </a>
+                                <a href="{{ route('pendataan.petani.show', $p) }}" class="text-blue-600 hover:underline">
+                                    Profil Petani &rarr;
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-5 py-8 text-center text-sm text-paper-400">
+                        <td colspan="8" class="px-5 py-8 text-center text-sm text-paper-400">
                             Belum ada petani yang terhubung menghasilkan item komoditas ini.
                         </td>
                     </tr>

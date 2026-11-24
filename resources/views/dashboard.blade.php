@@ -14,11 +14,11 @@
             <h2 class="font-display text-xl sm:text-2xl font-semibold text-ink-900">Dashboard Pemetaan Potensi {{ $desaAktif?->nama ?? 'Desa' }}</h2>
             <p class="text-xs text-paper-500 mt-1">Sistem informasi demografi penduduk, komoditas unggulan desa, dan identifikasi potensi barter antar koperasi.</p>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
-            <a href="{{ route('pendataan.potensi.create') }}" class="inline-flex justify-center items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-padi-500 text-ink-950 hover:bg-padi-600 shadow-sm transition">
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <a href="{{ route('pendataan.potensi.create') }}" class="flex-1 sm:flex-initial inline-flex justify-center items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-padi-500 text-ink-950 hover:bg-padi-600 shadow-sm transition text-center">
                 + Input Potensi
             </a>
-            <a href="{{ route('laporan.analisis.index') }}" class="inline-flex justify-center items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-ink-900 text-white hover:bg-ink-800 shadow-sm transition">
+            <a href="{{ route('laporan.analisis.index') }}" class="flex-1 sm:flex-initial inline-flex justify-center items-center px-3.5 py-2 rounded-lg text-xs font-semibold bg-ink-900 text-white hover:bg-ink-800 shadow-sm transition text-center">
                 Analisis Barter Desa
             </a>
         </div>
@@ -76,40 +76,40 @@
     </div>
 
     {{-- Seksi Distribusi 5 Kelompok Umur --}}
-    <div class="mb-6 bg-white p-6 rounded-xl border border-paper-200 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
+    <div class="mb-6 bg-white p-4 sm:p-6 rounded-xl border border-paper-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
             <div>
-                <h3 class="font-display text-lg font-semibold text-ink-900">Distribusi Penduduk Berdasarkan 5 Kelompok Umur</h3>
+                <h3 class="font-display text-base sm:text-lg font-semibold text-ink-900">Distribusi Penduduk Berdasarkan 5 Kelompok Umur</h3>
                 <p class="text-xs text-paper-500">Klasifikasi kelompok umur desa {{ $desaAktif?->nama ?? '' }} sesuai standar non-overlapping.</p>
             </div>
-            <a href="{{ route('pendataan.penduduk.index') }}" class="text-xs text-blue-600 hover:underline font-medium">Kelola Penduduk &rarr;</a>
+            <a href="{{ route('pendataan.penduduk.index') }}" class="text-xs text-blue-600 hover:underline font-medium shrink-0">Kelola Penduduk &rarr;</a>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-            <div class="p-4 rounded-lg bg-pink-50 border border-pink-100 text-center">
-                <p class="text-xs font-medium text-pink-700 uppercase tracking-wide">Balita (0–4 th)</p>
-                <p class="text-2xl font-display font-bold text-pink-900 mt-1">{{ number_format($demografi['balita']) }}</p>
-                <p class="text-[11px] text-pink-600 mt-0.5">Jiwa</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
+            <div class="p-3 sm:p-4 rounded-lg bg-pink-50 border border-pink-100 text-center">
+                <p class="text-[11px] sm:text-xs font-medium text-pink-700 uppercase tracking-wide">Balita (0–4 th)</p>
+                <p class="text-xl sm:text-2xl font-display font-bold text-pink-900 mt-1">{{ number_format($demografi['balita']) }}</p>
+                <p class="text-[10px] sm:text-[11px] text-pink-600 mt-0.5">Jiwa</p>
             </div>
-            <div class="p-4 rounded-lg bg-amber-50 border border-amber-100 text-center">
-                <p class="text-xs font-medium text-amber-700 uppercase tracking-wide">Anak (5–9 th)</p>
-                <p class="text-2xl font-display font-bold text-amber-900 mt-1">{{ number_format($demografi['anak']) }}</p>
-                <p class="text-[11px] text-amber-600 mt-0.5">Jiwa</p>
+            <div class="p-3 sm:p-4 rounded-lg bg-amber-50 border border-amber-100 text-center">
+                <p class="text-[11px] sm:text-xs font-medium text-amber-700 uppercase tracking-wide">Anak (5–9 th)</p>
+                <p class="text-xl sm:text-2xl font-display font-bold text-amber-900 mt-1">{{ number_format($demografi['anak']) }}</p>
+                <p class="text-[10px] sm:text-[11px] text-amber-600 mt-0.5">Jiwa</p>
             </div>
-            <div class="p-4 rounded-lg bg-cyan-50 border border-cyan-100 text-center">
-                <p class="text-xs font-medium text-cyan-700 uppercase tracking-wide">Remaja (10–19 th)</p>
-                <p class="text-2xl font-display font-bold text-cyan-900 mt-1">{{ number_format($demografi['remaja']) }}</p>
-                <p class="text-[11px] text-cyan-600 mt-0.5">Jiwa</p>
+            <div class="p-3 sm:p-4 rounded-lg bg-cyan-50 border border-cyan-100 text-center">
+                <p class="text-[11px] sm:text-xs font-medium text-cyan-700 uppercase tracking-wide">Remaja (10–19 th)</p>
+                <p class="text-xl sm:text-2xl font-display font-bold text-cyan-900 mt-1">{{ number_format($demografi['remaja']) }}</p>
+                <p class="text-[10px] sm:text-[11px] text-cyan-600 mt-0.5">Jiwa</p>
             </div>
-            <div class="p-4 rounded-lg bg-emerald-50 border border-emerald-100 text-center">
-                <p class="text-xs font-medium text-emerald-700 uppercase tracking-wide">Dewasa (20–59 th)</p>
-                <p class="text-2xl font-display font-bold text-emerald-900 mt-1">{{ number_format($demografi['dewasa']) }}</p>
-                <p class="text-[11px] text-emerald-600 mt-0.5">Jiwa</p>
+            <div class="p-3 sm:p-4 rounded-lg bg-emerald-50 border border-emerald-100 text-center">
+                <p class="text-[11px] sm:text-xs font-medium text-emerald-700 uppercase tracking-wide">Dewasa (20–59 th)</p>
+                <p class="text-xl sm:text-2xl font-display font-bold text-emerald-900 mt-1">{{ number_format($demografi['dewasa']) }}</p>
+                <p class="text-[10px] sm:text-[11px] text-emerald-600 mt-0.5">Jiwa</p>
             </div>
-            <div class="p-4 rounded-lg bg-purple-50 border border-purple-100 text-center">
-                <p class="text-xs font-medium text-purple-700 uppercase tracking-wide">Lansia (60+ th)</p>
-                <p class="text-2xl font-display font-bold text-purple-900 mt-1">{{ number_format($demografi['lansia']) }}</p>
-                <p class="text-[11px] text-purple-600 mt-0.5">Jiwa</p>
+            <div class="col-span-2 sm:col-span-1 lg:col-span-1 p-3 sm:p-4 rounded-lg bg-purple-50 border border-purple-100 text-center">
+                <p class="text-[11px] sm:text-xs font-medium text-purple-700 uppercase tracking-wide">Lansia (60+ th)</p>
+                <p class="text-xl sm:text-2xl font-display font-bold text-purple-900 mt-1">{{ number_format($demografi['lansia']) }}</p>
+                <p class="text-[10px] sm:text-[11px] text-purple-600 mt-0.5">Jiwa</p>
             </div>
         </div>
     </div>
@@ -117,13 +117,13 @@
     {{-- Grid 2 Kolom: Komoditas Unggulan Desa & Hierarki Kategori --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {{-- Komoditas Unggulan Desa Ini --}}
-        <div class="bg-white p-6 rounded-xl border border-paper-200 shadow-sm">
-            <div class="flex items-center justify-between mb-4">
+        <div class="bg-white p-4 sm:p-6 rounded-xl border border-paper-200 shadow-sm">
+            <div class="flex items-center justify-between gap-2 mb-4">
                 <div>
-                    <h3 class="font-display text-lg font-semibold text-ink-900">Komoditas Unggulan: {{ $desaAktif?->nama ?? 'Desa' }}</h3>
+                    <h3 class="font-display text-base sm:text-lg font-semibold text-ink-900">Komoditas Unggulan: {{ $desaAktif?->nama ?? 'Desa' }}</h3>
                     <p class="text-xs text-paper-500">Estimasi volume panen komoditas yang diproduksi petani desa.</p>
                 </div>
-                <a href="{{ route('pendataan.potensi.index') }}" class="text-xs text-blue-600 hover:underline font-medium">Lihat Semua &rarr;</a>
+                <a href="{{ route('pendataan.potensi.index') }}" class="text-xs text-blue-600 hover:underline font-medium shrink-0">Lihat Semua &rarr;</a>
             </div>
 
             @if($daftarKomoditasUnggulan->isEmpty())
@@ -162,13 +162,13 @@
         </div>
 
         {{-- Sebaran Kategori Komoditas --}}
-        <div class="bg-white p-6 rounded-xl border border-paper-200 shadow-sm">
-            <div class="flex items-center justify-between mb-4">
+        <div class="bg-white p-4 sm:p-6 rounded-xl border border-paper-200 shadow-sm">
+            <div class="flex items-center justify-between gap-2 mb-4">
                 <div>
-                    <h3 class="font-display text-lg font-semibold text-ink-900">Kategori & Master Komoditas</h3>
+                    <h3 class="font-display text-base sm:text-lg font-semibold text-ink-900">Kategori & Master Komoditas</h3>
                     <p class="text-xs text-paper-500">Struktur hierarki komoditas yang terdaftar pada sistem.</p>
                 </div>
-                <a href="{{ route('master.kategori-komoditas.index') }}" class="text-xs text-blue-600 hover:underline font-medium">Master Kategori &rarr;</a>
+                <a href="{{ route('master.kategori-komoditas.index') }}" class="text-xs text-blue-600 hover:underline font-medium shrink-0">Master Kategori &rarr;</a>
             </div>
 
             <div class="space-y-3">
