@@ -217,4 +217,23 @@ class SecretReviewController extends Controller
 
         return back()->with('status', 'Masukan berhasil dihapus.');
     }
+
+    public function destroyAll(): RedirectResponse
+    {
+        ReviewMasukan::query()->delete();
+
+        return back()->with('status', 'Seluruh data masukan dan coretan review berhasil dikosongkan.');
+    }
+
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['integer', 'exists:review_masukan,id'],
+        ]);
+
+        $count = ReviewMasukan::whereIn('id', $validated['ids'])->delete();
+
+        return back()->with('status', "Berhasil menghapus {$count} masukan terpilih secara serentak.");
+    }
 }

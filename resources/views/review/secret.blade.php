@@ -319,41 +319,114 @@
                         </div>
                     </div>
                 @else
-                    <div class="space-y-4">
-                        @foreach($masukanList as $item)
-                            <div class="bg-white rounded-2xl border border-paper-200 shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 space-y-3.5"
-                                 x-data="{ 
-                                     editTanggapan: false,
-                                     tanggapanText: '{{ addslashes($item->tanggapan ?? '') }}',
-                                     currentStatus: '{{ $item->status }}'
-                                 }">
-                                
-                                <!-- Header Penegas Segmentasi Area (Dropdown vs Sidebar vs Luar Sidebar) -->
-                                @if($item->sumber_area === 'dropdown_sidebar')
-                                    <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-purple-50 border border-purple-200 text-xs">
-                                        <div class="flex items-center gap-2 min-w-0">
-                                            <span class="px-2 py-0.5 rounded-md bg-purple-600 text-white font-bold text-[10px] tracking-wider uppercase shrink-0">Dropdown Sidebar</span>
-                                            <span class="font-semibold text-purple-900 truncate">{{ $item->detail_sumber ?: 'Menu di dalam Dropdown' }}</span>
+                    <div x-data="{ 
+                            selectedIds: [], 
+                            allIds: [{{ $masukanList->pluck('id')->implode(',') }}],
+                            toggleAll() {
+                                if (this.selectedIds.length === this.allIds.length) {
+                                    this.selectedIds = [];
+                                } else {
+                                    this.selectedIds = [...this.allIds];
+                                }
+                            }
+                         }"
+                         class="space-y-4">
+
+                        <!-- TOOLBAR AKSI SERENTAK / HAPUS MASSAL -->
+                        <div class="bg-white rounded-xl border border-paper-200 px-3 sm:px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 shadow-sm text-xs">
+                            <div class="flex items-center gap-2.5">
+                                <label class="flex items-center gap-2 cursor-pointer font-semibold text-ink-900 select-none">
+                                    <input type="checkbox" 
+                                           :checked="selectedIds.length === allIds.length && allIds.length > 0"
+                                           @change="toggleAll()"
+                                           class="w-4 h-4 rounded border-paper-300 text-padi-600 focus:ring-padi-500 cursor-pointer">
+                                    <span>Pilih Semua di Halaman Ini</span>
+                                </label>
+                                <span x-show="selectedIds.length > 0" 
+                                      x-text="`(${selectedIds.length} dipilih)`"
+                                      class="font-mono text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200"></span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <!-- Tombol Hapus Terpilih -->
+                                <form action="{{ route('secret.bulk_destroy') }}" 
+                                      method="POST" 
+                                      onsubmit="return confirm('Hapus seluruh masukan yang dicentang secara serentak?')"
+                                      x-show="selectedIds.length > 0"
+                                      class="inline">
+                                    @csrf
+                                    <template x-for="id in selectedIds" :key="id">
+                                        <input type="hidden" name="ids[]" :value="id">
+                                    </template>
+                                    <button type="submit" 
+                                            class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold shadow flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        <span>Hapus Terpilih (<span x-text="selectedIds.length"></span>)</span>
+                                    </button>
+                                </form>
+
+                                <!-- Tombol Kosongkan Semua Masukan -->
+                                <form action="{{ route('secret.destroy_all') }}" 
+                                      method="POST" 
+                                      onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin mengosongkan dan menghapus SELURUH masukan dan coretan review sekaligus?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95">
+                                        <svg class="w-3.5 h-3.5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        <span>Kosongkan Semua Masukan ({{ $stats['total'] }})</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            @foreach($masukanList as $item)
+                                <div class="bg-white rounded-2xl border border-paper-200 shadow-sm hover:shadow-md transition-shadow p-4 sm:p-6 space-y-3.5"
+                                     x-data="{ 
+                                         editTanggapan: false,
+                                         tanggapanText: '{{ addslashes($item->tanggapan ?? '') }}',
+                                         currentStatus: '{{ $item->status }}'
+                                     }">
+                                    
+                                    <!-- Header Penegas Segmentasi Area (Dropdown vs Sidebar vs Luar Sidebar) -->
+                                    @if($item->sumber_area === 'dropdown_sidebar')
+                                        <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-purple-50 border border-purple-200 text-xs">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <input type="checkbox" 
+                                                       :value="{{ $item->id }}" 
+                                                       x-model="selectedIds" 
+                                                       class="w-4 h-4 rounded border-purple-300 text-purple-600 focus:ring-purple-500 cursor-pointer">
+                                                <span class="px-2 py-0.5 rounded-md bg-purple-600 text-white font-bold text-[10px] tracking-wider uppercase shrink-0">Dropdown Sidebar</span>
+                                                <span class="font-semibold text-purple-900 truncate">{{ $item->detail_sumber ?: 'Menu di dalam Dropdown' }}</span>
+                                            </div>
+                                            <span class="text-[10px] font-mono font-medium text-purple-600 shrink-0 hidden sm:inline">Terisolasi: Dropdown</span>
                                         </div>
-                                        <span class="text-[10px] font-mono font-medium text-purple-600 shrink-0 hidden sm:inline">Terisolasi: Dropdown</span>
-                                    </div>
-                                @elseif($item->sumber_area === 'sidebar')
-                                    <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-sky-50 border border-sky-200 text-xs">
-                                        <div class="flex items-center gap-2 min-w-0">
-                                            <span class="px-2 py-0.5 rounded-md bg-sky-600 text-white font-bold text-[10px] tracking-wider uppercase shrink-0">Sidebar Navigasi</span>
-                                            <span class="font-semibold text-sky-900 truncate">{{ $item->detail_sumber ?: 'Navigasi Menu Sidebar' }}</span>
+                                    @elseif($item->sumber_area === 'sidebar')
+                                        <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-sky-50 border border-sky-200 text-xs">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <input type="checkbox" 
+                                                       :value="{{ $item->id }}" 
+                                                       x-model="selectedIds" 
+                                                       class="w-4 h-4 rounded border-sky-300 text-sky-600 focus:ring-sky-500 cursor-pointer">
+                                                <span class="px-2 py-0.5 rounded-md bg-sky-600 text-white font-bold text-[10px] tracking-wider uppercase shrink-0">Sidebar Navigasi</span>
+                                                <span class="font-semibold text-sky-900 truncate">{{ $item->detail_sumber ?: 'Navigasi Menu Sidebar' }}</span>
+                                            </div>
+                                            <span class="text-[10px] font-mono font-medium text-sky-600 shrink-0 hidden sm:inline">Terisolasi: Sidebar</span>
                                         </div>
-                                        <span class="text-[10px] font-mono font-medium text-sky-600 shrink-0 hidden sm:inline">Terisolasi: Sidebar</span>
-                                    </div>
-                                @else
-                                    <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-xs">
-                                        <div class="flex items-center gap-2 min-w-0">
-                                            <span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white font-bold text-[10px] tracking-wider uppercase shrink-0">Komponen Luar Sidebar</span>
-                                            <span class="font-semibold text-emerald-900 truncate">{{ $item->bagian_elemen ?: 'Halaman Dokumen Utama' }}</span>
+                                    @else
+                                        <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-xs">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <input type="checkbox" 
+                                                       :value="{{ $item->id }}" 
+                                                       x-model="selectedIds" 
+                                                       class="w-4 h-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                                <span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white font-bold text-[10px] tracking-wider uppercase shrink-0">Komponen Luar Sidebar</span>
+                                                <span class="font-semibold text-emerald-900 truncate">{{ $item->bagian_elemen ?: 'Halaman Dokumen Utama' }}</span>
+                                            </div>
+                                            <span class="text-[10px] font-mono font-medium text-emerald-600 shrink-0 hidden sm:inline">Terisolasi: Dokumen Utama</span>
                                         </div>
-                                        <span class="text-[10px] font-mono font-medium text-emerald-600 shrink-0 hidden sm:inline">Terisolasi: Dokumen Utama</span>
-                                    </div>
-                                @endif
+                                    @endif
 
                                 <!-- Card Header -->
                                 <div class="flex flex-wrap items-start justify-between gap-2 border-b border-paper-100 pb-3">
@@ -568,6 +641,7 @@
                             {{ $masukanList->links() }}
                         </div>
                     </div>
+                </div>
                 @endif
 
             </main>

@@ -155,4 +155,42 @@ class SecretReviewFeatureTest extends TestCase
         $redirect = $this->get(route('secret.demo', $review));
         $redirect->assertRedirect($review->demo_url);
     }
+
+    public function test_bulk_destroy_reviews(): void
+    {
+        $r1 = ReviewMasukan::create([
+            'nama_reviewer' => 'Tester 1',
+            'halaman_url' => 'http://127.0.0.1:8000/komoditas',
+            'halaman_path' => '/komoditas',
+            'komentar' => 'Review bulk 1',
+        ]);
+        $r2 = ReviewMasukan::create([
+            'nama_reviewer' => 'Tester 2',
+            'halaman_url' => 'http://127.0.0.1:8000/komoditas',
+            'halaman_path' => '/komoditas',
+            'komentar' => 'Review bulk 2',
+        ]);
+
+        $response = $this->post(route('secret.bulk_destroy'), [
+            'ids' => [$r1->id, $r2->id],
+        ]);
+
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('review_masukan', ['id' => $r1->id]);
+        $this->assertDatabaseMissing('review_masukan', ['id' => $r2->id]);
+    }
+
+    public function test_destroy_all_reviews(): void
+    {
+        ReviewMasukan::create([
+            'nama_reviewer' => 'Tester A',
+            'halaman_url' => 'http://127.0.0.1:8000/dashboard',
+            'halaman_path' => '/dashboard',
+            'komentar' => 'Review all 1',
+        ]);
+
+        $response = $this->delete(route('secret.destroy_all'));
+        $response->assertStatus(302);
+        $this->assertEquals(0, ReviewMasukan::count());
+    }
 }

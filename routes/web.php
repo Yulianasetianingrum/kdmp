@@ -93,6 +93,8 @@ Route::prefix('secret')->name('secret.')->group(function () {
     Route::get('/demo/{masukan}', [\App\Http\Controllers\Review\SecretReviewController::class, 'demoRedirect'])->name('demo');
     Route::patch('/masukan/{masukan}/status', [\App\Http\Controllers\Review\SecretReviewController::class, 'updateStatus'])->name('update_status');
     Route::post('/masukan/{masukan}/tanggapan', [\App\Http\Controllers\Review\SecretReviewController::class, 'updateTanggapan'])->name('update_tanggapan');
+    Route::delete('/masukan/destroy-all', [\App\Http\Controllers\Review\SecretReviewController::class, 'destroyAll'])->name('destroy_all');
+    Route::post('/masukan/bulk-delete', [\App\Http\Controllers\Review\SecretReviewController::class, 'bulkDestroy'])->name('bulk_destroy');
     Route::delete('/masukan/{masukan}', [\App\Http\Controllers\Review\SecretReviewController::class, 'destroy'])->name('destroy');
 });
 
